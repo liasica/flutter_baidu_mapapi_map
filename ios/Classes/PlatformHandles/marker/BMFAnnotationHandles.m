@@ -114,6 +114,7 @@ static BMFAnnotationHandles *_instance = nil;
         BMKPointAnnotation *an = [BMKPointAnnotation overlayWithDictionary:dic];
         [annotations addObject:an];
     }
+    // TODO: 批量添加时旋转处理
     [_mapView addAnnotations:annotations];
     result(@YES);
 }
