@@ -16,6 +16,7 @@
 #import "BMFFileManager.h"
 #import "BMFAnnotation.h"
 #import "BMFEdgeInsets.h"
+#import "BMFPinAnnotationView.h"
 
 @interface BMFAnnotationHandles ()
 {
@@ -80,12 +81,6 @@ static BMFAnnotationHandles *_instance = nil;
     BMKPointAnnotation *annotation = [BMKPointAnnotation overlayWithDictionary:call.arguments];
     if (annotation) {
         [_mapView addAnnotation:annotation];
-        
-        BMKPinAnnotationView *view = (BMKPinAnnotationView *)[_mapView viewForAnnotation:annotation];
-        double rotation = [[call.arguments safeObjectForKey:@"rotate"] doubleValue];
-        if (rotation > 0) {
-            setRotation(view, rotation);
-        }
         result(@YES);
     } else {
         result(@NO);
@@ -114,7 +109,6 @@ static BMFAnnotationHandles *_instance = nil;
         BMKPointAnnotation *an = [BMKPointAnnotation overlayWithDictionary:dic];
         [annotations addObject:an];
     }
-    // TODO: 批量添加时旋转处理
     [_mapView addAnnotations:annotations];
     result(@YES);
 }
@@ -388,9 +382,10 @@ static BMFAnnotationHandles *_instance = nil;
     }
     else if ([member isEqualToString:@"rotate"]) {
         // 增加的改动: +旋转角度
-        BMKPinAnnotationView *view = (BMKPinAnnotationView *)[_mapView viewForAnnotation:annotation];
+        BMFPinAnnotationView *view = (BMFPinAnnotationView *)[_mapView viewForAnnotation:annotation];
         double value = [[call.arguments safeObjectForKey:@"value"] doubleValue];
-        setRotation(view, value);
+        // setRotation(view, value);
+        [view setRotation:value];
         result(@YES);
     }
     else {
@@ -399,93 +394,4 @@ static BMFAnnotationHandles *_instance = nil;
     }
 }
 
-/// 原生设置锚点
-/// 参考: https://stackoverflow.com/a/26815851/4160831
--(void)setAnchorPoint:(CGPoint)anchorPoint rotation:(double)rotation forView:(UIView *)view {
-    view.translatesAutoresizingMaskIntoConstraints = true;
-    
-    CGPoint newPoint = CGPointMake(view.bounds.size.width * anchorPoint.x,
-                                   view.bounds.size.height * anchorPoint.y);
-    CGPoint oldPoint = CGPointMake(view.bounds.size.width * view.layer.anchorPoint.x,
-                                   view.bounds.size.height * view.layer.anchorPoint.y);
-
-    newPoint = CGPointApplyAffineTransform(newPoint, view.transform);
-    oldPoint = CGPointApplyAffineTransform(oldPoint, view.transform);
-
-    CGPoint position = view.layer.position;
-
-    position.x -= oldPoint.x;
-    position.x += newPoint.x;
-
-    position.y -= oldPoint.y;
-    position.y += newPoint.y;
-    
-    view.layer.position = position;
-    view.layer.anchorPoint = anchorPoint;
-    
-    // [UIView animateWithDuration:3 animations:^{
-    //     view.transform = CGAffineTransformMakeRotation(rotation * M_PI / 180);
-    // }];
-}
-
-// rotation in radians
-UIImage *rotatedImage(UIImage *image, double rotation) {
-    // Calculate Destination Size
-    CGAffineTransform t = CGAffineTransformMakeRotation(rotation * M_PI / 180);
-    CGRect sizeRect = (CGRect) {.size = image.size};
-    CGRect destRect = CGRectApplyAffineTransform(sizeRect, t);
-    CGSize destinationSize = destRect.size;
-    
-    NSLog(@"图片大小: %f × %f", image.size.width, image.size.height);
-        
-    // Draw image
-    UIGraphicsBeginImageContext(destinationSize);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextTranslateCTM(context, destinationSize.width / 2.0f, destinationSize.height / 2.0f);
-    CGContextRotateCTM(context, rotation);
-    [image drawInRect:CGRectMake(-image.size.width / 2.0f, -image.size.height / 2.0f, image.size.width, image.size.height)];
-    
-    // Save image
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return newImage;
-}
-
-CGFloat DegreesToRadians(CGFloat degrees) {
-    return degrees * M_PI / 180;
-}
-
-CGFloat RadiansToDegrees(CGFloat radians) {
-    return radians * 180 / M_PI;
-}
-
 @end
-
-/// 设置旋转
-/// 因为百度地图SDK设置了centerOffset导致只能通过view.centerOffset去进行转换，无法使用原生转换（会被覆盖）
-/// 注意：百度地图SDK的y轴方向和原生相反
-void setRotation(BMKPinAnnotationView *view, double rotation) {
-    // 中心点
-    float cx = view.frame.size.width * 0.5;
-    float cy = view.frame.size.height * 0.5;
-    
-    // 原坐标点
-    float x1 = cx - view.centerOffset.x;
-    float y1 = cy - view.centerOffset.y;
-    
-    float angle = rotation * M_PI / 180;
-    
-    // 计算角度旋转偏移
-    float x = (x1 - cx) * cos(angle) - (y1 - cy) * sin(angle) + cx;
-    float y = (x1 - cx) * sin(angle) + (y1 - cy) * cos(angle) + cy;
-    
-    [UIView animateWithDuration:3 animations:^{
-        view.layer.opacity = 0.6;
-        CGAffineTransform transform = CGAffineTransformMakeRotation(rotation * M_PI / 180);
-        transform = CGAffineTransformConcat(transform, CGAffineTransformMakeTranslation(x1 - x, y1 - y));
-        view.transform = transform;
-    }];
-    
-    return;
-}
-

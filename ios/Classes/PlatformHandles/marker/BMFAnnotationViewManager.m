@@ -12,6 +12,7 @@
 
 #import "BMFAnnotation.h"
 #import "BMFFileManager.h"
+#import "BMFPinAnnotationView.h"
 
 @implementation BMFAnnotationViewManager
 
@@ -24,10 +25,10 @@
     if ([annotation isKindOfClass:[BMKPointAnnotation class]]) {
         BMFAnnotationModel *model = (BMFAnnotationModel *)((BMKPointAnnotation *)annotation).flutterModel;
         NSString *identifier = model.identifier ? model.identifier : NSStringFromClass([BMKPointAnnotation class]);
-        BMKPinAnnotationView *annotationView = (BMKPinAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:identifier];
+        BMFPinAnnotationView *annotationView = (BMFPinAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:identifier];
         
         if (!annotationView) {
-            annotationView = [[BMKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:identifier];
+            annotationView = [[BMFPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:identifier];
         }
         
         if (model.iconData) {
@@ -40,6 +41,10 @@
         
         if (model.centerOffset) {
             annotationView.centerOffset = [model.centerOffset toCGPoint];
+        }
+        
+        if (model.rotate > 0) {
+            [annotationView setRotation:model.rotate];
         }
         annotationView.canShowCallout = model.canShowCallout;
         annotationView.selected = model.selected;

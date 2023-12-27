@@ -55,5 +55,3 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
-
-void setRotation(BMKPinAnnotationView* _Nonnull view, double rotation);
