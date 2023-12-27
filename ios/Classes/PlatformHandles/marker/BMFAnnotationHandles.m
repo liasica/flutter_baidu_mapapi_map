@@ -462,30 +462,30 @@ CGFloat RadiansToDegrees(CGFloat radians) {
 @end
 
 /// 设置旋转
-/// TODO: <BUG> 初始化旋转后，updateRotate会导致错位
 /// 因为百度地图SDK设置了centerOffset导致只能通过view.centerOffset去进行转换，无法使用原生转换（会被覆盖）
 /// 注意：百度地图SDK的y轴方向和原生相反
 void setRotation(BMKPinAnnotationView *view, double rotation) {
-    CGPoint anchorPoint = CGPointMake(0.5 + view.centerOffset.x / view.image.size.width, 1 + view.centerOffset.y / view.image.size.height / 2);
-    CGPoint oldOrigin = view.frame.origin;
-    CGPoint centerOffset = view.centerOffset;
+    // 中心点
+    float cx = view.frame.size.width * 0.5;
+    float cy = view.frame.size.height * 0.5;
     
-    view.layer.anchorPoint = anchorPoint;
+    // 原坐标点
+    float x1 = cx - view.centerOffset.x;
+    float y1 = cy - view.centerOffset.y;
     
-    CGPoint newOrigin = view.frame.origin;
-    CGPoint transition;
+    float angle = rotation * M_PI / 180;
     
-    transition.x = newOrigin.x - oldOrigin.x;
-    transition.y = newOrigin.y - oldOrigin.y;
+    // 计算角度旋转偏移
+    float x = (x1 - cx) * cos(angle) - (y1 - cy) * sin(angle) + cx;
+    float y = (x1 - cx) * sin(angle) + (y1 - cy) * cos(angle) + cy;
     
-    view.centerOffset = CGPointMake(centerOffset.x - transition.x, centerOffset.y - transition.y);
+    [UIView animateWithDuration:3 animations:^{
+        view.layer.opacity = 0.6;
+        CGAffineTransform transform = CGAffineTransformMakeRotation(rotation * M_PI / 180);
+        transform = CGAffineTransformConcat(transform, CGAffineTransformMakeTranslation(x1 - x, y1 - y));
+        view.transform = transform;
+    }];
     
-    view.transform = CGAffineTransformMakeRotation(rotation * M_PI / 180);
-    // view.transform = CGAffineTransformRotate(view.transform, rotation * M_PI / 180);
-    
-    // [UIView animateWithDuration:3 animations:^{
-    //     view.transform = CGAffineTransformMakeRotation(rotation * M_PI / 180);
-    // }];
     return;
 }
 
