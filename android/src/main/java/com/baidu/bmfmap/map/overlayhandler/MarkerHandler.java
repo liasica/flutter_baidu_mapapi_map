@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.baidu.bmfmap.BMFMapController;
+import com.baidu.bmfmap.FlutterBmfmapPlugin;
+import com.baidu.bmfmap.map.BranchIconView;
 import com.baidu.bmfmap.utils.Constants;
 import com.baidu.bmfmap.utils.Env;
 import com.baidu.bmfmap.utils.converter.FlutterDataConveter;
@@ -20,6 +22,7 @@ import com.baidu.mapapi.model.LatLng;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -164,7 +167,13 @@ public class MarkerHandler extends OverlayHandler {
             iconData = (byte[]) argument.get("iconData");
         }
 
-        if (TextUtils.isEmpty(icon) && (iconData == null || iconData.length <= 0)) {
+        // BranchIcon数据获取
+        Map<String, Object> branchIconData = null;
+        if (argument.containsKey("branchIcon")) {
+            branchIconData = (Map<String, Object>) argument.get("branchIcon");
+        }
+
+        if (TextUtils.isEmpty(icon) && (iconData == null || iconData.length <= 0) && branchIconData == null) {
             return false;
         }
 
@@ -247,6 +256,9 @@ public class MarkerHandler extends OverlayHandler {
             return false;
         }
         markerOptions.position(latLng);
+
+        Canvas canvas = new Canvas();
+        BranchIconView.draw_72v(canvas, FlutterBmfmapPlugin.getApplicationContext());
 
         BitmapDescriptor bitmapDescriptor = null;
         if (!TextUtils.isEmpty(icon)) {
