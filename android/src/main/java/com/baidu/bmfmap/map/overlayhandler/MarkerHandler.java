@@ -4,10 +4,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import com.baidu.bmfmap.BMFMapController;
 import com.baidu.bmfmap.FlutterBmfmapPlugin;
-import com.baidu.bmfmap.map.BranchIconView;
+import com.baidu.bmfmap.map.BranchIcon;
 import com.baidu.bmfmap.utils.Constants;
 import com.baidu.bmfmap.utils.Env;
 import com.baidu.bmfmap.utils.converter.FlutterDataConveter;
@@ -23,7 +24,6 @@ import com.baidu.mapapi.model.LatLng;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -167,13 +167,7 @@ public class MarkerHandler extends OverlayHandler {
             iconData = (byte[]) argument.get("iconData");
         }
 
-        // BranchIcon数据获取
-        Map<String, Object> branchIconData = null;
-        if (argument.containsKey("branchIcon")) {
-            branchIconData = (Map<String, Object>) argument.get("branchIcon");
-        }
-
-        if (TextUtils.isEmpty(icon) && (iconData == null || iconData.length <= 0) && branchIconData == null) {
+        if (TextUtils.isEmpty(icon) && (iconData == null || iconData.length == 0) && !argument.containsKey("branchIcon")) {
             return false;
         }
 
@@ -241,8 +235,8 @@ public class MarkerHandler extends OverlayHandler {
     /**
      * 解析并设置markertions里的信息
      *
-     * @return
      */
+    @SuppressWarnings("unchecked")
     private boolean setMarkerOptions(Map<String, Object> markerOptionsMap,
                                      MarkerOptions markerOptions, String id, String icon, byte[] iconData) {
 
@@ -257,11 +251,17 @@ public class MarkerHandler extends OverlayHandler {
         }
         markerOptions.position(latLng);
 
-        Canvas canvas = new Canvas();
-        BranchIconView.draw_72v(canvas, FlutterBmfmapPlugin.getApplicationContext());
-
         BitmapDescriptor bitmapDescriptor = null;
-        if (!TextUtils.isEmpty(icon)) {
+
+        // BranchIcon数据获取
+        if (markerOptionsMap.containsKey("branchIcon")) {
+            // 渲染图标
+            BranchIcon.Model branchModel = BranchIcon.fromMap((Map<String, Object>) Objects.requireNonNull(markerOptionsMap.get("branchIcon")));
+            Bitmap bitmap = Bitmap.createBitmap((int) branchModel.getWidth(), (int) branchModel.getHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            BranchIcon.draw(branchModel, canvas, FlutterBmfmapPlugin.getApplicationContext());
+            bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(bitmap);
+        } else if (!TextUtils.isEmpty(icon)) {
             bitmapDescriptor =
                     BitmapDescriptorFactory.fromAsset("flutter_assets/" + icon);
         } else {

@@ -38,12 +38,22 @@ public class FlutterBmfmapPlugin implements FlutterPlugin, ActivityAware,
 
     private static Context applicationContext;
 
-    public void setApplicationContext(Context context) {
+    private void setApplicationContext(Context context) {
         applicationContext = context;
     }
 
     public static Context getApplicationContext() {
         return applicationContext;
+    }
+
+    private static FlutterAssets flutterAssets;
+
+    private void setFlutterAssets(FlutterAssets assets) {
+        flutterAssets = assets;
+    }
+
+    public static FlutterAssets getFlutterAssets() {
+        return flutterAssets;
     }
 
     // This static function is optional and equivalent to onAttachedToEngine. It supports the old
@@ -87,6 +97,8 @@ public class FlutterBmfmapPlugin implements FlutterPlugin, ActivityAware,
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
+
+        setFlutterAssets(flutterPluginBinding.getFlutterAssets());
 
         setApplicationContext(flutterPluginBinding.getApplicationContext());
 
