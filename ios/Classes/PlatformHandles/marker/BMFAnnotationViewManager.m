@@ -13,6 +13,7 @@
 #import "BMFAnnotation.h"
 #import "BMFFileManager.h"
 #import "BMFPinAnnotationView.h"
+#import "BranchIcon.h"
 
 @implementation BMFAnnotationViewManager
 
@@ -31,7 +32,19 @@
             annotationView = [[BMFPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:identifier];
         }
         
-        if (model.iconData) {
+
+        if (model.branchIcon) {
+            NSString *batteryModel = [model.branchIcon objectForKey:@"batteryModel"];
+            NSNumber* number = [model.branchIcon valueForKey:@"number"];
+            NSNumber* scale = [model.branchIcon valueForKey:@"scale"];
+            // double scale = model.branchIcon.scale;
+            // BranchIcon *branchIcon = (BranchIcon *) model.branchIcon;
+            // BranchIcon *branchIcon = [BranchIcon create:@"60V" number:10 scale:0.55f];
+            // annotationView.image = [branchIcon draw];
+            UIImage *image = [BranchIcon draw:number.intValue scale:scale.doubleValue batteryModel:batteryModel];
+            annotationView.image = image;
+        }
+        else if (model.iconData) {
             UIImage *image = [UIImage imageWithData:((FlutterStandardTypedData *)model.iconData).data];
             annotationView.image = image;
         }

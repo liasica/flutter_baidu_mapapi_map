@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter_baidu_mapapi_base/flutter_baidu_mapapi_base.dart' show BMFCoordinate, BMFPoint;
 import 'package:flutter_baidu_mapapi_map/flutter_baidu_mapapi_map.dart';
 import 'package:flutter_baidu_mapapi_map/src/models/overlays/bmf_overlay.dart';
+import 'package:flutter_baidu_mapapi_map/src/models/overlays/branch_icon.dart';
 import 'package:flutter_baidu_mapapi_map/src/private/mapdispatcher/bmf_map_dispatcher_factory.dart';
 
 import 'bmf_title_option.dart';
@@ -181,8 +182,11 @@ class BMFMarker extends BMFOverlay {
   /// 是否开启与底图POI的碰撞检测，默认false。仅支持大于15地图显示层级。since 3.5.0
   bool? isOpenCollisionDetectionWithMapPOI;
 
-  /// 旋转
+  /// 新增+ 旋转
   double? rotate;
+
+  /// 新增+ BranchIcon
+  BranchIcon? branchIcon;
 
   /// BMFMarker构造方法
   @Deprecated('Use `BMFMarker.icon() or BMFMarker.iconData()` method instead since 3.1.0')
@@ -296,6 +300,44 @@ class BMFMarker extends BMFOverlay {
       this.rotate})
       : super(zIndex: zIndex, visible: visible);
 
+  /// 新增+ BranchIcon构造方法
+  BMFMarker.branchIcon(
+      {required this.position,
+      required this.branchIcon,
+      this.title,
+      this.subtitle,
+      this.isLockedToScreen = false,
+      this.screenPointToLock,
+      this.identifier,
+      this.centerOffset,
+      this.enabled3D,
+      this.enabled = true,
+      this.draggable = false,
+      this.selected = false,
+      this.canShowCallout = true,
+      this.hidePaopaoWhenSingleTapOnMap = true,
+      this.hidePaopaoWhenDoubleTapOnMap = false,
+      this.hidePaopaoWhenTwoFingersTapOnMap = false,
+      this.hidePaopaoWhenSelectOthers = true,
+      this.hidePaopaoWhenDrag = false,
+      this.hidePaopaoWhenDragOthers = false,
+      this.displayPriority = BMFMarkerDisplayPriority.Middle,
+      this.scaleX = 1.0,
+      this.scaleY = 1.0,
+      this.alpha = 1.0,
+      this.isPerspective,
+      this.customMap,
+      this.isOpenCollisionDetection = false,
+      this.collisionDetectionPriority = 0,
+      this.isForceDisplay = false,
+      this.isOpenCollisionDetectionWithMapPOI = false,
+      this.isOpenCollisionDetectionWithPaoPaoView = false,
+      this.titleOptions,
+      int zIndex = 0,
+      bool visible = true,
+      this.rotate})
+      : super(zIndex: zIndex, visible: visible);
+
   /// map => BMFMarker
   BMFMarker.fromMap(Map map)
       : assert(map['position'] != null),
@@ -341,6 +383,11 @@ class BMFMarker extends BMFOverlay {
       titleOptions = map['titleOptions' as Map];
     }
     rotate = map['rotate'];
+
+    /// 新增+ BranchIcon
+    if (map['branchIcon']) {
+      branchIcon = BranchIcon.fromMap(map['branchIcon']);
+    }
   }
 
   @override
@@ -385,6 +432,9 @@ class BMFMarker extends BMFOverlay {
         'isOpenCollisionDetectionWithPaoPaoView': this.isOpenCollisionDetectionWithPaoPaoView,
         'titleOptions': this.titleOptions?.toMap(),
         'rotate': this.rotate,
+
+        /// 新增+ BranchIcon
+        'branchIcon': this.branchIcon?.toMap(),
       });
   }
 }

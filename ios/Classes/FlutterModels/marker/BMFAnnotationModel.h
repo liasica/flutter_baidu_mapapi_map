@@ -104,6 +104,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// 旋转角度
 @property (nonatomic, assign) double rotate;
 
+/// 新增+ BranchIcon
+@property (nonatomic, strong) NSDictionary *branchIcon;
+
 @end
 
 
