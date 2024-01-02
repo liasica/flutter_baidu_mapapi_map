@@ -133,11 +133,6 @@ NSString * const BatteryModel60V = @"60V";
         [ovalPath fill];
     }
     
-    for (NSString *font in UIFont.familyNames) {
-        NSLog(@"[DEBUG] %@", font);
-    }
-    
-    
     //// Battery Model Drawing
     CGRect batteryModelRect = CGRectMake(27, 56, 36, 14);
     {
