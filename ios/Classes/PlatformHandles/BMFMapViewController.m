@@ -248,6 +248,8 @@ static NSString * const kProjectionMethods = @"flutter_bmfmap/projection/";
 
 #pragma mark - annotationView
 /// 根据anntation生成对应的View
+/// TODO: 新增图片图层以便于旋转
+/// 增加的改动: +旋转角度 https://www.jianshu.com/p/cddc0530ea8b
 - (__kindof BMKAnnotationView *)mapView:(BMKMapView *)mapView viewForAnnotation:(id<BMKAnnotation>)annotation {
     return [BMFAnnotationViewManager mapView:mapView viewForAnnotation:annotation];
 }

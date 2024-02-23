@@ -4,8 +4,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import com.baidu.bmfmap.BMFMapController;
+import com.baidu.bmfmap.FlutterBmfmapPlugin;
+import com.baidu.bmfmap.map.BranchIcon;
 import com.baidu.bmfmap.utils.Constants;
 import com.baidu.bmfmap.utils.Env;
 import com.baidu.bmfmap.utils.converter.FlutterDataConveter;
@@ -20,6 +23,7 @@ import com.baidu.mapapi.model.LatLng;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -163,7 +167,7 @@ public class MarkerHandler extends OverlayHandler {
             iconData = (byte[]) argument.get("iconData");
         }
 
-        if (TextUtils.isEmpty(icon) && (iconData == null || iconData.length <= 0)) {
+        if (TextUtils.isEmpty(icon) && (iconData == null || iconData.length == 0) && !argument.containsKey("branchIcon")) {
             return false;
         }
 
@@ -231,8 +235,8 @@ public class MarkerHandler extends OverlayHandler {
     /**
      * 解析并设置markertions里的信息
      *
-     * @return
      */
+    @SuppressWarnings("unchecked")
     private boolean setMarkerOptions(Map<String, Object> markerOptionsMap,
                                      MarkerOptions markerOptions, String id, String icon, byte[] iconData) {
 
@@ -248,7 +252,16 @@ public class MarkerHandler extends OverlayHandler {
         markerOptions.position(latLng);
 
         BitmapDescriptor bitmapDescriptor = null;
-        if (!TextUtils.isEmpty(icon)) {
+
+        // BranchIcon数据获取
+        if (markerOptionsMap.containsKey("branchIcon")) {
+            // 渲染图标
+            BranchIcon.Model branchModel = BranchIcon.fromMap((Map<String, Object>) Objects.requireNonNull(markerOptionsMap.get("branchIcon")));
+            Bitmap bitmap = Bitmap.createBitmap((int) branchModel.getWidth(), (int) branchModel.getHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            BranchIcon.draw(branchModel, canvas, FlutterBmfmapPlugin.getApplicationContext());
+            bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(bitmap);
+        } else if (!TextUtils.isEmpty(icon)) {
             bitmapDescriptor =
                     BitmapDescriptorFactory.fromAsset("flutter_assets/" + icon);
         } else {
@@ -267,6 +280,10 @@ public class MarkerHandler extends OverlayHandler {
             return false;
         }
 
+        int width = bitmapDescriptor.getBitmap().getWidth();
+        int height = bitmapDescriptor.getBitmap().getHeight();
+        // Log.d("BDEBUG", "width = " + width + ", height = " + height);
+
         markerOptions.icon(bitmapDescriptor);
         mMarkerBitmapMap.put(id, bitmapDescriptor);
 
@@ -274,10 +291,59 @@ public class MarkerHandler extends OverlayHandler {
         Map<String, Object> centerOffset =
                 new TypeConverter<Map<String, Object>>().getValue(markerOptionsMap, "centerOffset");
         if (null != centerOffset) {
+            float anchorX = 0.5f;
+            float anchorY = 1.0f;
+
+            // X轴偏移
+            Double x = new TypeConverter<Double>().getValue(centerOffset, "x");
+            if (null != x) {
+                // markerOptions.xOffset(x.intValue());
+                anchorX -= x.floatValue() / (float)width;
+            }
+
+            // 添加Y轴偏移
             Double y = new TypeConverter<Double>().getValue(centerOffset, "y");
             if (null != y) {
-                markerOptions.yOffset(y.intValue());
+                // markerOptions.yOffset(y.intValue());
+                anchorY -= y.floatValue() / (float)height;
             }
+
+            // 计算并设置锚点，初始锚点为 (0.5, 1)
+            markerOptions.anchor(anchorX, anchorY);
+            Log.d("BDEBUG", "anchorX = " + anchorX + ", anchorY = " + anchorY);
+        }
+
+        // 添加旋转
+        Double rotate = new TypeConverter<Double>().getValue(markerOptionsMap, "rotate");
+        if (null != rotate && rotate.floatValue() > 0) {
+            // Image旋转
+            // Matrix matrix = new Matrix();
+            // matrix.postRotate(rotate.floatValue(), 0.5f * width, 0.9791667f * height);
+            // Bitmap bitmap = bitmapDescriptor.getBitmap();
+            // Bitmap rotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+            // bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(rotated);
+
+            float rotation = rotate.floatValue();
+            markerOptions.rotate(rotation);
+
+            // 旋转锚点，百度地图虽然可以设置锚点，但是旋转时不跟随锚点旋转，强制以(0.5, 1)进行旋转
+            float cx = width * 0.5f;
+            float cy = height * 1.0f;
+
+            // 原坐标点
+            float x1 = markerOptions.getAnchorX() * width;
+            float y1 = markerOptions.getAnchorY() * height;
+
+            float angle = rotation * (float) Math.PI / 180f;
+
+            // 计算角度旋转偏移量
+            float x = (x1 - cx) * (float) Math.cos(angle) - (y1 - cy) * (float) Math.sin(angle) + cx;
+            float y = (x1 - cx) * (float) Math.sin(angle) + (y1 - cy) * (float) Math.cos(angle) + cy;
+
+            // Log.d("BDEBUG", "rotation = " + rotation + ", x  = " + x  + ", y  = " + y);
+            // Log.d("BDEBUG", "rotation = " + rotation + ", x1 = " + x1 + ", y1 = " + y1);
+            markerOptions.xOffset((int) (x - x1));
+            markerOptions.yOffset((int) (y1 - y));
         }
 
         Boolean enable = new TypeConverter<Boolean>().getValue(markerOptionsMap, "enabled");

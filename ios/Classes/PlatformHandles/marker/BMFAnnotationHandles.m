@@ -16,6 +16,7 @@
 #import "BMFFileManager.h"
 #import "BMFAnnotation.h"
 #import "BMFEdgeInsets.h"
+#import "BMFPinAnnotationView.h"
 
 @interface BMFAnnotationHandles ()
 {
@@ -376,6 +377,14 @@ static BMFAnnotationHandles *_instance = nil;
         BMKPinAnnotationView *view = (BMKPinAnnotationView *)[_mapView viewForAnnotation:annotation];
         BOOL value = [[call.arguments safeObjectForKey:@"value"] boolValue];
         view.draggable = value;
+        result(@YES);
+    }
+    else if ([member isEqualToString:@"rotate"]) {
+        // 增加的改动: +旋转角度
+        BMFPinAnnotationView *view = (BMFPinAnnotationView *)[_mapView viewForAnnotation:annotation];
+        double value = [[call.arguments safeObjectForKey:@"value"] doubleValue];
+        // setRotation(view, value);
+        [view setRotation:value];
         result(@YES);
     }
     else {
