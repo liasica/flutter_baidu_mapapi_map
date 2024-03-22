@@ -184,6 +184,7 @@ public class MarkerHandler extends OverlayHandler {
 
         Bundle bundle = new Bundle();
         bundle.putString("id", id);
+        bundle.putBoolean("branchIcon", argument.containsKey("branchIcon"));
         if (!TextUtils.isEmpty(icon)) {
             bundle.putString("icon", icon);
         }
