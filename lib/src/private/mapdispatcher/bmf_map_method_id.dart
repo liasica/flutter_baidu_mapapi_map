@@ -358,6 +358,16 @@ class BMFMarkerCallbackMethodId {
   static const kMapDragMarkerCallback = 'flutter_bmfmap/marker/dragMarker';
 }
 
+/// 点聚合事件回调方法
+class BMFClusterMethodID {
+  /// 点聚合点击回调
+  static const kMapClusterClickCallback = 'flutter_bmfmap/cluster/clickCluster';
+
+  /// 点聚合点击item回调
+  static const kMapClusterClickItemCallback =
+      'flutter_bmfmap/cluster/clickClusterItem';
+}
+
 /// infoWindow方法ID集合
 class BMFInfoWindowMethodId {
   /// marker的infoWindow（iOS paopaoView）点击回调
@@ -665,4 +675,28 @@ class BMFProjectionMethodId {
   /// 将三维地理坐标转化为屏幕坐标 since 3.3.0
   static const kScreenPointFromMapPoint3Method =
       'flutter_bmfmap/projection/screenPointFromMapPoint3';
+}
+
+/// 聚合marker方法Id集合
+class BMFClusterMarkerMethodId {
+  /// 设置聚合marker的地理坐标
+  static const kSetClusterMarkerCoordinateMethod =
+      'flutter_bmfmap/marker/setClusterCoordinates';
+
+  /// 获取聚合后的cluster
+  static const kGetClusterOnZoomLevelMethod =
+      'flutter_bmfmap/marker/getCluster';
+
+  /// 更新聚合页面
+  static const kUpdateClustersMethod = 'flutter_bmfmap/marker/updateClusters';
+
+  /// iOS刷新点聚合
+  static const kRefreshClustersMethod = 'flutter_bmfmap/marker/refreshClusters';
+
+  /// 设置当前层级最大距离聚合
+  static const kSetMaxDistanceZoomMethod =
+      'flutter_bmfmap/marker/setClusterMaxZoomDistance';
+
+  /// 清除聚合数据
+  static const kCleanCluster = 'flutter_bmfmap/marker/cleanCluster';
 }

@@ -86,6 +86,10 @@ public class BMFMapController implements MethodChannel.MethodCallHandler, BaiduM
         mFileUtils.setContext(context);
     }
 
+    public Context getContext() {
+        return mContext;
+    }
+
     public void release() {
         mMethodChannel.setMethodCallHandler(null);
         mMapListener.release();

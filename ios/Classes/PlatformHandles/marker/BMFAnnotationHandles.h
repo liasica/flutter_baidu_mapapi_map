@@ -15,6 +15,32 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSDictionary<NSString *, NSString *> *)annotationHandles;
 @end
+
+#pragma mark - cluster
+@interface BMFRefreshCluster :  NSObject<BMFMapViewHandler>
+
+@end
+
+@interface BMFCleanCluster :  NSObject<BMFMapViewHandler>
+
+@end
+
+@interface BMFClusterSetMaxDistance :  NSObject<BMFMapViewHandler>
+
+@end
+
+@interface BMFUpdateCluster :  NSObject<BMFMapViewHandler>
+
+@end
+
+@interface BMFAddClusterAnnotation :  NSObject<BMFMapViewHandler>
+
+@end
+
+@interface BMFGetCluster :  NSObject<BMFMapViewHandler>
+
+@end
+
 #pragma mark - marker
 
 @interface BMFAddAnnotation : NSObject<BMFMapViewHandler>

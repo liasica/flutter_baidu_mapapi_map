@@ -8,7 +8,8 @@ import 'package:flutter_baidu_mapapi_map/src/private/mapdispatcher/bmf_map_metho
         BMFMarkerCallbackMethodId,
         BMFInfoWindowMethodId,
         BMFHeatMapMethodId,
-        BMFUserlocationMethodId;
+        BMFUserlocationMethodId,
+        BMFClusterMethodID;
 
 /// 地图无参数回调
 typedef BMFMapCallback = void Function();
@@ -28,6 +29,14 @@ typedef BMFMapOnClickedMapPoiCallback = void Function(BMFMapPoi mapPoi);
 
 /// 地图marker事件回调
 typedef BMFMapMarkerCallback = void Function(BMFMarker marker);
+
+/// Cluster点击事件回调
+typedef BMFMapClusterCallback = void Function(
+    List<BMFClusterInfo> clusterInfoList, int size);
+
+/// Cluster点击item事件回调
+typedef BMFMapClusterClickItemCallback = void Function(
+    BMFClusterInfo clusterInfo);
 
 /// 地图拖拽marker回调
 typedef BMFMapDragMarkerCallback = void Function(
@@ -207,6 +216,12 @@ class BMFMethodChannelHandler {
   /// marker的infoWindow（ios paopaoView）点击回调
   BMFMapMarkerCallback? _mapDidClickedInfoWindowCallback;
 
+  /// 点聚合点击回调
+  BMFMapClusterCallback? _mapClusterCallback;
+
+  /// 点聚合item点击回调
+  BMFMapClusterClickItemCallback? _mapClusterItemCallback;
+
   /// 地图绘制出有效数据的监听
   BMFMapRenderValidDataCallback? _mapRenderValidDataCallback;
 
@@ -322,7 +337,7 @@ class BMFMethodChannelHandler {
           break;
         }
       case BMFOverlayCallbackMethodId
-          .kMapOnClickedMultiPointOverlayItemCallback:
+            .kMapOnClickedMultiPointOverlayItemCallback:
         {
           if (this._mapOnClickedMultiPointOverlayItemCallback != null) {
             BMFMultiPointOverlay multiPointOverlay =
@@ -347,7 +362,7 @@ class BMFMethodChannelHandler {
           break;
         }
       case BMFOverlayCallbackMethodId
-          .kTraceOverlayAnimationRunningProgressCallback:
+            .kTraceOverlayAnimationRunningProgressCallback:
         {
           if (this._traceOverlayAnimationRunningProgressCallback != null) {
             BMFTraceOverlay traceOverlay =
@@ -369,7 +384,7 @@ class BMFMethodChannelHandler {
           break;
         }
       case BMFOverlayCallbackMethodId
-          .kPrismOverlayViewFloorAnimationDidEndCallback:
+            .kPrismOverlayViewFloorAnimationDidEndCallback:
         {
           if (this._prismOverlayViewFloorAnimationDidEndCallback != null) {
             BMFPrismOverlay prismOverlay =
@@ -379,7 +394,7 @@ class BMFMethodChannelHandler {
           break;
         }
       case BMFOverlayCallbackMethodId
-          .kTraceOverlayAnimationUpdatePositionCallback:
+            .kTraceOverlayAnimationUpdatePositionCallback:
         {
           if (this._traceOverlayAnimationUpdatePositionCallback != null) {
             BMFCoordinate coordinate =
@@ -492,6 +507,34 @@ class BMFMethodChannelHandler {
             BMFMarkerDragState oldState =
                 BMFMarkerDragState.values[call.arguments['oldState'] as int];
             this._mapDragMarkerCallback!(marker, newState, oldState);
+          }
+          break;
+        }
+      case BMFClusterMethodID.kMapClusterClickCallback:
+        {
+          if (this._mapClusterCallback != null) {
+            BMFLog.d("cluster click", tag: 'BMFMethodChannelHandler');
+            List<BMFClusterInfo> clusterInfoList = [];
+            List tempList = call.arguments['clusterInfoList'] as List;
+            if (tempList.length > 0) {
+              for (int i = 0; i < tempList.length; i++) {
+                BMFClusterInfo clusterInfo =
+                    BMFClusterInfo.fromMap(tempList[i] as Map);
+                clusterInfoList.add(clusterInfo);
+              }
+              int size = call.arguments['size'] as int;
+              this._mapClusterCallback!(clusterInfoList, size);
+            }
+          }
+          break;
+        }
+      case BMFClusterMethodID.kMapClusterClickItemCallback:
+        {
+          if (this._mapClusterItemCallback != null) {
+            BMFLog.d("cluster item click", tag: 'BMFMethodChannelHandler');
+            BMFClusterInfo clusterInfo =
+                BMFClusterInfo.fromMap(call.arguments['clusterInfo']);
+            this._mapClusterItemCallback!(clusterInfo);
           }
           break;
         }
@@ -742,5 +785,19 @@ extension IndoorMapHandlerExtension on BMFMethodChannelHandler {
       BMFMapInOrOutBaseIndoorMapCallback block) {
     ArgumentError.checkNotNull(block, "block");
     this._mapInOrOutBaseIndoorMapCallback = block;
+  }
+}
+
+extension ClusterHandlerExtension on BMFMethodChannelHandler {
+  /// 设置Cluster聚合点击回调
+  void setClusterClickCallback(BMFMapClusterCallback block) {
+    ArgumentError.checkNotNull(block, "block");
+    this._mapClusterCallback = block;
+  }
+
+  /// 设置Cluster聚合点击回调
+  void setClusterItemClickCallback(BMFMapClusterClickItemCallback block) {
+    ArgumentError.checkNotNull(block, "block");
+    this._mapClusterItemCallback = block;
   }
 }

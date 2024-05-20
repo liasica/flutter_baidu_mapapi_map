@@ -623,6 +623,11 @@ public class MapListener implements BaiduMap.OnMapClickListener, BaiduMap.OnMapL
         circleMap.put("fillColor", Integer.toHexString(circle.getFillColor()));
         circleMap.put("lineDashType", circle.getDottedStrokeType());
         circleMap.put("clickable", circle.isClickable());
+        HashMap<String, Object> customMap =
+                (HashMap<String, Object>) bundle.getSerializable("customMap");
+        if (customMap != null && customMap.size() > 0) {
+            circleMap.put("customMap", customMap);
+        }
 
         return circleMap;
     }
@@ -680,6 +685,11 @@ public class MapListener implements BaiduMap.OnMapClickListener, BaiduMap.OnMapL
         // 目前polygon没有lineDashType，所以先设置为0，否则flutter会出现转换报错
         polygonMap.put("lineDashType", 0);
         polygonMap.put("clickable", polygon.isClickable());
+        HashMap<String, Object> customMap =
+                (HashMap<String, Object>) bundle.getSerializable("customMap");
+        if (customMap != null && customMap.size() > 0) {
+            polygonMap.put("customMap", customMap);
+        }
 
         return polygonMap;
     }
@@ -756,6 +766,11 @@ public class MapListener implements BaiduMap.OnMapClickListener, BaiduMap.OnMapL
 
         groundMap.put("transparency", Double.valueOf(ground.getTransparency()));
         groundMap.put("clickable", ground.isClickable());
+        HashMap<String, Object> customMap =
+                (HashMap<String, Object>) bundle.getSerializable("customMap");
+        if (customMap != null && customMap.size() > 0) {
+            groundMap.put("customMap", customMap);
+        }
 
         return groundMap;
     }
@@ -819,6 +834,12 @@ public class MapListener implements BaiduMap.OnMapClickListener, BaiduMap.OnMapL
         // 目前arc没有lineDashType，所以先设置为0，否则flutter会出现转换报错
         arcLineMap.put("lineDashType", 0);
         arcLineMap.put("clickable", arc.isClickable());
+        HashMap<String, Object> customMap =
+                (HashMap<String, Object>) bundle.getSerializable("customMap");
+        if (customMap != null && customMap.size() > 0) {
+            arcLineMap.put("customMap", customMap);
+        }
+
         return arcLineMap;
     }
 
@@ -903,6 +924,11 @@ public class MapListener implements BaiduMap.OnMapClickListener, BaiduMap.OnMapL
         polylineMap.put("lineBloomWidth", Integer.valueOf(polyline.getBloomWidth()).doubleValue());
         polylineMap.put("lineBloomAlpha", Integer.valueOf(polyline.getBloomAlpha()).doubleValue());
         polylineMap.put("lineBloomGradientASPeed", Float.valueOf(polyline.getBloomGradientASpeed()).doubleValue());
+        HashMap<String, Object> customMap =
+                (HashMap<String, Object>) bundle.getSerializable("customMap");
+        if (customMap != null && customMap.size() > 0) {
+            polylineMap.put("customMap", customMap);
+        }
 
         return polylineMap;
     }
@@ -1098,6 +1124,12 @@ public class MapListener implements BaiduMap.OnMapClickListener, BaiduMap.OnMapL
         multiPointOverlayMap.put("id", id);
         resultMap.put("multiPointOverlay", multiPointOverlayMap);
         resultMap.put("item", itemMap);
+        HashMap<String, Object> customMap =
+                (HashMap<String, Object>) bundle.getSerializable("customMap");
+        if (customMap != null && customMap.size() > 0) {
+            resultMap.put("customMap", customMap);
+        }
+
         mMethodChannel.invokeMethod(Constants.MethodProtocol.MapStateProtocol.
                         MAP_ON_CLICK_MULTI_POINT_OVERLAY_ITEM_CALLBACK,
                 resultMap, new MethodChannel.Result() {

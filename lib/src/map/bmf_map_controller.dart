@@ -1204,6 +1204,58 @@ extension ProjectionExtension on BMFMapController {
   }
 }
 
+/// 聚合marker相关
+extension ClusterMarkerExtension on BMFMapController {
+  /// 设置需要聚合的marker经纬度 since 3.7.0
+  ///
+  /// [BMFCoordinate] coordinates 地理坐标集合
+  ///
+  Future<bool> setClusterCoordinates(List<BMFClusterInfo> clusterInfos) async {
+    return await BMFMapDispatcherFactory.instance.mapClusterMarkerDispatcher
+        .setClusterCoordinates(_mapChannel, clusterInfos);
+  }
+
+  /// [maxDistanceInDP] 最大聚合距离 单位dp 默认为50dp since 3.7.0
+  ///
+  /// Android 建议设置100dp，iOS建议设置100-200dp
+  Future<bool> setClusterMaxDistanceInDP(int maxDistanceInDP) async {
+    return await BMFMapDispatcherFactory.instance.mapClusterMarkerDispatcher
+        .setClusterMaxDistanceInDP(_mapChannel, maxDistanceInDP);
+  }
+
+  /// 更新聚合BMFClusterInfo， since 3.7.0
+  ///
+  /// [List<BMFClusterInfo>] clusterInfos
+  Future<bool> updateClusters(List<BMFClusterInfo> clusterInfos) async {
+    return await BMFMapDispatcherFactory.instance.mapClusterMarkerDispatcher
+        .updateClusters(_mapChannel, clusterInfos);
+  }
+
+  /// 清除聚合marker since 3.7.0
+  ///
+  Future<bool> cleanCluster() async {
+    return await BMFMapDispatcherFactory.instance.mapClusterMarkerDispatcher
+        .cleanCluster(_mapChannel);
+  }
+
+  /// 获取指定级别下聚合后的BMFCluster对象 since 3.7.0
+  /// IOS独有接口，Android暂不支持
+  /// [int] clusterZoom 地图级别
+  Future<List<BMFClusterInfo?>> getClusterOnZoomLevel(int clusterZoom) async {
+    return await BMFMapDispatcherFactory.instance.mapClusterMarkerDispatcher
+        .getClusterOnZoomLevel(_mapChannel, clusterZoom);
+  }
+
+  /// 在合适的时机更新聚合marker，推荐在setMapRegionDidChangeCallback回调中进行更新 since 3.7.0
+  /// 可以根据getClusterOnZoomLevel获取到当前层级下的BMFClusterInfo，然后进行marker样式设置
+  /// iOS独有  Android暂不支持
+  /// [List<BMFClusterInfo>] clusterInfos clusterInfos的样式
+  Future<bool> refreshClusters(List<BMFClusterInfo> clusterInfos) async {
+    return await BMFMapDispatcherFactory.instance.mapClusterMarkerDispatcher
+        .refreshClusters(_mapChannel, clusterInfos);
+  }
+}
+
 /// 地图相关回调
 extension MapCallbackExtension on BMFMapController {
   /// 设置地图加载完成回调
@@ -1445,5 +1497,22 @@ extension MarkerCallbackExtension on BMFMapController {
   void setMapDidClickedInfoWindowCallback(
       {required BMFMapMarkerCallback callback}) {
     _methodChannelHandler.setMapDidClickedInfoWindowCallback(callback);
+  }
+}
+
+extension ClusterCallbackExtension on BMFMapController {
+  /// 设置点聚合的点击回调
+  /// android 独有
+  /// [BMFMapClusterCallback] callback 回调接口
+  void setMapClusterClickCallback({required BMFMapClusterCallback callback}) {
+    _methodChannelHandler.setClusterClickCallback(callback);
+  }
+
+  /// 设置点聚合的Item点击回调
+  ///
+  /// [BMFMapClusterClickItemCallback] callback 回调接口
+  void setMapClusterItemClickCallback(
+      {required BMFMapClusterClickItemCallback callback}) {
+    _methodChannelHandler.setClusterItemClickCallback(callback);
   }
 }

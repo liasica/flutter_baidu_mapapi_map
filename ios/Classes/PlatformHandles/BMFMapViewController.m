@@ -35,6 +35,8 @@
 #import "BMFPolygonModel.h"
 #import "BMFGroundModel.h"
 
+#import "BMFClusterAnnotation.h"
+
 static NSString * const kBMFMapChannelName = @"flutter_bmfmap/map_";
 static NSString * const kMapMethods = @"flutter_bmfmap/map/";
 static NSString * const kMarkerMethods = @"flutter_bmfmap/marker/";
@@ -263,6 +265,19 @@ static NSString * const kProjectionMethods = @"flutter_bmfmap/projection/";
     if ([view isKindOfClass:NSClassFromString(@"BMKUserLocationView")]) {
         return;
     }
+    
+    /// 点聚合类兼容Android做的逻辑，后续可以删除，使用BMKAnnotation的这一套
+    if ([view.annotation isKindOfClass:[BMFClusterAnnotation class]]) {
+        BMFAnnotationModel *model = [BMFAnnotationViewManager annotationModelfromAnnotionView:view];
+        BMFClusterAnnotation *annotation = (BMFClusterAnnotation *)view.annotation;
+        [_channel invokeMethod:kBMFMapClickClusterItemCallback arguments:@{
+            @"clusterInfo": @{@"coordinate": [model.position bmf_toDictionary],
+                              @"icon": model.icon ? model.icon : @"",
+                              @"iconData": @{@"data": model.iconData ? model.iconData : @""},
+                              @"size": @(annotation.size)}} result:nil];
+        return;
+    }
+    
     // 回调marker数据model
     BMFAnnotationModel *model = [BMFAnnotationViewManager annotationModelfromAnnotionView:view];
     [_channel invokeMethod:kBMFMapClickedMarkerCallback arguments:@{@"marker": [model bmf_toDictionary]} result:nil];

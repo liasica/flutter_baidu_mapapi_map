@@ -34,6 +34,7 @@ public class Constants {
         public static final int BM3DMODEL_HANDLER = 11;
         public static final int MULTIPOINT_HANDLER = 12;
         public static final int TRACE_HANDLER = 13;
+        public static final int CLUSTER_HANDLER = 14;
     }
 
     /**
@@ -223,6 +224,53 @@ public class Constants {
             // 移除infoWindow
             public static final String sRemoveInfoWindowMapMethod =
                     "flutter_bmfmap/map/removeInfoWindow";
+        }
+
+        /**
+         * 点聚合类型
+         */
+        public class ClusterProtocol {
+            /**
+             * 设置聚合marker的地理坐标
+             */
+            public static final String SET_CLUSTER_MARKER_COORDINATE_METHOD =
+                    "flutter_bmfmap/marker/setClusterCoordinates";
+
+            /**
+             * 获取聚合后的cluster
+             */
+            public static final String GET_CLUSTER_ON_ZOOM_LEVEL_METHOD =
+                    "flutter_bmfmap/marker/getCluster";
+
+            /**
+             * 更新聚合页面
+             */
+            public static final String UPDATE_CLUSTERS_METHOD =
+                    "flutter_bmfmap/marker/updateClusters";
+
+            /**
+             * 设置当前zoom最大聚合距离
+             */
+            public static final String SET_MAX_DISTANCE_ZOOM_METHOD =
+                    "flutter_bmfmap/marker/setClusterMaxZoomDistance";
+
+            /**
+             * 点聚合item点击回调
+             */
+            public static final String CLUSTER_CLICK_ITEM_METHOD =
+                    "flutter_bmfmap/cluster/clickClusterItem";
+
+            /**
+             * 点聚合item点击回调
+             */
+            public static final String CLUSTER_CLICK_METHOD =
+                    "flutter_bmfmap/cluster/clickCluster";
+
+            /**
+             * 清除聚合数据
+             */
+            public static final String CLEAN_CLUSTER_METHOD =
+                    "flutter_bmfmap/marker/cleanCluster";
         }
 
         /**

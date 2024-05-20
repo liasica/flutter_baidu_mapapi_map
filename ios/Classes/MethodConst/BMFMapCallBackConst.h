@@ -52,6 +52,9 @@ FOUNDATION_EXPORT NSString *const kBMFMapDidClickedPaoPaoCallback;
 /// marker的拖拽回调
 FOUNDATION_EXPORT NSString *const kBMFMapDidDragMarkerCallback;
 
+/// 点聚合点击item回调
+FOUNDATION_EXPORT NSString *const kBMFMapClickClusterItemCallback;
+
 
 /// 当mapView新添加overlay views时，调用此接口
 FOUNDATION_EXPORT NSString *const kBMFMapDidAddOverlayCallback;

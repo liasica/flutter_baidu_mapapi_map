@@ -177,6 +177,11 @@ public class PolylineHandler extends OverlayHandler {
         }
         setOptions(id, argument, polylineOptions, null, colors, textures, GEODESIC_LINE);
 
+        HashMap<String,Object> customMap = null;
+        if (argument.containsKey("customMap")) {
+            customMap = (HashMap<String, Object>) argument.get("customMap");
+        }
+
         final Overlay overlay = baiduMap.addOverlay(polylineOptions);
         if (null == overlay) {
             return false;
@@ -185,6 +190,9 @@ public class PolylineHandler extends OverlayHandler {
         Bundle bundle = new Bundle();
         bundle.putString("id", id);
         bundle.putStringArrayList("textures", textures);
+        if (customMap != null && customMap.size() > 0) {
+            bundle.putSerializable("customMap", customMap);
+        }
         overlay.setExtraInfo(bundle);
         mOverlayMap.put(id, overlay);
         mMapController.mOverlayIdMap.put(id, overlay);
@@ -225,6 +233,11 @@ public class PolylineHandler extends OverlayHandler {
         ArrayList<String> textures = (ArrayList<String>) argument.get("textures");
         setOptions(id, argument, polylineOptions, indexs, colors, textures, SIMPLE_LINE);
 
+        HashMap<String,Object> customMap = null;
+        if (argument.containsKey("customMap")) {
+            customMap = (HashMap<String, Object>) argument.get("customMap");
+        }
+
         final Overlay overlay = baiduMap.addOverlay(polylineOptions);
         if (null == overlay) {
             return false;
@@ -234,6 +247,9 @@ public class PolylineHandler extends OverlayHandler {
         bundle.putString("id", id);
         bundle.putIntegerArrayList("indexs", indexs);
         bundle.putStringArrayList("textures", textures);
+        if (customMap != null && customMap.size() > 0) {
+            bundle.putSerializable("customMap", customMap);
+        }
         overlay.setExtraInfo(bundle);
         mOverlayMap.put(id, overlay);
         mMapController.mOverlayIdMap.put(id, overlay);

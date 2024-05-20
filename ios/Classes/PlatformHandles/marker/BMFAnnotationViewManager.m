@@ -12,6 +12,7 @@
 
 #import "BMFAnnotation.h"
 #import "BMFFileManager.h"
+#import "BMFClusterAnnotation.h"
 
 @implementation BMFAnnotationViewManager
 
@@ -21,6 +22,28 @@
 }
 /// 根据anntation生成对应的View
 + (BMKAnnotationView *)mapView:(BMKMapView *)mapView viewForAnnotation:(id<BMKAnnotation>)annotation {
+    /// 点聚合类兼容Android做的逻辑，后续可以删除，使用BMKAnnotation的这一套
+    if ([annotation isKindOfClass:[BMFClusterAnnotation class]]) {
+        BMFAnnotationModel *model = (BMFAnnotationModel *)((BMKPointAnnotation *)annotation).flutterModel;
+        NSString *identifier = model.identifier ? model.identifier : NSStringFromClass([BMFClusterAnnotation class]);
+        BMKPinAnnotationView *annotationView = (BMKPinAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:identifier];
+        
+        if (!annotationView) {
+            annotationView = [[BMKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:identifier];
+        }
+        
+        if (model.iconData) {
+            UIImage *image = [UIImage imageWithData:((FlutterStandardTypedData *)model.iconData).data];
+            annotationView.image = image;
+        }
+        else if (model.icon) {
+            annotationView.image = [UIImage imageWithContentsOfFile:[[BMFFileManager defaultCenter] pathForFlutterImageName:model.icon]];
+        }
+        
+        annotationView.enabled = YES;
+        return annotationView;
+    }
+    
     if ([annotation isKindOfClass:[BMKPointAnnotation class]]) {
         BMFAnnotationModel *model = (BMFAnnotationModel *)((BMKPointAnnotation *)annotation).flutterModel;
         NSString *identifier = model.identifier ? model.identifier : NSStringFromClass([BMKPointAnnotation class]);

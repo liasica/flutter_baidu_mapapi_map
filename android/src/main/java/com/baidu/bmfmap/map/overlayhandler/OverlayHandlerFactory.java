@@ -71,6 +71,8 @@ public class OverlayHandlerFactory {
                 .put(OverlayHandlerType.MULTIPOINT_HANDLER, new MultiPointHandler(bmfMapController));
         overlayHandlerHashMap
                 .put(OverlayHandlerType.TRACE_HANDLER, new TraceHandler(bmfMapController));
+        overlayHandlerHashMap
+                .put(OverlayHandlerType.CLUSTER_HANDLER, new MarkerClusterHandler(bmfMapController));
     }
 
     public boolean dispatchMethodHandler(MethodCall call, MethodChannel.Result result) {
@@ -103,6 +105,13 @@ public class OverlayHandlerFactory {
             case Constants.MethodProtocol.InfoWindowProtocol.sAddInfoWindowsMapMethod:
                 overlayHandler =
                         overlayHandlerHashMap.get(OverlayHandlerType.INFOWINDOW_HANDLER);
+                break;
+            case Constants.MethodProtocol.ClusterProtocol.SET_CLUSTER_MARKER_COORDINATE_METHOD:
+            case Constants.MethodProtocol.ClusterProtocol.SET_MAX_DISTANCE_ZOOM_METHOD:
+            case Constants.MethodProtocol.ClusterProtocol.CLEAN_CLUSTER_METHOD:
+            case Constants.MethodProtocol.ClusterProtocol.UPDATE_CLUSTERS_METHOD:
+                overlayHandler =
+                        overlayHandlerHashMap.get(OverlayHandlerType.CLUSTER_HANDLER);
                 break;
             case ArclineProtocol.sMapAddArclinelineMethod:
             case ArclineProtocol.sMapUpdateArclineMemberMethod:

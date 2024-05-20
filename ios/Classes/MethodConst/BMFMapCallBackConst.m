@@ -30,6 +30,8 @@ NSString *const kBMFMapDidDeselectMarkerCallback = @"flutter_bmfmap/marker/didDe
 NSString *const kBMFMapDidClickedPaoPaoCallback = @"flutter_bmfmap/map/didClickedInfoWindow";
 NSString *const kBMFMapDidDragMarkerCallback = @"flutter_bmfmap/marker/dragMarker";
 
+// cluster
+NSString *const kBMFMapClickClusterItemCallback = @"flutter_bmfmap/cluster/clickClusterItem";
 
 // overlay
 NSString *const kBMFMapDidAddOverlayCallback = @"flutter_bmfmap/overlay/didAddOverlay";

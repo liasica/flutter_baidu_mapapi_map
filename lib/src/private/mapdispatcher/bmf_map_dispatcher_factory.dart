@@ -1,3 +1,4 @@
+import 'package:flutter_baidu_mapapi_map/src/private/mapdispatcher/dispatchers/bmf_cluster_marker_dispatcher.dart';
 import 'package:flutter_baidu_mapapi_map/src/private/mapdispatcher/dispatchers/bmf_custommap_dispatcher.dart';
 import 'package:flutter_baidu_mapapi_map/src/private/mapdispatcher/dispatchers/bmf_get_mapproperty_dispacther.dart';
 import 'package:flutter_baidu_mapapi_map/src/private/mapdispatcher/dispatchers/bmf_heatmap_dispatcher.dart';
@@ -32,6 +33,7 @@ class BMFMapDispatcherFactory {
   late BMFCustomMapDispatcher _customMapDispatcher;
   late BMFIndoorMapDispatcher _indoorMapDispatcher;
   late BMFMapCopyrightInfoDispatcher _mapCopyrightInfoDispatcher;
+  late BMFClusterMarkerDispatcher _mapClusterMarkerDispatcher;
 
   BMFMapDispatcherFactory._internal() {
     _mapStatusDispatcher = BMFMapStatusDispatcher();
@@ -47,6 +49,7 @@ class BMFMapDispatcherFactory {
     _customMapDispatcher = BMFCustomMapDispatcher();
     _indoorMapDispatcher = BMFIndoorMapDispatcher();
     _mapCopyrightInfoDispatcher = BMFMapCopyrightInfoDispatcher();
+    _mapClusterMarkerDispatcher = BMFClusterMarkerDispatcher();
   }
 
   static BMFMapDispatcherFactory _getInstance() {
@@ -95,4 +98,8 @@ class BMFMapDispatcherFactory {
   /// mapCopyrightInfoDispatcher
   BMFMapCopyrightInfoDispatcher get mapCopyrightInfoDispatcher =>
       _mapCopyrightInfoDispatcher;
+
+  /// mapClusterMarkerDispatcher
+  BMFClusterMarkerDispatcher get mapClusterMarkerDispatcher =>
+      _mapClusterMarkerDispatcher;
 }

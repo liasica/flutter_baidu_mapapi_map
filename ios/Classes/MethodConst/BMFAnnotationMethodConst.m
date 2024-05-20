@@ -3,7 +3,14 @@
 #define __BMFAnnotationMethodConst__M__
 
 #import <Foundation/Foundation.h>
-// marker
+
+
+NSString *const kBMFMapRefreshClustersMethod = @"flutter_bmfmap/marker/refreshClusters";
+NSString *const kBMFMapSetMaxDistanceZoomMethod = @"flutter_bmfmap/marker/setClusterMaxZoomDistance";
+NSString *const kBMFMapCleanClusterMethod = @"flutter_bmfmap/marker/cleanCluster";
+NSString *const kBMFMapUpdateClustersMethod = @"flutter_bmfmap/marker/updateClusters";
+NSString *const kBMFMapGetClusterMethod = @"flutter_bmfmap/marker/getCluster";
+NSString *const kBMFMapSetClusterCoordinatesMethod = @"flutter_bmfmap/marker/setClusterCoordinates";
 NSString *const kBMFMapAddMarkerMethod = @"flutter_bmfmap/marker/addMarker";
 NSString *const kBMFMapAddMarkersMethod = @"flutter_bmfmap/marker/addMarkers";
 NSString *const kBMFMapRemoveMarkerMethod = @"flutter_bmfmap/marker/removeMarker";

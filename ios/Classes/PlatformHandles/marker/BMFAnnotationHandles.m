@@ -16,6 +16,9 @@
 #import "BMFFileManager.h"
 #import "BMFAnnotation.h"
 #import "BMFEdgeInsets.h"
+#import "BMFClusterManager.h"
+#import "BMFCluster.h"
+#import "BMFClusterAnnotation.h"
 
 @interface BMFAnnotationHandles ()
 {
@@ -49,6 +52,12 @@ static BMFAnnotationHandles *_instance = nil;
 - (NSDictionary<NSString *, NSString *> *)annotationHandles {
     if (!_handles) {
         _handles = @{
+            kBMFMapRefreshClustersMethod: NSStringFromClass([BMFRefreshCluster class]),
+            kBMFMapCleanClusterMethod: NSStringFromClass([BMFCleanCluster class]),
+            kBMFMapSetMaxDistanceZoomMethod: NSStringFromClass([BMFClusterSetMaxDistance class]),
+            kBMFMapUpdateClustersMethod: NSStringFromClass([BMFUpdateCluster class]),
+            kBMFMapGetClusterMethod: NSStringFromClass([BMFGetCluster class]),
+            kBMFMapSetClusterCoordinatesMethod: NSStringFromClass([BMFAddClusterAnnotation class]),
             kBMFMapAddMarkerMethod: NSStringFromClass([BMFAddAnnotation class]),
             kBMFMapAddMarkersMethod: NSStringFromClass([BMFAddAnnotations class]),
             kBMFMapRemoveMarkerMethod: NSStringFromClass([BMFRemoveAnnotation class]),
@@ -63,6 +72,229 @@ static BMFAnnotationHandles *_instance = nil;
     return _handles;
 }
 
+@end
+
+#pragma mark - cluster
+
+@implementation BMFCleanCluster
+@synthesize _mapView;
+
+- (nonnull NSObject<BMFMapViewHandler> *)initWith:(nonnull BMFMapView *)mapView {
+    _mapView = mapView;
+    return self;
+}
+
+- (void)handleMethodCall:(nonnull FlutterMethodCall *)call result:(nonnull FlutterResult)result {
+    
+    BMFClusterManager *clusterManager = [BMFClusterManager defaultCenter];
+    [clusterManager clearClusterItems];
+    [clusterManager.clusterCaches removeAllObjects];
+    [_mapView removeAnnotations:_mapView.annotations];
+    result(@(YES));
+}
+@end
+
+@implementation BMFClusterSetMaxDistance
+@synthesize _mapView;
+
+- (nonnull NSObject<BMFMapViewHandler> *)initWith:(nonnull BMFMapView *)mapView {
+    _mapView = mapView;
+    return self;
+}
+
+- (void)handleMethodCall:(nonnull FlutterMethodCall *)call result:(nonnull FlutterResult)result {
+    if (!call.arguments || ![call.arguments safeObjectForKey:@"maxDistanceInDP"]) {
+        result(nil);
+        return;
+    }
+    
+    NSInteger maxDistance = [[call.arguments safeObjectForKey:@"maxDistanceInDP"] integerValue];
+    BMFClusterManager *clusterManager = [BMFClusterManager defaultCenter];
+    clusterManager.maxDistance = maxDistance;
+    
+    result(@(YES));
+}
+@end
+
+
+@implementation BMFRefreshCluster
+@synthesize _mapView;
+
+- (nonnull NSObject<BMFMapViewHandler> *)initWith:(nonnull BMFMapView *)mapView {
+    _mapView = mapView;
+    return self;
+}
+
+- (void)handleMethodCall:(nonnull FlutterMethodCall *)call result:(nonnull FlutterResult)result {
+    BMFClusterManager *clusterManager = [BMFClusterManager defaultCenter];
+    if (clusterManager.clusterCaches.count <= 0) {
+        result(@(NO));
+        return;
+    }
+    
+    
+    NSInteger clusterZoom = (NSInteger)_mapView.zoomLevel-3;
+
+    @synchronized(clusterManager.clusterCaches) {
+         NSMutableArray *clusters = [clusterManager.clusterCaches objectAtIndex:(clusterZoom)];
+        if (clusters.count > 0) {
+            /**
+             移除一组标注
+
+             @param annotations 要移除的标注数组
+             */
+            [_mapView removeAnnotations:_mapView.annotations];
+            //将一组标注添加到当前地图View中
+            [_mapView addAnnotations:clusters];
+        } else {
+            dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                ///获取聚合后的标注
+                NSMutableArray *annotations = @[].mutableCopy;
+                NSDictionary *clusterDict = call.arguments;
+                NSArray *clusterInfos = [clusterDict safeObjectForKey:@"clusterInfos"];
+                for (NSDictionary *dic in clusterInfos) {
+                    NSMutableDictionary *mutableDic = [NSMutableDictionary dictionaryWithDictionary:dic];
+                    [mutableDic setObject:dic[@"coordinate"] forKey:@"position"];
+                    BMFClusterAnnotation *an = [BMFClusterAnnotation overlayWithDictionary:mutableDic];
+                    an.size = [[mutableDic objectForKey:@"size"] intValue];
+                    [clusters addObject:an];
+                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+
+                    /**
+                     移除一组标注
+                     
+                     @param annotations 要移除的标注数组
+                     */
+                    [_mapView removeAnnotations:_mapView.annotations];
+                    //将一组标注添加到当前地图View中
+                    [_mapView addAnnotations:clusters];
+                });
+            });
+        }
+        clusterManager.zoomlevel = clusterZoom;
+    }
+    result(@(YES));
+}
+@end
+
+
+@implementation BMFUpdateCluster
+@synthesize _mapView;
+
+- (nonnull NSObject<BMFMapViewHandler> *)initWith:(nonnull BMFMapView *)mapView {
+    _mapView = mapView;
+    return self;
+}
+
+- (void)handleMethodCall:(nonnull FlutterMethodCall *)call result:(nonnull FlutterResult)result {
+    if (!call.arguments || ![call.arguments safeObjectForKey:@"clusterInfos"]) {
+        result(@NO);
+        return;
+    }
+    
+    NSArray *clusterInfos = [call.arguments safeObjectForKey:@"clusterInfos"];
+    if (!clusterInfos.count) {
+        result(@NO);
+        return;
+    }
+    
+    BMFClusterManager *clusterManager = [BMFClusterManager defaultCenter];
+
+    // 先清除原有的数据，再重新进行添加
+    [clusterManager clearClusterItems];
+    [clusterManager.clusterCaches removeAllObjects];
+    
+    NSInteger count = clusterInfos.count;
+    CLLocationCoordinate2D coords[count];
+
+    for (NSInteger i = 0; i < count; i++) {
+
+        NSDictionary *infoDict = clusterInfos[i];
+        NSDictionary *coordDict = [infoDict safeObjectForKey:@"coordinate"];
+        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([coordDict[@"latitude"] doubleValue], [coordDict[@"longitude"] doubleValue]);
+        coords[i] = coordinate;
+    }
+    [clusterManager setClusterCoordinates:coords count:count];
+    
+    result(@YES);
+}
+@end
+
+@implementation BMFGetCluster
+@synthesize _mapView;
+
+- (nonnull NSObject<BMFMapViewHandler> *)initWith:(nonnull BMFMapView *)mapView {
+    _mapView = mapView;
+    return self;
+}
+
+- (void)handleMethodCall:(nonnull FlutterMethodCall *)call result:(nonnull FlutterResult)result {
+    if (!call.arguments || ![call.arguments safeObjectForKey:@"zoomLevel"]) {
+        result(nil);
+        return;
+    }
+    
+    NSInteger zommLevel = [[call.arguments safeObjectForKey:@"zoomLevel"] integerValue];
+    BMFClusterManager *clusterManager = [BMFClusterManager defaultCenter];
+    
+    NSArray *array = [clusterManager getClusters:zommLevel];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSMutableArray *clusters = [NSMutableArray array];
+        for (BMFCluster *item in array) {
+            NSMutableDictionary *cluster = [NSMutableDictionary dictionary];
+            [cluster setObject:@(item.size) forKey:@"size"];
+            NSDictionary *coordDict = @{@"latitude": @(item.coordinate.latitude), @"longitude": @(item.coordinate.longitude)};
+            [cluster setObject:coordDict forKey:@"coordinate"];
+
+            [clusters addObject:cluster];
+        }
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            result(clusters);
+        });
+    });
+
+}
+@end
+
+@implementation BMFAddClusterAnnotation
+@synthesize _mapView;
+
+- (nonnull NSObject<BMFMapViewHandler> *)initWith:(nonnull BMFMapView *)mapView {
+    _mapView = mapView;
+    return self;
+}
+
+- (void)handleMethodCall:(nonnull FlutterMethodCall *)call result:(nonnull FlutterResult)result {
+    if (!call.arguments || ![call.arguments safeObjectForKey:@"clusterInfos"]) {
+        result(@NO);
+        return;
+    }
+    
+    NSArray *clusterInfos = [call.arguments safeObjectForKey:@"clusterInfos"];
+    if (!clusterInfos.count) {
+        result(@NO);
+        return;
+    }
+    
+    BMFClusterManager *clusterManager = [BMFClusterManager defaultCenter];
+
+    NSInteger count = clusterInfos.count;
+    CLLocationCoordinate2D coords[count];
+
+    for (NSInteger i = 0; i < count; i++) {
+
+        NSDictionary *infoDict = clusterInfos[i];
+        NSDictionary *coordDict = [infoDict safeObjectForKey:@"coordinate"];
+        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake([coordDict[@"latitude"] doubleValue], [coordDict[@"longitude"] doubleValue]);
+        coords[i] = coordinate;
+    }
+    [clusterManager setClusterCoordinates:coords count:count];
+    
+    result(@YES);
+}
 @end
 
 #pragma mark - marker
