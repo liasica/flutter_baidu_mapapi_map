@@ -38,3 +38,6 @@ export 'src/models/overlays/bmf_text.dart';
 export 'src/models/overlays/bmf_tile.dart';
 export 'src/models/overlays/bmf_title_option.dart';
 export 'src/models/overlays/bmf_trace_overlay.dart';
+
+/// 新增+ BranchIcon
+export 'src/models/overlays/branch_icon.dart';

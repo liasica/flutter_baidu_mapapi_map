@@ -536,8 +536,9 @@ public class MapListener implements BaiduMap.OnMapClickListener, BaiduMap.OnMapL
         }
 
         String icon = bundle.getString("icon");
+        boolean isBranchIcon = bundle.getBoolean("branchIcon");
         byte[] data = bundle.getByteArray("iconData");
-        if (TextUtils.isEmpty(icon) && (data == null || data.length <= 0)) {
+        if (TextUtils.isEmpty(icon) && (data == null || data.length <= 0) && !isBranchIcon) {
             return null;
         }
 

@@ -9,6 +9,7 @@ import com.baidu.mapapi.VersionInfo;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import androidx.annotation.NonNull;
@@ -34,6 +35,26 @@ public class FlutterBmfmapPlugin implements FlutterPlugin, ActivityAware,
     private Lifecycle mLifecycle;
 
     private OfflineHandler mOfflineHandler;
+
+    private static Context applicationContext;
+
+    private void setApplicationContext(Context context) {
+        applicationContext = context;
+    }
+
+    public static Context getApplicationContext() {
+        return applicationContext;
+    }
+
+    private static FlutterAssets flutterAssets;
+
+    private void setFlutterAssets(FlutterAssets assets) {
+        flutterAssets = assets;
+    }
+
+    public static FlutterAssets getFlutterAssets() {
+        return flutterAssets;
+    }
 
     // This static function is optional and equivalent to onAttachedToEngine. It supports the old
     // pre-Flutter-1.12 Android projects. You are encouraged to continue supporting
@@ -76,6 +97,10 @@ public class FlutterBmfmapPlugin implements FlutterPlugin, ActivityAware,
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
+
+        setFlutterAssets(flutterPluginBinding.getFlutterAssets());
+
+        setApplicationContext(flutterPluginBinding.getApplicationContext());
 
         BinaryMessenger mMessenger = flutterPluginBinding.getBinaryMessenger();
 

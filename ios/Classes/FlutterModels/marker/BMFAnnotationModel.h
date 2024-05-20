@@ -101,6 +101,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// 是否开启与底图POI的碰撞检测，默认NO。仅支持大于15地图显示层级。
 @property (nonatomic, assign) BOOL isOpenCollisionDetectionWithMapPOI;
 
+/// 旋转角度
+@property (nonatomic, assign) double rotate;
+
+/// 新增+ BranchIcon
+@property (nonatomic, strong) NSDictionary *branchIcon;
+
 @end
 
 
