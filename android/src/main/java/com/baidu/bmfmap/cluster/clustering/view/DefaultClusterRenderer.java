@@ -27,7 +27,6 @@ import android.util.SparseArray;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 
-import com.baidu.bmfmap.R;
 import com.baidu.bmfmap.cluster.MarkerManager;
 import com.baidu.bmfmap.cluster.clustering.Cluster;
 import com.baidu.bmfmap.cluster.clustering.ClusterItem;
@@ -35,6 +34,7 @@ import com.baidu.bmfmap.cluster.clustering.ClusterManager;
 import com.baidu.bmfmap.cluster.projection.Point;
 import com.baidu.bmfmap.cluster.projection.SphericalMercatorProjection;
 import com.baidu.bmfmap.cluster.ui.IconGenerator;
+import com.baidu.flutter_baidu_mapapi_map.R;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;

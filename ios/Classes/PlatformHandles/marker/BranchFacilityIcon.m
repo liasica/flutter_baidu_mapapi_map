@@ -46,12 +46,12 @@ NSString * const BranchFacilityTypeV60 = @"v60";
 /// https://juejin.cn/post/6894530597851496455
 /// https://www.cnblogs.com/HypeCheng/articles/4159049.html
 /// https://furnacedigital.blogspot.com/2010/12/quartz-2d.html
-+ (UIImage *) draw:(int)number scale:(double)scale branchFacilityType:(NSString *)branchFacilityType color:(NSNumber *)color
++ (UIImage *) draw:(int)number scale:(double)scale branchFacilityType:(NSString *)branchFacilityType color:(NSString *)color
 {
     double width = DESIGISIZE.width * scale;
     double height = DESIGISIZE.height * scale;
     
-    UIColor *iconColor = UIColorFromRGB([color intValue]);
+    UIColor *iconColor = [self UIColorFromHexString:color];
     
     CGSize size = CGSizeMake(width, height);
     
@@ -71,7 +71,6 @@ NSString * const BranchFacilityTypeV60 = @"v60";
 }
 
 #pragma mark 网点设施图标绘制
-/// 绘制电柜设施
 + (void)drawBranchFacilityIconWithFrame: (CGRect)targetFrame number:(int)number branchFacilityType:(NSString *)branchFacilityType resizing:(BranchFacilityIconResizingBehavior)resizing iconColor:(UIColor *)iconColor
 {
     //// General Declarations
@@ -285,6 +284,15 @@ NSString * const BranchFacilityTypeV60 = @"v60";
     
     
     CGContextRestoreGState(context);
+}
+
+
++ (UIColor *)UIColorFromHexString:(NSString *)hexString {
+    unsigned rgbValue = 0;
+    NSScanner *scanner = [NSScanner scannerWithString:hexString];
+    [scanner setScanLocation:1]; // bypass '#' character
+    [scanner scanHexInt:&rgbValue];
+    return [UIColor colorWithRed:((rgbValue & 0xFF0000) >> 16)/255.0 green:((rgbValue & 0xFF00) >> 8)/255.0 blue:(rgbValue & 0xFF)/255.0 alpha:1.0];
 }
 
 @end

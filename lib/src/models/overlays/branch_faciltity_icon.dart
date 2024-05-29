@@ -35,22 +35,22 @@ class BranchFacilityIcon {
   late int state;
 
   /// 设施颜色
-  int get color {
+  String get color {
     if (state == 0) {
       // 设施不可用颜色
-      return 0x505D6D;
+      return '#505D6D';
     }
     switch (type) {
       case BranchFacilityType.store:
-        return 0x00BFFF;
+        return '#00BFFF';
       case BranchFacilityType.v72:
-        return 0x00DFCA;
+        return '#00DFCA';
       case BranchFacilityType.v60:
-        return 0x00BFFF;
+        return '#00BFFF';
       case BranchFacilityType.rest:
-        return 0xFF781D;
+        return '#FF781D';
       case BranchFacilityType.$unknown:
-        return 0;
+        return '#FFFFFF';
     }
   }
 

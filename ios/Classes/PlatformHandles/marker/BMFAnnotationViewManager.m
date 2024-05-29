@@ -60,7 +60,7 @@
             NSString *branchFacilityType = [model.branchFacilityIcon objectForKey:@"type"];
             NSNumber* number = [model.branchFacilityIcon valueForKey:@"number"];
             NSNumber* scale = [model.branchFacilityIcon valueForKey:@"scale"];
-            NSNumber* color = [model.branchFacilityIcon valueForKey:@"color"];
+            NSString* color = [model.branchFacilityIcon valueForKey:@"color"];
             // double scale = model.branchFacilityIcon.scale;
             // BranchFacilityIcon *branchFacilityIcon = (BranchFacilityIcon *) model.branchFacilityIcon;
             // BranchFacilityIcon *branchFacilityIcon = [BranchFacilityIcon create:@"60V" number:10 scale:0.55f];

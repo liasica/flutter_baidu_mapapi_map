@@ -35,9 +35,12 @@ extern CGRect BranchFacilityIconResizingBehaviorApply(BranchFacilityIconResizing
 @interface BranchFacilityIcon : NSObject
 
 // Drawing Methods
-+ (UIImage *) draw:(int)number scale:(double)scale branchFacilityType:(NSString *)branchFacilityType color:(NSNumber *)color;
++ (UIImage *) draw:(int)number scale:(double)scale branchFacilityType:(NSString *)branchFacilityType color:(NSString *)color;
 
-// 绘制电柜设施
+// 绘制网点设施
 + (void)drawBranchFacilityIconWithFrame: (CGRect)targetFrame number:(int)number branchFacilityType:(NSString *)branchFacilityType resizing: (BranchFacilityIconResizingBehavior)resizing iconColor:(UIColor *)iconColor;
+
+// HEX 转为 UIColor
++ (UIColor *)UIColorFromHexString:(NSString *)hexString;
 
 @end

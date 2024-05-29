@@ -8,7 +8,7 @@ import java.util.Objects;
 
 import com.baidu.bmfmap.BMFMapController;
 import com.baidu.bmfmap.FlutterBmfmapPlugin;
-import com.baidu.bmfmap.map.BranchIcon;
+import com.baidu.bmfmap.map.BranchFacilityIcon;
 import com.baidu.bmfmap.utils.Constants;
 import com.baidu.bmfmap.utils.Env;
 import com.baidu.bmfmap.utils.converter.FlutterDataConveter;
@@ -167,7 +167,7 @@ public class MarkerHandler extends OverlayHandler {
             iconData = (byte[]) argument.get("iconData");
         }
 
-        if (TextUtils.isEmpty(icon) && (iconData == null || iconData.length == 0) && !argument.containsKey("branchIcon")) {
+        if (TextUtils.isEmpty(icon) && (iconData == null || iconData.length == 0) && !argument.containsKey("branchFacilityIcon")) {
             return false;
         }
 
@@ -184,7 +184,7 @@ public class MarkerHandler extends OverlayHandler {
 
         Bundle bundle = new Bundle();
         bundle.putString("id", id);
-        bundle.putBoolean("branchIcon", argument.containsKey("branchIcon"));
+        bundle.putBoolean("branchFacilityIcon", argument.containsKey("branchFacilityIcon"));
         if (!TextUtils.isEmpty(icon)) {
             bundle.putString("icon", icon);
         }
@@ -254,13 +254,13 @@ public class MarkerHandler extends OverlayHandler {
 
         BitmapDescriptor bitmapDescriptor = null;
 
-        // BranchIcon数据获取
-        if (markerOptionsMap.containsKey("branchIcon")) {
+        // BranchFacilityIcon数据获取
+        if (markerOptionsMap.containsKey("branchFacilityIcon")) {
             // 渲染图标
-            BranchIcon.Model branchModel = BranchIcon.fromMap((Map<String, Object>) Objects.requireNonNull(markerOptionsMap.get("branchIcon")));
+            BranchFacilityIcon.Model branchModel = BranchFacilityIcon.fromMap((Map<String, Object>) Objects.requireNonNull(markerOptionsMap.get("branchFacilityIcon")));
             Bitmap bitmap = Bitmap.createBitmap((int) branchModel.getWidth(), (int) branchModel.getHeight(), Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(bitmap);
-            BranchIcon.draw(branchModel, canvas, FlutterBmfmapPlugin.getApplicationContext());
+            BranchFacilityIcon.draw(branchModel, canvas, FlutterBmfmapPlugin.getApplicationContext());
             bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(bitmap);
         } else if (!TextUtils.isEmpty(icon)) {
             bitmapDescriptor =
