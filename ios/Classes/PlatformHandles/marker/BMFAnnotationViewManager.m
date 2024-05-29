@@ -14,7 +14,7 @@
 #import "BMFFileManager.h"
 #import "BMFClusterAnnotation.h"
 #import "BMFPinAnnotationView.h"
-#import "BranchIcon.h"
+#import "BranchFacilityIcon.h"
 
 @implementation BMFAnnotationViewManager
 
@@ -56,15 +56,16 @@
         }
         
 
-        if (model.branchIcon) {
-            NSString *batteryModel = [model.branchIcon objectForKey:@"batteryModel"];
-            NSNumber* number = [model.branchIcon valueForKey:@"number"];
-            NSNumber* scale = [model.branchIcon valueForKey:@"scale"];
-            // double scale = model.branchIcon.scale;
-            // BranchIcon *branchIcon = (BranchIcon *) model.branchIcon;
-            // BranchIcon *branchIcon = [BranchIcon create:@"60V" number:10 scale:0.55f];
-            // annotationView.image = [branchIcon draw];
-            UIImage *image = [BranchIcon draw:number.intValue scale:scale.doubleValue batteryModel:batteryModel];
+        if (model.branchFacilityIcon) {
+            NSString *branchFacilityType = [model.branchFacilityIcon objectForKey:@"type"];
+            NSNumber* number = [model.branchFacilityIcon valueForKey:@"number"];
+            NSNumber* scale = [model.branchFacilityIcon valueForKey:@"scale"];
+            NSNumber* color = [model.branchFacilityIcon valueForKey:@"color"];
+            // double scale = model.branchFacilityIcon.scale;
+            // BranchFacilityIcon *branchFacilityIcon = (BranchFacilityIcon *) model.branchFacilityIcon;
+            // BranchFacilityIcon *branchFacilityIcon = [BranchFacilityIcon create:@"60V" number:10 scale:0.55f];
+            // annotationView.image = [branchFacilityIcon draw];
+            UIImage *image = [BranchFacilityIcon draw:number.intValue scale:scale.doubleValue branchFacilityType:branchFacilityType color:color];
             annotationView.image = image;
         }
         else if (model.iconData) {

@@ -5,7 +5,7 @@ import 'package:flutter_baidu_mapapi_base/flutter_baidu_mapapi_base.dart'
     show BMFCoordinate, BMFPoint;
 import 'package:flutter_baidu_mapapi_map/flutter_baidu_mapapi_map.dart';
 import 'package:flutter_baidu_mapapi_map/src/models/overlays/bmf_overlay.dart';
-import 'package:flutter_baidu_mapapi_map/src/models/overlays/branch_icon.dart';
+import 'package:flutter_baidu_mapapi_map/src/models/overlays/branch_faciltity_icon.dart';
 import 'package:flutter_baidu_mapapi_map/src/private/mapdispatcher/bmf_map_dispatcher_factory.dart';
 
 import 'bmf_title_option.dart';
@@ -181,8 +181,8 @@ class BMFMarker extends BMFOverlay {
   /// 新增+ 旋转
   double? rotate;
 
-  /// 新增+ BranchIcon
-  BranchIcon? branchIcon;
+  /// 新增+ BranchFacilityIcon
+  BranchFacilityIcon? branchFacilityIcon;
 
   /// BMFMarker构造方法
   @Deprecated(
@@ -297,10 +297,10 @@ class BMFMarker extends BMFOverlay {
       this.rotate})
       : super(zIndex: zIndex, visible: visible, customMap: customMap);
 
-    /// 新增+ BranchIcon构造方法
-  BMFMarker.branchIcon(
+    /// 新增+ BranchFacilityIcon构造方法
+  BMFMarker.branchFacilityIcon(
       {required this.position,
-      required this.branchIcon,
+      required this.branchFacilityIcon,
       this.title,
       this.subtitle,
       this.isLockedToScreen = false,
@@ -430,8 +430,8 @@ class BMFMarker extends BMFOverlay {
         'titleOptions': this.titleOptions?.toMap(),
         'rotate': this.rotate,
 
-        /// 新增+ BranchIcon
-        'branchIcon': this.branchIcon?.toMap(),
+        /// 新增+ BranchFacilityIcon
+        'branchFacilityIcon': this.branchFacilityIcon?.toMap(),
       });
   }
 }
