@@ -45,7 +45,8 @@ public class MarkerClusterHandler extends OverlayHandler implements
         mClusterManager = new ClusterManager<MyItem>(bmfMapController.getContext(), mBaiduMap);
 
         // 设置地图监听，当地图状态发生改变时，进行点聚合运算
-        mBaiduMap.setOnMapStatusChangeListener(mClusterManager);
+        // FUCK BAIDU 这里监听了之后会使原有的 MapListener.setOnMapStatusChangeListener 失效
+        // mBaiduMap.setOnMapStatusChangeListener(mClusterManager);
         // 设置maker点击时的响应
         mBaiduMap.setOnMarkerClickListener(mClusterManager);
 
