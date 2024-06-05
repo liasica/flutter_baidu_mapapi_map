@@ -56,6 +56,17 @@ public class BranchFacilityIcon {
             }
             return $unknown;
         }
+
+        public String getIconText() {
+            switch (this) {
+                case v72:
+                    return "72V";
+                case v60:
+                    return "60V";
+                default:
+                    return "";
+            }
+        }
     }
 
     public static class Model {
@@ -252,7 +263,7 @@ public class BranchFacilityIcon {
             branchFacilityTypeTextPaint.setColor(Color.WHITE);
             branchFacilityTypeTextPaint.setTypeface(GlobalCache.lucidaGrande);
             branchFacilityTypeTextPaint.setTextSize(16f);
-            StaticLayout branchFacilityTypeStaticLayout = CacheForCanvas.branchFacilityTypeStaticLayout.get((int) branchFacilityTypeRect.width(), Layout.Alignment.ALIGN_CENTER, branchModel.getBranchFacilityType().value, branchFacilityTypeTextPaint);
+            StaticLayout branchFacilityTypeStaticLayout = CacheForCanvas.branchFacilityTypeStaticLayout.get((int) branchFacilityTypeRect.width(), Layout.Alignment.ALIGN_CENTER, branchModel.getBranchFacilityType().getIconText(), branchFacilityTypeTextPaint);
             canvas.save();
             canvas.clipRect(branchFacilityTypeRect);
             canvas.translate(branchFacilityTypeRect.left, branchFacilityTypeRect.top + (branchFacilityTypeRect.height() - branchFacilityTypeStaticLayout.getHeight()) / 2f);

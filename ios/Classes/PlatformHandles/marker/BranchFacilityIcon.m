@@ -138,7 +138,11 @@ NSString * const BranchFacilityTypeV60 = @"v60";
         //// Battery Model Drawing
         CGRect branchFacilityTypeRect = CGRectMake(27, 56, 36, 14);
         {
-            NSString* textContent = branchFacilityType;
+            NSString* textContent = @"72V";
+            if ([[branchFacilityType lowercaseString] isEqual:BranchFacilityTypeV60]) {
+                textContent = @"60V";
+            }
+            
             NSMutableParagraphStyle* branchFacilityTypeStyle = [[NSMutableParagraphStyle alloc] init];
             branchFacilityTypeStyle.alignment = NSTextAlignmentCenter;
             NSDictionary* branchFacilityTypeFontAttributes = @{NSFontAttributeName: [UIFont fontWithName: @"LucidaGrande" size: 16], NSForegroundColorAttributeName: UIColor.whiteColor, NSParagraphStyleAttributeName: branchFacilityTypeStyle};

@@ -38,7 +38,7 @@ class BranchFacilityIcon {
   String get color {
     if (state == 0) {
       // 设施不可用颜色
-      return '#505D6D';
+      return '#B7C0CC';
     }
     switch (type) {
       case BranchFacilityType.store:
