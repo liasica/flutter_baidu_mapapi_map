@@ -74,6 +74,14 @@ public interface BaiduMapInterface {
 
     void setAllGesturesEnabled(Boolean enabled);
 
+    void setFlingEnable(Boolean enabled);
+
+    void setPointGesturesCenter(Point point);
+
+    void setLatLngGesturesCenter(LatLng latLng);
+
+    void setDoubleClickGesturesCenter(Boolean enabled);
+
     void setCompassEnabled(Boolean enabled);
 
     /**

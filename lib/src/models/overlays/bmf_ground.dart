@@ -50,10 +50,10 @@ class BMFGround extends BMFOverlay {
     this.zoomLevel,
     this.bounds,
     this.position,
-    this.transparency: 1.0,
-    this.clickable: false,
-    int zIndex: 0,
-    bool visible: true,
+    this.transparency = 1.0,
+    this.clickable = false,
+    int zIndex = 0,
+    bool visible = true,
     Map? customMap,
   }) : super(zIndex: zIndex, visible: visible, customMap: customMap);
 

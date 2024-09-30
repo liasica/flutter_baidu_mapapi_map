@@ -14,6 +14,8 @@ import com.baidu.bmfmap.cluster.clustering.algo.NonHierarchicalDistanceBasedAlgo
 import com.baidu.bmfmap.cluster.clustering.algo.PreCachingAlgorithmDecorator;
 import com.baidu.bmfmap.cluster.clustering.view.ClusterRenderer;
 import com.baidu.bmfmap.cluster.clustering.view.DefaultClusterRenderer;
+import com.baidu.bmfmap.cluster.listener.ClusterMapStatusChangeListener;
+import com.baidu.bmfmap.cluster.listener.ClusterMarkerClickListener;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.Marker;
@@ -30,7 +32,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * <li>
  */
 public class ClusterManager<T extends ClusterItem> implements
-        BaiduMap.OnMapStatusChangeListener, BaiduMap.OnMarkerClickListener {
+        ClusterMapStatusChangeListener, ClusterMarkerClickListener {
     private final MarkerManager mMarkerManager;
     private final MarkerManager.Collection mMarkers;
     private final MarkerManager.Collection mClusterMarkers;

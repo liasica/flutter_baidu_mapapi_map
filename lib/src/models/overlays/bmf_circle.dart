@@ -44,15 +44,15 @@ class BMFCircle extends BMFOverlay implements BMFOverlayBoundsInterface {
   BMFCircle({
     required this.center,
     required this.radius,
-    this.width: 5,
-    this.strokeColor: Colors.blue,
-    this.fillColor: Colors.red,
-    this.lineDashType: BMFLineDashType.LineDashTypeNone,
+    this.width = 5,
+    this.strokeColor = Colors.blue,
+    this.fillColor = Colors.red,
+    this.lineDashType = BMFLineDashType.LineDashTypeNone,
     this.dottedLine,
     this.hollowShapes,
-    this.clickable: false,
-    int zIndex: 0,
-    bool visible: true,
+    this.clickable = false,
+    int zIndex = 0,
+    bool visible = true,
     Map? customMap,
   }) : super(zIndex: zIndex, visible: visible, customMap: customMap);
 

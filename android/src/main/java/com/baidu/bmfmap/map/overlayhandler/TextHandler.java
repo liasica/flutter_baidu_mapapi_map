@@ -227,6 +227,15 @@ public class TextHandler extends OverlayHandler {
         int color;
         boolean ret = false;
         switch (member) {
+            case "visible":
+                Boolean visible = (Boolean) argument.get("value");
+                if (null == visible) {
+                    break;
+                }
+
+                text.setVisible(visible);
+                ret = true;
+                break;
             case "text":
                 String textStr = (String) argument.get("value");
                 if (null == textStr) {

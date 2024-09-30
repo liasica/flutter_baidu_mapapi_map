@@ -26,12 +26,12 @@ class BMFArcLine extends BMFOverlay implements BMFOverlayBoundsInterface {
   /// BMFArcline构造方法
   BMFArcLine({
     required this.coordinates,
-    this.width: 5,
-    this.color: Colors.blue,
-    this.lineDashType: BMFLineDashType.LineDashTypeNone,
+    this.width = 5,
+    this.color = Colors.blue,
+    this.lineDashType = BMFLineDashType.LineDashTypeNone,
     this.clickable = false,
-    int zIndex: 0,
-    bool visible: true,
+    int zIndex = 0,
+    bool visible = true,
     Map? customMap,
   })  : assert(coordinates.length > 2),
         super(zIndex: zIndex, visible: visible, customMap: customMap);

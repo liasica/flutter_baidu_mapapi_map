@@ -542,6 +542,36 @@ public class MapStateHandler extends BMapHandler {
             mMapController.setAllGesturesEnabled(gesturesEnabled);
         }
 
+        // 设置是否允许抛出手势 since 3.8.0
+        Boolean flingEnable =
+                new TypeConverter<Boolean>().getValue(mapOptionsMap, "flingEnable");
+        if (null != flingEnable) {
+            mMapController.setFlingEnable(flingEnable);
+        }
+
+        // 设置双击放大是否按照设置的屏幕或地理坐标为放大中心点 since 3.8.0
+        Boolean doubleClickGesturesEnable =
+                new TypeConverter<Boolean>().getValue(mapOptionsMap, "doubleClickGesturesEnable");
+        if (null != doubleClickGesturesEnable) {
+            mMapController.setDoubleClickGesturesCenter(doubleClickGesturesEnable);
+        }
+
+        // 设置屏幕坐标为手势中心点 since 3.8.0
+        Map<String, Object> pointGesturesMap = new TypeConverter<Map<String, Object>>()
+                .getValue(mapOptionsMap, "pointGestures");
+        Point pointGestures = FlutterDataConveter.mapToPoint(pointGesturesMap);
+        if (null != pointGestures) {
+            mMapController.setPointGesturesCenter(pointGestures);
+        }
+
+        // 设置地理坐标为手势中心点 since 3.8.0
+        Map<String, Object> latLngGesturesMap =
+                new TypeConverter<Map<String, Object>>().getValue(mapOptionsMap, "latLngGestures");
+        LatLng latLngGestures = FlutterDataConveter.mapToLatlng(latLngGesturesMap);
+        if (null != latLngGestures) {
+            mMapController.setLatLngGesturesCenter(latLngGestures);
+        }
+
         // 设置是否开启放大缩小
         Boolean zoomEnabled = new TypeConverter<Boolean>().getValue(mapOptionsMap, "zoomEnabled");
         if (null != zoomEnabled) {

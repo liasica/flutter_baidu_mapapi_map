@@ -16,6 +16,7 @@ import com.baidu.bmfmap.BMFMapController;
 import com.baidu.bmfmap.cluster.clustering.Cluster;
 import com.baidu.bmfmap.cluster.clustering.ClusterItem;
 import com.baidu.bmfmap.cluster.clustering.ClusterManager;
+import com.baidu.bmfmap.map.MapListener;
 import com.baidu.bmfmap.utils.Constants;
 import com.baidu.bmfmap.utils.Env;
 import com.baidu.bmfmap.utils.converter.FlutterDataConveter;
@@ -43,14 +44,16 @@ public class MarkerClusterHandler extends OverlayHandler implements
     public MarkerClusterHandler(BMFMapController bmfMapController) {
         super(bmfMapController);
         mClusterManager = new ClusterManager<MyItem>(bmfMapController.getContext(), mBaiduMap);
+        MapListener mapListener = bmfMapController.getMapListener();
+        if (null != mapListener) {
+            // 设置maker点击时的响应
+            mapListener.setOnClusterMarkerClickListener(mClusterManager);
+            // 设置地图监听，当地图状态发生改变时，进行点聚合运算
+            mapListener.setOnClusterMapStatusChangeListener(mClusterManager);
 
-        // 设置地图监听，当地图状态发生改变时，进行点聚合运算
-        mBaiduMap.setOnMapStatusChangeListener(mClusterManager);
-        // 设置maker点击时的响应
-        mBaiduMap.setOnMarkerClickListener(mClusterManager);
-
-        mClusterManager.setOnClusterClickListener(this);
-        mClusterManager.setOnClusterItemClickListener(this);
+            mClusterManager.setOnClusterClickListener(this);
+            mClusterManager.setOnClusterItemClickListener(this);
+        }
     }
 
     @Override
@@ -86,6 +89,7 @@ public class MarkerClusterHandler extends OverlayHandler implements
 
         result.success(ret);
     }
+
 
     private boolean updateCluster(MethodCall call) {
         if (null == call || mClusterManager == null) {

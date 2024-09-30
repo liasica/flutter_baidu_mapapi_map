@@ -205,11 +205,26 @@ public class BuildingHandler extends OverlayHandler {
         }
 
         if (buildInfoMap.containsKey("center")) {
-            HashMap<String, Double> center = (HashMap<String, Double>) buildInfoMap.get("center");
-            if (center != null && center.size() == 2) {
-                Double longitude = center.get("longitude");
-                Double latitude = center.get("latitude");
-                buildingInfo.setCenter(longitude + "," + latitude);
+           HashMap<String, Double> center = (HashMap<String, Double>) buildInfoMap.get("center");
+           if (center != null && center.size() == 2) {
+               Double longitude = center.get("longitude");
+               Double latitude = center.get("latitude");
+               LatLng centerLl = new LatLng(latitude, longitude);
+               buildingInfo.setCenter(centerLl);
+           }
+        }
+
+        if (buildInfoMap.containsKey("structId")) {
+            String structId = (String) buildInfoMap.get("structId");
+            if (!TextUtils.isEmpty(structId)) {
+                buildingInfo.setStructID(structId);
+            }
+        }
+
+        if (buildInfoMap.containsKey("label")) {
+            Integer label = (Integer) buildInfoMap.get("label");
+            if (label != null) {
+                buildingInfo.setLabel(label);
             }
         }
 
@@ -437,6 +452,20 @@ public class BuildingHandler extends OverlayHandler {
             buildingOptions.setFloorSideTextureImage(FlutterDataConveter.getIcon(floorSideTextureImageStr));
         }
 
+        // since 3.8.0新增
+        // 是否打开圆角开关 默认关闭
+        Boolean isRoundedCornerEnable = new TypeConverter<Boolean>().getValue(prismOptionsMap, "isRoundedCorner");
+        if (null != isRoundedCornerEnable) {
+            buildingOptions.setRoundedCornerEnable(isRoundedCornerEnable);
+        }
+
+        // 当设置圆角时，最大的圆角半径，可根据实际体验调整。
+        // 开启圆角后，设置圆角半径，建议范围1~10，默认为5.0f
+        Double roundedCornerRadius = new TypeConverter<Double>().getValue(prismOptionsMap, "roundedCornerRadius");
+        if (null != roundedCornerRadius) {
+            buildingOptions.setRoundedCornerRadius(roundedCornerRadius.floatValue());
+        }
+
         return true;
     }
 
@@ -455,10 +484,25 @@ public class BuildingHandler extends OverlayHandler {
             buildingInfo.setGeom(paths);
         }
 
-        if (center != null && center.size() == 2) {
-            Double longitude = center.get("longitude");
-            Double latitude = center.get("latitude");
-            buildingInfo.setCenter(longitude + "," + latitude);
+       if (center != null && center.size() == 2) {
+           Double longitude = center.get("longitude");
+           Double latitude = center.get("latitude");
+           LatLng centerLl = new LatLng(latitude, longitude);
+           buildingInfo.setCenter(centerLl);
+       }
+
+        if (buildInfoMap.containsKey("structId")) {
+            String structId = (String) buildInfoMap.get("structId");
+            if (!TextUtils.isEmpty(structId)) {
+                buildingInfo.setStructID(structId);
+            }
+        }
+
+        if (buildInfoMap.containsKey("label")) {
+            Integer label = (Integer) buildInfoMap.get("label");
+            if (label != null) {
+                buildingInfo.setLabel(label);
+            }
         }
 
         if (null != height) {

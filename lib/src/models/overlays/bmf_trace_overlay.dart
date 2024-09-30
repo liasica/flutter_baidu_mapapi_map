@@ -3,7 +3,6 @@ import 'package:flutter_baidu_mapapi_base/flutter_baidu_mapapi_base.dart'
     show BMFModel, BMFCoordinate, ColorUtil, BMFCoordinateBounds;
 import 'package:flutter_baidu_mapapi_map/flutter_baidu_mapapi_map.dart';
 import 'package:flutter_baidu_mapapi_map/src/private/mapdispatcher/bmf_map_dispatcher_factory.dart';
-import 'bmf_overlay.dart';
 
 /// 动态轨迹 since 3.1.0
 class BMFTraceOverlay extends BMFOverlay implements BMFOverlayBoundsInterface {
@@ -49,17 +48,17 @@ class BMFTraceOverlay extends BMFOverlay implements BMFOverlayBoundsInterface {
   BMFTraceOverlay({
     required this.coordinates,
     required this.traceOverlayAnimateOption,
-    this.width: 5,
-    this.strokeColor: Colors.blue,
-    this.fillColor: Colors.green,
-    this.isTrackBloom: false,
-    this.isGradientColor: false,
-    this.bloomSpeed: 5.0,
-    this.isThined: true,
-    this.isCornerSmooth: true,
-    this.strokeColors: const [],
-    int zIndex: 0,
-    bool visible: true,
+    this.width = 5,
+    this.strokeColor = Colors.blue,
+    this.fillColor = Colors.green,
+    this.isTrackBloom = false,
+    this.isGradientColor = false,
+    this.bloomSpeed = 5.0,
+    this.isThined = true,
+    this.isCornerSmooth = true,
+    this.strokeColors = const [],
+    int zIndex = 0,
+    bool visible = true,
   })  : assert(coordinates.length > 1),
         super(zIndex: zIndex, visible: visible);
 
@@ -253,19 +252,19 @@ class BMFTrace3DModelOption extends BMF3DModelOption {
       {required String modelPath,
       required String modelName,
       this.yawAxis,
-      double scale: 1,
-      bool zoomFixed: false,
-      double rotateX: 0,
-      double rotateY: 0,
-      double rotateZ: 0,
-      double offsetX: 0,
-      double offsetY: 0,
-      double offsetZ: 0,
-      BMF3DModelType type: BMF3DModelType.BMF3DModelTypeObj,
-      bool animationIsEnable: false,
-      int animationIndex: 0,
-      int animationRepeatCount: 0,
-      double animationSpeed: 1})
+      double scale = 1,
+      bool zoomFixed = false,
+      double rotateX = 0,
+      double rotateY = 0,
+      double rotateZ = 0,
+      double offsetX = 0,
+      double offsetY = 0,
+      double offsetZ = 0,
+      BMF3DModelType type = BMF3DModelType.BMF3DModelTypeObj,
+      bool animationIsEnable = false,
+      int animationIndex = 0,
+      int animationRepeatCount = 0,
+      double animationSpeed = 1})
       : super(
             modelPath: modelPath,
             modelName: modelName,

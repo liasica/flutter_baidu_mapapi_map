@@ -39,8 +39,8 @@ class BMFGeodesicLine extends BMFOverlay {
     this.textureImage,
     this.lineDashType = BMFLineDashType.LineDashTypeNone,
     this.lineDirectionCross180 = BMFLineDirectionCross180Type.None,
-    int zIndex: 0,
-    bool visible: true,
+    int zIndex = 0,
+    bool visible = true,
     Map? customMap,
   })  : assert(coordinates.length > 1),
         super(zIndex: zIndex, visible: visible, customMap: customMap);
@@ -51,8 +51,8 @@ class BMFGeodesicLine extends BMFOverlay {
     required this.strokeColor,
     this.lineDashType = BMFLineDashType.LineDashTypeNone,
     this.lineDirectionCross180 = BMFLineDirectionCross180Type.None,
-    int zIndex: 0,
-    bool visible: true,
+    int zIndex = 0,
+    bool visible = true,
     Map? customMap,
   }) : super(zIndex: zIndex, visible: visible, customMap: customMap);
 
@@ -62,8 +62,8 @@ class BMFGeodesicLine extends BMFOverlay {
     required this.textureImage,
     this.lineDashType = BMFLineDashType.LineDashTypeNone,
     this.lineDirectionCross180 = BMFLineDirectionCross180Type.None,
-    int zIndex: 0,
-    bool visible: true,
+    int zIndex = 0,
+    bool visible = true,
     Map? customMap,
   }) : super(zIndex: zIndex, visible: visible, customMap: customMap);
 

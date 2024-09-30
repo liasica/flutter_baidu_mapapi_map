@@ -45,8 +45,8 @@ class BMFTile extends BMFOverlay {
     this.minZoom,
     this.maxTileTmp,
     this.url,
-    int zIndex: 0,
-    bool visible: true,
+    int zIndex = 0,
+    bool visible = true,
     Map? customMap,
   }) : super(zIndex: zIndex, visible: visible, customMap: customMap);
 

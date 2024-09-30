@@ -182,6 +182,15 @@ public class DotHandler extends OverlayHandler {
         int color;
         boolean ret = false;
         switch (member) {
+            case "visible":
+                Boolean visible = (Boolean) argument.get("value");
+                if (null == visible) {
+                    break;
+                }
+
+                dot.setVisible(visible);
+                ret = true;
+                break;
             case "center":
                 Map<String, Object> centerMap = (Map<String, Object>) argument.get("value");
                 LatLng center = FlutterDataConveter.mapToLatlng(centerMap);

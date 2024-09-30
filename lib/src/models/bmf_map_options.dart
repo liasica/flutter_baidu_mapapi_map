@@ -86,6 +86,26 @@ class BMFMapOptions {
   /// 设定地图View能否支持所有手势操作
   bool gesturesEnabled;
 
+  /// 设置是否允许抛出手势
+  ///
+  /// Android 独有
+  bool flingEnable;
+
+  /// 设置双击放大是否按照设置的屏幕或地理坐标为放大中心点
+  /// 默认：false 即按照手势中心点放大，true：按照设置的屏幕或地理坐标为放大中心点
+  /// Android 独有
+  bool doubleClickGesturesEnable;
+
+  /// 设置屏幕坐标为手势中心点
+  /// 手势中心点地理和屏幕坐标只能设置一个生效，默认屏幕坐标优先级更高
+  /// Android 独有
+  BMFPoint? pointGestures;
+
+  /// 设置地理坐标为手势中心点
+  /// 手势中心点地理和屏幕坐标只能设置一个生效，默认屏幕坐标优先级更高
+  /// Android 独有
+  BMFCoordinate? latLngGestures;
+
   /// 设定地图View能否支持用户多点缩放(双指)
   bool zoomEnabled;
 
@@ -200,6 +220,10 @@ class BMFMapOptions {
     this.trafficEnabled = false,
     this.baiduHeatMapEnabled = false,
     this.gesturesEnabled = true,
+    this.flingEnable = true,
+    this.doubleClickGesturesEnable = false,
+    this.pointGestures,
+    this.latLngGestures,
     this.zoomEnabled = true,
     this.zoomEnabledWithTap = true,
     this.zoomEnabledWithDoubleClick = true,
@@ -246,6 +270,10 @@ class BMFMapOptions {
       'trafficEnabled': this.trafficEnabled,
       'baiduHeatMapEnabled': this.baiduHeatMapEnabled,
       'gesturesEnabled': this.gesturesEnabled,
+      'flingEnable': this.flingEnable,
+      'doubleClickGesturesEnable': this.doubleClickGesturesEnable,
+      'pointGestures': this.pointGestures?.toMap(),
+      'latLngGestures': this.latLngGestures?.toMap(),
       'zoomEnabled': this.zoomEnabled,
       'zoomEnabledWithTap': this.zoomEnabledWithTap,
       'zoomEnabledWithDoubleClick': this.zoomEnabledWithDoubleClick,

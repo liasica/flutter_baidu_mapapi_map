@@ -4,6 +4,8 @@
 
 package com.baidu.bmfmap.cluster;
 
+import com.baidu.bmfmap.cluster.listener.ClusterMarkerClickListener;
+import com.baidu.bmfmap.cluster.listener.ClusterMarkerDragListener;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
@@ -105,8 +107,8 @@ public class MarkerManager implements BaiduMap.OnMarkerClickListener, BaiduMap.O
 
     public class Collection {
         private final Set<Marker> mMarkers = new HashSet<Marker>();
-        private BaiduMap.OnMarkerClickListener mMarkerClickListener;
-        private BaiduMap.OnMarkerDragListener mMarkerDragListener;
+        private ClusterMarkerClickListener mMarkerClickListener;
+        private ClusterMarkerDragListener mMarkerDragListener;
 
         public Collection() {
         }
@@ -139,11 +141,11 @@ public class MarkerManager implements BaiduMap.OnMarkerClickListener, BaiduMap.O
             return Collections.unmodifiableCollection(mMarkers);
         }
 
-        public void setOnMarkerClickListener(BaiduMap.OnMarkerClickListener markerClickListener) {
+        public void setOnMarkerClickListener(ClusterMarkerClickListener markerClickListener) {
             mMarkerClickListener = markerClickListener;
         }
 
-        public void setOnMarkerDragListener(BaiduMap.OnMarkerDragListener markerDragListener) {
+        public void setOnMarkerDragListener(ClusterMarkerDragListener markerDragListener) {
             mMarkerDragListener = markerDragListener;
         }
     }

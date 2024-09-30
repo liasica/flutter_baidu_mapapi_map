@@ -560,6 +560,13 @@ static BMFAnnotationHandles *_instance = nil;
     else if ([member isEqualToString:@"subtitle"]) {
         annotation.subtitle = [call.arguments safeObjectForKey:@"value"];
         result(@YES);
+    } else if ([member isEqualToString:@"rotation"]) {
+        BMKPinAnnotationView *view = (BMKPinAnnotationView *)[_mapView viewForAnnotation:annotation];
+        NSInteger rotation = [[call.arguments safeObjectForKey:@"value"] integerValue];
+        CGFloat radians = rotation * M_PI / 180.0;
+        CGAffineTransform transform = CGAffineTransformMakeRotation(radians);
+        view.transform = transform;
+        result(@YES);
     }
     else if ([member isEqualToString:@"position"]) {
         BMFCoordinate *coord = [BMFCoordinate bmf_modelWith:[call.arguments safeObjectForKey:@"value"]];

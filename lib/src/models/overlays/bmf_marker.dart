@@ -1,13 +1,10 @@
-import 'dart:typed_data';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter_baidu_mapapi_base/flutter_baidu_mapapi_base.dart'
     show BMFCoordinate, BMFPoint;
 import 'package:flutter_baidu_mapapi_map/flutter_baidu_mapapi_map.dart';
-import 'package:flutter_baidu_mapapi_map/src/models/overlays/bmf_overlay.dart';
 import 'package:flutter_baidu_mapapi_map/src/private/mapdispatcher/bmf_map_dispatcher_factory.dart';
-
-import 'bmf_title_option.dart';
 
 /// marker拖拽状态枚举
 enum BMFMarkerDragState {
@@ -51,6 +48,10 @@ class BMFMarker extends BMFOverlay {
 
   /// marker位置经纬度
   late BMFCoordinate position;
+
+  /// TODO ???  Android为逆时针？
+  /// marker的旋转角度 范围：顺时针0~360 since 3.8.0
+  double? rotation;
 
   /// 标注固定在指定屏幕位置,  必须与screenPointToLock一起使用。
   ///
@@ -160,6 +161,11 @@ class BMFMarker extends BMFOverlay {
   /// Android独有
   bool? isPerspective;
 
+  /// 设置 Marker 覆盖物的锚点比例，默认（0.5f, 1.0f）水平居中，垂直下对齐
+  /// 范围[0.0f , 1.0f]， 否则不生效
+  double? anchorX;
+  double? anchorY;
+
   /// 开启碰撞检测，默认false，关闭。since 3.2.0
   bool? isOpenCollisionDetection;
 
@@ -186,31 +192,34 @@ class BMFMarker extends BMFOverlay {
       this.iconData,
       this.title,
       this.subtitle,
-      this.isLockedToScreen: false,
+      this.rotation,
+      this.isLockedToScreen = false,
       this.screenPointToLock,
       this.identifier,
       this.centerOffset,
       this.enabled3D,
-      this.enabled: true,
-      this.draggable: false,
-      this.selected: false,
-      this.canShowCallout: true,
-      this.hidePaopaoWhenSingleTapOnMap: true,
-      this.hidePaopaoWhenDoubleTapOnMap: false,
-      this.hidePaopaoWhenTwoFingersTapOnMap: false,
-      this.hidePaopaoWhenSelectOthers: true,
-      this.hidePaopaoWhenDrag: false,
-      this.hidePaopaoWhenDragOthers: false,
-      this.displayPriority: BMFMarkerDisplayPriority.Middle,
-      this.scaleX: 1.0,
-      this.scaleY: 1.0,
-      this.alpha: 1.0,
+      this.enabled = true,
+      this.draggable = false,
+      this.selected = false,
+      this.canShowCallout = true,
+      this.hidePaopaoWhenSingleTapOnMap = true,
+      this.hidePaopaoWhenDoubleTapOnMap = false,
+      this.hidePaopaoWhenTwoFingersTapOnMap = false,
+      this.hidePaopaoWhenSelectOthers = true,
+      this.hidePaopaoWhenDrag = false,
+      this.hidePaopaoWhenDragOthers = false,
+      this.displayPriority = BMFMarkerDisplayPriority.Middle,
+      this.scaleX = 1.0,
+      this.scaleY = 1.0,
+      this.alpha = 1.0,
       this.isPerspective,
-      this.isOpenCollisionDetectionWithMapPOI: false,
-      this.isOpenCollisionDetectionWithPaoPaoView: false,
+      this.anchorX = 0.5,
+      this.anchorY = 1.0,
+      this.isOpenCollisionDetectionWithMapPOI = false,
+      this.isOpenCollisionDetectionWithPaoPaoView = false,
       this.titleOptions,
-      int zIndex: 0,
-      bool visible: true,
+      int zIndex = 0,
+      bool visible = true,
       Map<String, dynamic>? customMap})
       : super(zIndex: zIndex, visible: visible, customMap: customMap);
 
@@ -220,34 +229,37 @@ class BMFMarker extends BMFOverlay {
       required this.icon,
       this.title,
       this.subtitle,
-      this.isLockedToScreen: false,
+      this.rotation,
+      this.isLockedToScreen = false,
       this.screenPointToLock,
       this.identifier,
       this.centerOffset,
       this.enabled3D,
-      this.enabled: true,
-      this.draggable: false,
-      this.selected: false,
-      this.canShowCallout: true,
-      this.hidePaopaoWhenSingleTapOnMap: true,
-      this.hidePaopaoWhenDoubleTapOnMap: false,
-      this.hidePaopaoWhenTwoFingersTapOnMap: false,
-      this.hidePaopaoWhenSelectOthers: true,
-      this.hidePaopaoWhenDrag: false,
-      this.hidePaopaoWhenDragOthers: false,
-      this.displayPriority: BMFMarkerDisplayPriority.Middle,
-      this.scaleX: 1.0,
-      this.scaleY: 1.0,
-      this.alpha: 1.0,
+      this.enabled = true,
+      this.draggable = false,
+      this.selected = false,
+      this.canShowCallout = true,
+      this.hidePaopaoWhenSingleTapOnMap = true,
+      this.hidePaopaoWhenDoubleTapOnMap = false,
+      this.hidePaopaoWhenTwoFingersTapOnMap = false,
+      this.hidePaopaoWhenSelectOthers = true,
+      this.hidePaopaoWhenDrag = false,
+      this.hidePaopaoWhenDragOthers = false,
+      this.displayPriority = BMFMarkerDisplayPriority.Middle,
+      this.scaleX = 1.0,
+      this.scaleY = 1.0,
+      this.alpha = 1.0,
       this.isPerspective,
-      this.isOpenCollisionDetection: false,
-      this.collisionDetectionPriority: 0,
-      this.isForceDisplay: false,
-      this.isOpenCollisionDetectionWithMapPOI: false,
-      this.isOpenCollisionDetectionWithPaoPaoView: false,
+      this.anchorX = 0.5,
+      this.anchorY = 1.0,
+      this.isOpenCollisionDetection = false,
+      this.collisionDetectionPriority = 0,
+      this.isForceDisplay = false,
+      this.isOpenCollisionDetectionWithMapPOI = false,
+      this.isOpenCollisionDetectionWithPaoPaoView = false,
       this.titleOptions,
-      int zIndex: 0,
-      bool visible: true,
+      int zIndex = 0,
+      bool visible = true,
       Map<String, dynamic>? customMap})
       : super(zIndex: zIndex, visible: visible, customMap: customMap);
 
@@ -257,34 +269,37 @@ class BMFMarker extends BMFOverlay {
       required this.iconData,
       this.title,
       this.subtitle,
-      this.isLockedToScreen: false,
+      this.rotation,
+      this.isLockedToScreen = false,
       this.screenPointToLock,
       this.identifier,
       this.centerOffset,
       this.enabled3D,
-      this.enabled: true,
-      this.draggable: false,
-      this.selected: false,
-      this.canShowCallout: true,
-      this.hidePaopaoWhenSingleTapOnMap: true,
-      this.hidePaopaoWhenDoubleTapOnMap: false,
-      this.hidePaopaoWhenTwoFingersTapOnMap: false,
-      this.hidePaopaoWhenSelectOthers: true,
-      this.hidePaopaoWhenDrag: false,
-      this.hidePaopaoWhenDragOthers: false,
-      this.displayPriority: BMFMarkerDisplayPriority.Middle,
-      this.scaleX: 1.0,
-      this.scaleY: 1.0,
-      this.alpha: 1.0,
+      this.enabled = true,
+      this.draggable = false,
+      this.selected = false,
+      this.canShowCallout = true,
+      this.hidePaopaoWhenSingleTapOnMap = true,
+      this.hidePaopaoWhenDoubleTapOnMap = false,
+      this.hidePaopaoWhenTwoFingersTapOnMap = false,
+      this.hidePaopaoWhenSelectOthers = true,
+      this.hidePaopaoWhenDrag = false,
+      this.hidePaopaoWhenDragOthers = false,
+      this.displayPriority = BMFMarkerDisplayPriority.Middle,
+      this.scaleX = 1.0,
+      this.scaleY = 1.0,
+      this.alpha = 1.0,
       this.isPerspective,
-      this.isOpenCollisionDetection: false,
-      this.collisionDetectionPriority: 0,
-      this.isForceDisplay: false,
-      this.isOpenCollisionDetectionWithMapPOI: false,
-      this.isOpenCollisionDetectionWithPaoPaoView: false,
+      this.anchorX = 0.5,
+      this.anchorY = 1.0,
+      this.isOpenCollisionDetection = false,
+      this.collisionDetectionPriority = 0,
+      this.isForceDisplay = false,
+      this.isOpenCollisionDetectionWithMapPOI = false,
+      this.isOpenCollisionDetectionWithPaoPaoView = false,
       this.titleOptions,
-      int zIndex: 0,
-      bool visible: true,
+      int zIndex = 0,
+      bool visible = true,
       Map<String, dynamic>? customMap})
       : super(zIndex: zIndex, visible: visible, customMap: customMap);
 
@@ -295,6 +310,7 @@ class BMFMarker extends BMFOverlay {
     position = BMFCoordinate.fromMap(map['position']);
     title = map['title'];
     subtitle = map["subtitle"];
+    rotation = map['rotation'];
     isLockedToScreen = map['isLockedToScreen'] as bool?;
     screenPointToLock = map['screenPointToLock'] == null
         ? null
@@ -321,6 +337,8 @@ class BMFMarker extends BMFOverlay {
     scaleY = map['scaleY'];
     alpha = map['alpha'];
     isPerspective = map['isPerspective'];
+    anchorX = map['anchorX'];
+    anchorY = map['anchorY'];
     if (map['iconData'] != null) {
       Map iconDataMap = map['iconData'];
       List<dynamic> iconDataList = iconDataMap['data'];
@@ -350,6 +368,7 @@ class BMFMarker extends BMFOverlay {
         'position': this.position.toMap(),
         'title': this.title,
         'subtitle': this.subtitle,
+        'rotation': this.rotation,
         'isLockedToScreen': this.isLockedToScreen,
         'screenPointToLock': this.screenPointToLock?.toMap(),
         'identifier': this.identifier,
@@ -373,6 +392,8 @@ class BMFMarker extends BMFOverlay {
         'scaleY': this.scaleY,
         'alpha': this.alpha,
         'isPerspective': this.isPerspective,
+        'anchorX': this.anchorX,
+        'anchorY': this.anchorY,
         'isOpenCollisionDetection': this.isOpenCollisionDetection,
         'collisionDetectionPriority': this.collisionDetectionPriority,
         'isForceDisplay': this.isForceDisplay,
@@ -436,6 +457,25 @@ extension BMFMarkerUpdateExtension on BMFMarker {
 
     if (ret) {
       this.position = position;
+    }
+
+    return ret;
+  }
+
+  /// 更新的旋转角度
+  ///
+  Future<bool> updaterRotation(double rotation) async {
+    ArgumentError.checkNotNull(rotation, "rotation");
+
+    bool ret = await BMFMapDispatcherFactory.instance.markerDispatcher
+        .updateMarkerMember(this.methodChannel, {
+      'id': this.id,
+      'member': 'rotation',
+      'value': rotation,
+    });
+
+    if (ret) {
+      this.rotation = rotation;
     }
 
     return ret;
@@ -643,6 +683,26 @@ extension BMFMarkerUpdateExtension on BMFMarker {
 
     if (ret) {
       this.isPerspective = isPerspective;
+    }
+
+    return ret;
+  }
+
+  /// 更新锚点数据
+  ///
+  /// Android独有
+  Future<bool> updateAnchor(double anchorX, double anchorY) async {
+    bool ret = await BMFMapDispatcherFactory.instance.markerDispatcher
+        .updateMarkerMember(this.methodChannel, {
+      'id': this.id,
+      'member': 'anchor',
+      'value': anchorX,
+      'value1': anchorY,
+    });
+
+    if (ret) {
+      this.anchorX = anchorX;
+      this.anchorY = anchorY;
     }
 
     return ret;

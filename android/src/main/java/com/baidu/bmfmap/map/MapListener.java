@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.microedition.khronos.opengles.GL10;
 
+import com.baidu.bmfmap.cluster.listener.ClusterMapStatusChangeListener;
+import com.baidu.bmfmap.cluster.listener.ClusterMarkerClickListener;
 import com.baidu.bmfmap.utils.Constants;
 import com.baidu.bmfmap.utils.Constants.MethodProtocol.MarkerProtocol.MarkerDragState;
 import com.baidu.bmfmap.utils.Env;
@@ -186,6 +188,9 @@ public class MapListener implements BaiduMap.OnMapClickListener, BaiduMap.OnMapL
 
     @Override
     public void onMapStatusChangeStart(MapStatus mapStatus) {
+        if (null != mClusterMapStatusChangeListener) {
+            mClusterMapStatusChangeListener.onMapStatusChangeStart(mapStatus);
+        }
         if (null == mapStatus || mMethodChannel == null) {
             return;
         }
@@ -231,6 +236,9 @@ public class MapListener implements BaiduMap.OnMapClickListener, BaiduMap.OnMapL
 
     @Override
     public void onMapStatusChangeStart(MapStatus mapStatus, int reason) {
+        if (null != mClusterMapStatusChangeListener) {
+            mClusterMapStatusChangeListener.onMapStatusChangeStart(mapStatus, reason);
+        }
         if (null == mapStatus || mMethodChannel == null) {
             return;
         }
@@ -279,6 +287,9 @@ public class MapListener implements BaiduMap.OnMapClickListener, BaiduMap.OnMapL
 
     @Override
     public void onMapStatusChange(MapStatus mapStatus) {
+        if (null != mClusterMapStatusChangeListener) {
+            mClusterMapStatusChangeListener.onMapStatusChange(mapStatus);
+        }
         if (null == mapStatus || mMethodChannel == null) {
             return;
         }
@@ -332,6 +343,9 @@ public class MapListener implements BaiduMap.OnMapClickListener, BaiduMap.OnMapL
 
     @Override
     public void onMapStatusChangeFinish(MapStatus mapStatus) {
+        if (null != mClusterMapStatusChangeListener) {
+            mClusterMapStatusChangeListener.onMapStatusChangeFinish(mapStatus);
+        }
         if (null == mapStatus || mMethodChannel == null) {
             return;
         }
@@ -480,6 +494,11 @@ public class MapListener implements BaiduMap.OnMapClickListener, BaiduMap.OnMapL
         if (Env.DEBUG) {
             Log.d(TAG, "onMarkerClick");
         }
+
+        if (null != mClusterMarkerClickListener) {
+            mClusterMarkerClickListener.onMarkerClick(marker);
+        }
+
         if (null == mMethodChannel) {
             return false;
         }
@@ -1233,7 +1252,6 @@ public class MapListener implements BaiduMap.OnMapClickListener, BaiduMap.OnMapL
         resultMap.put("height", Float.valueOf(building.getHeight()).intValue());
         BuildingInfo buildingInfo = building.getBuildingInfo();
         if (buildingInfo != null && buildingInfo.getHeight() > 0
-                && !TextUtils.isEmpty(buildingInfo.getCenter())
                 && !TextUtils.isEmpty(buildingInfo.getGeom())) {
             Map<String, Object> buildingInfoMap = new HashMap<>();
             buildingInfoMap.put("height", Double.valueOf(buildingInfo.getHeight()));
@@ -1241,12 +1259,12 @@ public class MapListener implements BaiduMap.OnMapClickListener, BaiduMap.OnMapL
             buildingInfoMap.put("accuracy", buildingInfo.getAccuracy());
             HashMap centerMap = new HashMap<String, Double>();
             if (null != centerMap) {
-                String center = buildingInfo.getCenter();
-                String[] centerSplit = center.split(",");
-                if (centerSplit.length == 2) {
-                    centerMap.put("latitude", Double.parseDouble(centerSplit[1]));
-                    centerMap.put("longitude", Double.parseDouble(centerSplit[0]));
-                }
+               LatLng center = buildingInfo.getCenter();
+               if (center != null) {
+                   centerMap.put("latitude", center.latitude);
+                   centerMap.put("longitude", center.longitude);
+               }
+
             }
             buildingInfoMap.put("center", centerMap);
 
@@ -1293,6 +1311,17 @@ public class MapListener implements BaiduMap.OnMapClickListener, BaiduMap.OnMapL
         // 3d模型
         ThreeDModel,
         GradientLine,
+    }
+
+    private ClusterMarkerClickListener mClusterMarkerClickListener;
+    private ClusterMapStatusChangeListener mClusterMapStatusChangeListener;
+
+    public void setOnClusterMarkerClickListener(ClusterMarkerClickListener listener) {
+        mClusterMarkerClickListener = listener;
+    }
+
+    public void setOnClusterMapStatusChangeListener(ClusterMapStatusChangeListener listener) {
+        mClusterMapStatusChangeListener = listener;
     }
 
 }

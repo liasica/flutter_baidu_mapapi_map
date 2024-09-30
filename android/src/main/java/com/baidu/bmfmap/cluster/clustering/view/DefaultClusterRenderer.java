@@ -32,6 +32,7 @@ import com.baidu.bmfmap.cluster.MarkerManager;
 import com.baidu.bmfmap.cluster.clustering.Cluster;
 import com.baidu.bmfmap.cluster.clustering.ClusterItem;
 import com.baidu.bmfmap.cluster.clustering.ClusterManager;
+import com.baidu.bmfmap.cluster.listener.ClusterMarkerClickListener;
 import com.baidu.bmfmap.cluster.projection.Point;
 import com.baidu.bmfmap.cluster.projection.SphericalMercatorProjection;
 import com.baidu.bmfmap.cluster.ui.IconGenerator;
@@ -127,7 +128,7 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
 
     @Override
     public void onAdd() {
-        mClusterManager.getMarkerCollection().setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
+        mClusterManager.getMarkerCollection().setOnMarkerClickListener(new ClusterMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
                 return mItemClickListener != null && mItemClickListener.onClusterItemClick(mMarkerCache.get(marker));
@@ -135,7 +136,7 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
         });
 
 
-        mClusterManager.getClusterMarkerCollection().setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
+        mClusterManager.getClusterMarkerCollection().setOnMarkerClickListener(new ClusterMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
                 return mClickListener != null && mClickListener.onClusterClick(mMarkerToCluster.get(marker));

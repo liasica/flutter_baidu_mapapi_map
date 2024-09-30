@@ -1,9 +1,7 @@
-
 import 'dart:ui';
 import 'package:flutter_baidu_mapapi_base/flutter_baidu_mapapi_base.dart';
 
 class BMFTitleOptions implements BMFModel {
-
   /// 背景颜色 since 3.5.0
   ///
   /// Android独有
@@ -53,13 +51,13 @@ class BMFTitleOptions implements BMFModel {
     this.bgColor,
     this.fontColor,
     this.text,
-    this.fontSize : 48,
-    this.titleAnchorX : 0.5,
-    this.titleAnchorY : 1.0,
+    this.fontSize = 48,
+    this.titleAnchorX = 0.5,
+    this.titleAnchorY = 1.0,
     this.titleRotate,
     this.titleXOffset,
     this.titleYOffset,
- });
+  });
 
   @override
   fromMap(Map map) {

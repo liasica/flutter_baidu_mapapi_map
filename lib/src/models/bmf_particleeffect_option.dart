@@ -16,7 +16,7 @@ class BMFParticleEffectOption implements BMFModel {
 
   BMFParticleEffectOption({
     this.location,
-    this.images: const [],
+    this.images = const [],
   });
 
   BMFParticleEffectOption.fromMap(Map map)

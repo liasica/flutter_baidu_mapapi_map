@@ -90,6 +90,45 @@ public class TextureMapViewFactory extends PlatformViewFactory {
             }
         }
 
+        // 3.8.0新增 设置是否允许抛出手势
+        if (params.containsKey("flingEnable")) {
+            Boolean flingEnable = FlutterDataConveter.toBoolean(params.get("flingEnable"));
+            if (flingEnable != null) {
+                builder.flingEnable(flingEnable);
+            }
+        }
+
+        // 3.8.0新增 设置双击放大是否按照设置的屏幕或地理坐标为放大中心点
+        // 默认：false 即按照手势中心点放大，true：按照设置的屏幕或地理坐标为放大中心点
+        if (params.containsKey("doubleClickGesturesEnable")) {
+            Boolean doubleClickGesturesEnable = FlutterDataConveter.toBoolean(params.get("doubleClickGesturesEnable"));
+            if (doubleClickGesturesEnable != null) {
+                builder.doubleClickGesturesEnable(doubleClickGesturesEnable);
+            }
+        }
+
+        // 3.8.0新增 设置屏幕坐标为手势中心点
+        if (params.containsKey("pointGestures")) {
+            Map<String, Object> pointGesturesMap = (Map<String, Object>) FlutterDataConveter.toMap(params.get("pointGestures"));
+            if (null != pointGesturesMap) {
+                Point pointGestures = FlutterDataConveter.mapToPoint(pointGesturesMap);
+                if (null != pointGestures) {
+                    builder.pointGestures(pointGestures);
+                }
+            }
+        }
+
+        // 3.8.0新增 设置地理坐标为手势中心点
+        if (params.containsKey("latLngGestures")) {
+            Map<String, Object> latLngGesturesMap = (Map<String, Object>) FlutterDataConveter.toMap(params.get("latLngGestures"));
+            if (null != latLngGesturesMap) {
+                LatLng latLngGestures = FlutterDataConveter.mapToLatlng(latLngGesturesMap);
+                if (null != latLngGestures) {
+                    builder.latLngGestures(latLngGestures);
+                }
+            }
+        }
+
         // 3.6.0新增 设置地图展示地形图层
         if (params.containsKey("showDEMLayer")) {
             Boolean showDEMLayer = FlutterDataConveter.toBoolean(params.get("showDEMLayer"));

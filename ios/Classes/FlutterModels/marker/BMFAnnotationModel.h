@@ -23,6 +23,13 @@ NS_ASSUME_NONNULL_BEGIN
 /// 子标题
 @property (nonatomic, copy) NSString *subtitle;
 
+/// 旋转角度
+@property (nonatomic, assign) NSInteger rotation;
+
+/// 旋转锚点
+@property (nonatomic, assign) CGFloat anchorX;
+@property (nonatomic, assign) CGFloat anchorY;
+
 /// annotation中心坐标.
 @property (nonatomic, strong) BMFCoordinate *position;
 

@@ -60,6 +60,12 @@ public class BMFMapBuilder {
     // 3.6.0 新增属性
     private boolean mapDEMEnable;
 
+    // 3.8.0 新增属性
+    private boolean mFlingEnable;
+    private boolean mDoubleClickGesturesEnable;
+    private Point mPointGestures;
+    private LatLng mLatLngGestures;
+
     public BMFMapController build(int id, Context context, BinaryMessenger binaryMessenger,
                                   String viewType, BaiduMapOptions options) {
 
@@ -99,6 +105,10 @@ public class BMFMapBuilder {
         mapController.setMapBackgroundColor(mapBackgroundColor);
         mapController.setMapBackgroundImage(mapBackgroundImage);
         mapController.setDEMEnable(mapDEMEnable);
+        mapController.setFlingEnable(mFlingEnable);
+        mapController.setDoubleClickGesturesCenter(mDoubleClickGesturesEnable);
+        mapController.setPointGesturesCenter(mPointGestures);
+        mapController.setLatLngGesturesCenter(mLatLngGestures);
 
         if (viewPadding != null) {
             mapController.setViewPadding(viewPadding.left, viewPadding.top, viewPadding.right,
@@ -280,6 +290,26 @@ public class BMFMapBuilder {
 
     public BMFMapBuilder setDEMEnable(boolean enable) {
         this.mapDEMEnable = enable;
+        return this;
+    }
+
+    public BMFMapBuilder flingEnable(boolean enable) {
+        this.mFlingEnable = enable;
+        return this;
+    }
+
+    public BMFMapBuilder doubleClickGesturesEnable(boolean enable) {
+        this.mDoubleClickGesturesEnable = enable;
+        return this;
+    }
+
+    public BMFMapBuilder pointGestures(Point pointGestures) {
+        this.mPointGestures = pointGestures;
+        return this;
+    }
+
+    public BMFMapBuilder latLngGestures(LatLng latLngGestures) {
+        this.mLatLngGestures = latLngGestures;
         return this;
     }
 }

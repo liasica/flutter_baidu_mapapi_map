@@ -119,19 +119,19 @@ class BMFText extends BMFOverlay {
     required this.text,
     required this.position,
     this.bgColor,
-    this.fontColor: Colors.blue,
-    this.fontSize: 12,
+    this.fontColor = Colors.blue,
+    this.fontSize = 12,
     this.typeFace,
-    this.rotate: 0,
-    this.paragraphSpacing: 2,
+    this.rotate = 0,
+    this.paragraphSpacing = 2,
     this.maxLineWidth,
-    this.lineSpacing: 4,
-    this.alignment: BMFTextAlignment.center,
-    this.lineBreakMode: BMFTextLineBreakMode.charWrapping,
-    this.startLevel: 4,
-    this.endLevel: 21,
-    int zIndex: 0,
-    bool visible: true,
+    this.lineSpacing = 4,
+    this.alignment = BMFTextAlignment.center,
+    this.lineBreakMode = BMFTextLineBreakMode.charWrapping,
+    this.startLevel = 4,
+    this.endLevel = 21,
+    int zIndex = 0,
+    bool visible = true,
     Map? customMap,
   }) : super(zIndex: zIndex, visible: visible, customMap: customMap);
 
@@ -140,14 +140,14 @@ class BMFText extends BMFOverlay {
     required this.text,
     required this.position,
     this.bgColor,
-    this.fontColor: Colors.blue,
-    this.fontSize: 12,
+    this.fontColor = Colors.blue,
+    this.fontSize = 12,
     this.typeFace,
-    this.alignY: BMFVerticalAlign.ALIGN_CENTER_VERTICAL,
-    this.alignX: BMFHorizontalAlign.ALIGN_CENTER_HORIZONTAL,
-    this.rotate: 0,
-    int zIndex: 0,
-    bool visible: true,
+    this.alignY = BMFVerticalAlign.ALIGN_CENTER_VERTICAL,
+    this.alignX = BMFHorizontalAlign.ALIGN_CENTER_HORIZONTAL,
+    this.rotate = 0,
+    int zIndex = 0,
+    bool visible = true,
     Map? customMap,
   }) : super(zIndex: zIndex, visible: visible, customMap: customMap);
 
@@ -156,21 +156,21 @@ class BMFText extends BMFOverlay {
     required this.text,
     required this.position,
     this.bgColor,
-    this.fontColor: Colors.blue,
-    this.fontSize: 12,
+    this.fontColor = Colors.blue,
+    this.fontSize = 12,
     this.typeFace,
-    this.alignY: BMFVerticalAlign.ALIGN_CENTER_VERTICAL,
-    this.alignX: BMFHorizontalAlign.ALIGN_CENTER_HORIZONTAL,
-    this.rotate: 0,
-    this.paragraphSpacing: 2,
+    this.alignY = BMFVerticalAlign.ALIGN_CENTER_VERTICAL,
+    this.alignX = BMFHorizontalAlign.ALIGN_CENTER_HORIZONTAL,
+    this.rotate = 0,
+    this.paragraphSpacing = 2,
     this.maxLineWidth,
-    this.lineSpacing: 4,
-    this.alignment: BMFTextAlignment.center,
-    this.lineBreakMode: BMFTextLineBreakMode.charWrapping,
-    this.startLevel: 4,
-    this.endLevel: 21,
-    int zIndex: 0,
-    bool visible: true,
+    this.lineSpacing = 4,
+    this.alignment = BMFTextAlignment.center,
+    this.lineBreakMode = BMFTextLineBreakMode.charWrapping,
+    this.startLevel = 4,
+    this.endLevel = 21,
+    int zIndex = 0,
+    bool visible = true,
     Map? customMap,
   }) : super(zIndex: zIndex, visible: visible, customMap: customMap);
 
@@ -588,6 +588,23 @@ extension BMFTextUpdateExtension on BMFText {
     if (ret) {
       this.endLevel = endLevel;
     }
+    return ret;
+  }
+
+  /// 更新Text是否显示
+  /// Android独有
+  /// [bool] visible 显示状态
+  Future<bool> updateVisible(bool visible) async {
+    ArgumentError.checkNotNull(visible, "visible");
+
+    bool ret = await BMFMapDispatcherFactory.instance.overlayDispatcher
+        .updateTextMember(this.methodChannel,
+            {'id': this.id, 'member': 'visible', 'value': visible});
+
+    if (ret) {
+      this.visible = visible;
+    }
+
     return ret;
   }
 }

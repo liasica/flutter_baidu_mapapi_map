@@ -90,6 +90,10 @@ public class BMFMapController implements MethodChannel.MethodCallHandler, BaiduM
         return mContext;
     }
 
+    public MapListener getMapListener() {
+        return mMapListener;
+    }
+
     public void release() {
         mMethodChannel.setMethodCallHandler(null);
         mMapListener.release();
@@ -282,6 +286,35 @@ public class BMFMapController implements MethodChannel.MethodCallHandler, BaiduM
     public void setAllGesturesEnabled(Boolean enabled) {
         if (mUiSettings != null && enabled != null) {
             mUiSettings.setAllGesturesEnabled(enabled);
+        }
+    }
+
+    @Override
+    public void setFlingEnable(Boolean enabled) {
+        if (mUiSettings != null && enabled != null) {
+            mUiSettings.setFlingEnable(enabled);
+        }
+    }
+
+    @Override
+    public void setPointGesturesCenter(Point point) {
+        if (mUiSettings != null && point != null) {
+            mUiSettings.setPointGesturesCenter(point);
+        }
+    }
+
+    @Override
+    public void setLatLngGesturesCenter(LatLng latLng) {
+        if (mUiSettings != null && latLng != null) {
+            mUiSettings.setLatLngGesturesCenter(latLng);
+        }
+    }
+
+    @Override
+    public void setDoubleClickGesturesCenter(Boolean enabled) {
+        if (mUiSettings != null && enabled != null) {
+            // TODO : 7.6.2功能添加后才可以支持，暂时注释
+//            mUiSettings.setDoubleClickGesturesCenter(enabled);
         }
     }
 

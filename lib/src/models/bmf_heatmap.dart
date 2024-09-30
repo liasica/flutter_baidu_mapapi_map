@@ -51,17 +51,17 @@ class BMFHeatMap implements BMFModel {
   /// BMFHeatMap构造方法
   BMFHeatMap({
     this.data,
-    this.radius: 12,
-    this.radiusIsMeter: false,
-    this.radiusMeter: 12,
-    this.maxShowLevel: 22,
-    this.minShowLevel: 4,
-    this.opacity: 0.6,
+    this.radius = 12,
+    this.radiusIsMeter = false,
+    this.radiusMeter = 12,
+    this.maxShowLevel = 22,
+    this.minShowLevel = 4,
+    this.opacity = 0.6,
     this.gradient,
     this.datas,
-    this.mMaxHight: 0,
-    this.mMaxIntensity: 1,
-    this.mMinIntensity: 0,
+    this.mMaxHight = 0,
+    this.mMaxIntensity = 1,
+    this.mMinIntensity = 0,
     this.animation,
     this.frameAnimation,
   });
@@ -224,7 +224,7 @@ class BMFAnimation implements BMFModel {
   /// 动画缓动函数类型，默认0：线性
   BMFAnimationType? type;
 
-  BMFAnimation({this.duration: 0, this.type: BMFAnimationType.Linear});
+  BMFAnimation({this.duration = 0, this.type = BMFAnimationType.Linear});
 
   BMFAnimation.fromMap(Map map) {
     duration = map['duration'] >= 0 ? map['duration'] : 0;

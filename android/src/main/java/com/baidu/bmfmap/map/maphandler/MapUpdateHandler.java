@@ -894,10 +894,10 @@ public class MapUpdateHandler extends BMapHandler {
         if (null != mapStatus && null != animateDurationMs) {
             boolean b = setAnimateMapStatusImp(mapStatus, animateDurationMs);
             result.success(b);
-        } if (null != mapStatus) {
+        } else if (null != mapStatus) {
             boolean b = setMapStatusImp(mapStatus);
             result.success(b);
-        }else {
+        } else {
             result.success(false);
         }
     }

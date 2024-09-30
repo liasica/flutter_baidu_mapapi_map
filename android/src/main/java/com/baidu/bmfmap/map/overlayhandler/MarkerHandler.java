@@ -288,6 +288,12 @@ public class MarkerHandler extends OverlayHandler {
             markerOptions.clickable(enable);
         }
 
+        Double anchorX = new TypeConverter<Double>().getValue(markerOptionsMap, "anchorX");
+        Double anchorY = new TypeConverter<Double>().getValue(markerOptionsMap, "anchorY");
+        if (null != anchorX && null != anchorY) {
+            markerOptions.anchor(anchorX.floatValue(), anchorY.floatValue());
+        }
+
         Boolean draggable = new TypeConverter<Boolean>().getValue(markerOptionsMap, "draggable");
         if (null != draggable) {
             markerOptions.draggable(draggable);
@@ -406,6 +412,12 @@ public class MarkerHandler extends OverlayHandler {
             }
 
             markerOptions.titleOptions(titleOptions);
+        }
+
+        // 设置Marker的旋转角度
+        Double rotate = new TypeConverter<Double>().getValue(markerOptionsMap, "rotation");
+        if (null != rotate) {
+            markerOptions.rotate(rotate.floatValue());
         }
         return true;
     }
@@ -672,6 +684,20 @@ public class MarkerHandler extends OverlayHandler {
                 if (null != isPerspective) {
                     marker.setPerspective(isPerspective);
                     ret = true;
+                }
+                break;
+            case "anchor":
+                Double anchorX = (Double) value;
+                Double anchorY = (Double) argument.get("value1");
+                if (null != anchorX && null != anchorY) {
+                    marker.setAnchor(anchorX.floatValue(), anchorY.floatValue());
+                    ret = true;
+                }
+                break;
+            case "rotation":
+                Double rotate = (Double) value;
+                if (null != rotate) {
+                    marker.setRotate(rotate.floatValue());
                 }
                 break;
             default:

@@ -42,6 +42,12 @@ class BMFPrismOverlay extends BMFOverlay {
   /// 自定义建筑物的楼层侧面纹理 (仅对建筑物生效) since 3.5.0
   String? floorSideTextureImage;
 
+  /// 是否开启圆角 (仅对建筑物生效) since 3.8.0
+  bool? isRoundedCorner;
+
+  /// 开启圆角后，设置圆角半径，建议范围1~10，默认为5.0f (仅对建筑物生效) since 3.8.0
+  double? roundedCornerRadius;
+
   /// 3d棱柱构造方法
   BMFPrismOverlay({
     required this.coordinates,
@@ -49,8 +55,8 @@ class BMFPrismOverlay extends BMFOverlay {
     this.sideFaceColor,
     this.sideFacTexture,
     this.height,
-    int zIndex: 0,
-    bool visible: true,
+    int zIndex = 0,
+    bool visible = true,
     Map? customMap,
   })  : assert(coordinates != null),
         assert(coordinates!.length > 3),
@@ -62,8 +68,8 @@ class BMFPrismOverlay extends BMFOverlay {
     required this.topFaceColor,
     required this.sideFaceColor,
     this.height,
-    int zIndex: 0,
-    bool visible: true,
+    int zIndex = 0,
+    bool visible = true,
     Map? customMap,
   })  : assert(coordinates != null),
         assert(coordinates!.length > 3),
@@ -75,8 +81,8 @@ class BMFPrismOverlay extends BMFOverlay {
     required this.topFaceColor,
     required this.sideFacTexture,
     this.height,
-    int zIndex: 0,
-    bool visible: true,
+    int zIndex = 0,
+    bool visible = true,
     Map? customMap,
   })  : assert(coordinates != null),
         assert(coordinates!.length > 3),
@@ -87,14 +93,16 @@ class BMFPrismOverlay extends BMFOverlay {
     required this.buildInfo,
     required this.topFaceColor,
     required this.sideFaceColor,
-    this.isGrowthAnimation: true,
+    this.isGrowthAnimation = true,
     this.showLevel,
     this.height,
     this.floorColor,
     this.floorSideTextureImage,
     this.floorHeight,
-    int zIndex: 0,
-    bool visible: true,
+    this.isRoundedCorner,
+    this.roundedCornerRadius,
+    int zIndex = 0,
+    bool visible = true,
     Map? customMap,
   })  : assert(buildInfo != null),
         super(zIndex: zIndex, visible: visible, customMap: customMap);
@@ -104,14 +112,16 @@ class BMFPrismOverlay extends BMFOverlay {
     required this.buildInfo,
     required this.topFaceColor,
     required this.sideFacTexture,
-    this.isGrowthAnimation: true,
+    this.isGrowthAnimation = true,
     this.showLevel,
     this.height,
     this.floorColor,
     this.floorSideTextureImage,
     this.floorHeight,
-    int zIndex: 0,
-    bool visible: true,
+    this.isRoundedCorner,
+    this.roundedCornerRadius,
+    int zIndex = 0,
+    bool visible = true,
     Map? customMap,
   })  : assert(buildInfo != null),
         super(zIndex: zIndex, visible: visible, customMap: customMap);
@@ -139,6 +149,8 @@ class BMFPrismOverlay extends BMFOverlay {
     floorColor = ColorUtil.hexToColor(map['floorColor']);
     floorSideTextureImage = map['floorSideTextureImage'];
     floorHeight = map['floorHeight'] as double;
+    isRoundedCorner = map['isRoundedCorner'];
+    roundedCornerRadius = map['roundedCornerRadius'] as double;
   }
 
   @override
@@ -161,6 +173,8 @@ class BMFPrismOverlay extends BMFOverlay {
         'floorSideTextureImage': this.floorSideTextureImage,
         'floorColor': this.floorColor?.value.toRadixString(16),
         'floorHeight': this.floorHeight,
+        'isRoundedCorner': this.isRoundedCorner,
+        'roundedCornerRadius': this.roundedCornerRadius,
       });
   }
 }

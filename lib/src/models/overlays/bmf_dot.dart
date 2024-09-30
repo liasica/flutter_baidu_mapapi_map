@@ -23,8 +23,8 @@ class BMFDot extends BMFOverlay {
     required this.center,
     required this.radius,
     required this.color,
-    int zIndex: 0,
-    bool visible: true,
+    int zIndex = 0,
+    bool visible = true,
     Map? customMap,
   }) : super(zIndex: zIndex, visible: visible, customMap: customMap);
 
@@ -108,6 +108,23 @@ extension BMFDotUpdateExtension on BMFDot {
 
     if (ret) {
       this.color = color;
+    }
+
+    return ret;
+  }
+
+  /// 更新Dot是否显示
+  /// Android独有
+  /// [bool] visible 显示状态
+  Future<bool> updateVisible(bool visible) async {
+    ArgumentError.checkNotNull(visible, "visible");
+
+    bool ret = await BMFMapDispatcherFactory.instance.overlayDispatcher
+        .updateDotMember(this.methodChannel,
+            {'id': this.id, 'member': 'visible', 'value': visible});
+
+    if (ret) {
+      this.visible = visible;
     }
 
     return ret;

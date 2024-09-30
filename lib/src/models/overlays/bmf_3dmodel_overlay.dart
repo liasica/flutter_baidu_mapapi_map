@@ -25,8 +25,8 @@ class BMF3DModelOverlay extends BMFOverlay {
   BMF3DModelOverlay({
     required this.center,
     required this.option,
-    int zIndex: 0,
-    bool visible: true,
+    int zIndex = 0,
+    bool visible = true,
     Map? customMap,
   }) : super(zIndex: zIndex, visible: visible, customMap: customMap);
 
@@ -102,19 +102,19 @@ class BMF3DModelOption implements BMFModel {
   BMF3DModelOption(
       {required this.modelPath,
       required this.modelName,
-      this.scale: 1,
-      this.zoomFixed: false,
-      this.rotateX: 0,
-      this.rotateY: 0,
-      this.rotateZ: 0,
-      this.offsetX: 0,
-      this.offsetY: 0,
-      this.offsetZ: 0,
-      this.type: BMF3DModelType.BMF3DModelTypeObj,
-      this.animationIsEnable: false,
-      this.animationIndex: 0,
-      this.animationRepeatCount: 0,
-      this.animationSpeed: 1});
+      this.scale = 1,
+      this.zoomFixed = false,
+      this.rotateX = 0,
+      this.rotateY = 0,
+      this.rotateZ = 0,
+      this.offsetX = 0,
+      this.offsetY = 0,
+      this.offsetZ = 0,
+      this.type = BMF3DModelType.BMF3DModelTypeObj,
+      this.animationIsEnable = false,
+      this.animationIndex = 0,
+      this.animationRepeatCount = 0,
+      this.animationSpeed = 1});
 
   /// map =>> BMF3DModelOption
   BMF3DModelOption.fromMap(Map map)
