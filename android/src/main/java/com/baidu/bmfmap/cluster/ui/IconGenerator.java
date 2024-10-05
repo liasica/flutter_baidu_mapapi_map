@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.baidu.bmfmap.R;
+import com.baidu.flutter_baidu_mapapi_map.R;
 
 
 /**
@@ -95,7 +95,7 @@ public class IconGenerator {
                 canvas.translate(measuredWidth, 0);
                 canvas.rotate(90);
             } else if (mRotation == 2) {
-                canvas.rotate(180, measuredWidth / 2, measuredHeight / 2);
+                canvas.rotate(180, (float) measuredWidth / 2, (float) measuredHeight / 2);
             } else {
                 canvas.translate(0, measuredHeight);
                 canvas.rotate(270);
