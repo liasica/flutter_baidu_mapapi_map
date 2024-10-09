@@ -55,7 +55,6 @@
             annotationView = [[BMFPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:identifier];
         }
         
-
         if (model.branchFacilityIcon) {
             NSString *branchFacilityType = [model.branchFacilityIcon objectForKey:@"type"];
             NSNumber* number = [model.branchFacilityIcon valueForKey:@"number"];
@@ -100,12 +99,12 @@
         annotationView.isOpenCollisionDetectionWithMapPOI = model.isOpenCollisionDetectionWithMapPOI;
         annotationView.isOpenCollisionDetectionWithPaoPaoView = model.isOpenCollisionDetectionWithPaoPaoView;
         
-        if (model.anchorX >= 0 && model.anchorY >= 0 && model.anchorX <= 1 && model.anchorY <= 1) {
-            annotationView.layer.anchorPoint = CGPointMake(model.anchorX, model.anchorY);
-        }
-        CGFloat radians = model.rotation * M_PI / 180.0;
-        CGAffineTransform transform = CGAffineTransformMakeRotation(radians);
-        annotationView.transform = transform;
+        // if (model.anchorX >= 0 && model.anchorY >= 0 && model.anchorX <= 1 && model.anchorY <= 1) {
+        //     annotationView.layer.anchorPoint = CGPointMake(model.anchorX, model.anchorY);
+        // }
+        // CGFloat radians = model.rotation * M_PI / 180.0;
+        // CGAffineTransform transform = CGAffineTransformMakeRotation(radians);
+        // annotationView.transform = transform;
         return annotationView;
     }
     return nil;

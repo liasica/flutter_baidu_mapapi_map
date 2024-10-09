@@ -358,7 +358,7 @@ class BMFMarker extends BMFOverlay {
     position = BMFCoordinate.fromMap(map['position']);
     title = map['title'];
     subtitle = map["subtitle"];
-    rotation = map['rotation'];
+    rotation = map['rotation']?.toDouble();
     isLockedToScreen = map['isLockedToScreen'] as bool?;
     screenPointToLock = map['screenPointToLock'] == null
         ? null
