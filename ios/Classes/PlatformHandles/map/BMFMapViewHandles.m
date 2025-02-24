@@ -109,6 +109,8 @@ static  BMFMapViewHandles *_instance = nil;
             kBMFMapShowMapParticleEffectMethod: NSStringFromClass([BMFMapShowParticleEffect class]),
             kBMFMapCloseMapParticleEffectMethod: NSStringFromClass([BMFMapCloseParticleEffect class]),
             kBMFMapCustomMapParticleEffectMethod: NSStringFromClass([BMFMapCustomParticleEffect class]),
+            kBMFMapFitVisibleMapRectWithPaddingMethod: NSStringFromClass([BMFFitVisibleMapRectWithPadding class]),
+            kBMFMapSetMapCenterToScreenPtMethod: NSStringFromClass([BMFSetMapCenterToScreenPt class]),
         };
     }
     return _handles;
@@ -490,13 +492,35 @@ static  BMFMapViewHandles *_instance = nil;
 }
 
 - (void)handleMethodCall:(nonnull FlutterMethodCall *)call result:(nonnull FlutterResult)result {
-    if (!call.arguments || !call.arguments[@"visibleMapBounds"] || !call.arguments[@"insets"] || !call.arguments[@"animated"]) {
+    if (!call.arguments || !call.arguments[@"visibleMapBounds"]) {
         result(@NO);
         return;
     }
     BMFCoordinateBounds *bounds = [BMFCoordinateBounds bmf_modelWith:[call.arguments safeObjectForKey:@"visibleMapBounds"]];
     BMFEdgeInsets *insets = [BMFEdgeInsets bmf_modelWith:[call.arguments safeObjectForKey:@"insets"]];
     [_mapView setVisibleMapRect:[bounds toBMKMapRect] edgePadding:[insets toUIEdgeInsets] animated:[[call.arguments safeValueForKey:@"animated"] boolValue]];
+    result(@YES);
+}
+
+@end
+
+@implementation BMFFitVisibleMapRectWithPadding
+
+@synthesize _mapView;
+
+- (nonnull NSObject<BMFMapViewHandler> *)initWith:(nonnull BMFMapView *)mapView {
+    _mapView = mapView;
+    return self;
+}
+
+- (void)handleMethodCall:(nonnull FlutterMethodCall *)call result:(nonnull FlutterResult)result {
+    if (!call.arguments || !call.arguments[@"fitVisibleMapBounds"]) {
+        result(@NO);
+        return;
+    }
+    BMFCoordinateBounds *bounds = [BMFCoordinateBounds bmf_modelWith:[call.arguments safeObjectForKey:@"fitVisibleMapBounds"]];
+    BMFEdgeInsets *insets = [BMFEdgeInsets bmf_modelWith:[call.arguments safeObjectForKey:@"insets"]];
+    [_mapView fitVisibleMapRect:[bounds toBMKMapRect] edgePadding:[insets toUIEdgeInsets] withAnimated:[[call.arguments safeValueForKey:@"animated"] boolValue]];
     result(@YES);
 }
 
@@ -519,6 +543,27 @@ static  BMFMapViewHandles *_instance = nil;
     BMFMapStatusModel *status = [BMFMapStatusModel bmf_modelWith:[call.arguments safeObjectForKey:@"mapStatus"]];
     int animate = [[call.arguments safeValueForKey:@"animateDurationMs"] intValue];
     [_mapView setMapStatus:[status toMapStatus] withAnimation: animate!=0 ? YES : NO];
+    result(@YES);
+}
+
+@end
+
+@implementation BMFSetMapCenterToScreenPt
+
+@synthesize _mapView;
+
+- (nonnull NSObject<BMFMapViewHandler> *)initWith:(nonnull BMFMapView *)mapView {
+    _mapView = mapView;
+    return self;
+}
+
+- (void)handleMethodCall:(nonnull FlutterMethodCall *)call result:(nonnull FlutterResult)result {
+    if (!call.arguments || !call.arguments[@"point"]) {
+        result(@NO);
+        return;
+    }
+    BMFMapPoint *point = [BMFMapPoint bmf_modelWith:[call.arguments safeObjectForKey:@"point"]];
+    [_mapView setMapCenterToScreenPt:[point toCGPoint]];
     result(@YES);
 }
 

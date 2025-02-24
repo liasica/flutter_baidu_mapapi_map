@@ -386,6 +386,14 @@ static NSString * const kProjectionMethods = @"flutter_bmfmap/projection/";
         overlayType = kBMFOverlayTypeGround;
         model = [BMFOverlayViewManager groundModelWith:(BMKGroundOverlayView *)overlayView];
         
+    } else if ([overlayView isKindOfClass:[BMKTextMarkerView class]]) {
+        overlayType = kBMFOverlayTextMarker;
+        model = [BMFOverlayViewManager textMarkerModelWith:(BMKTextMarkerView *)overlayView];
+
+    } else if ([overlayView isKindOfClass:[BMKIconMarkerView class]]) {
+        overlayType = kBMFOverlayIconMarker;
+        model = [BMFOverlayViewManager iconMarkerModelWith:(BMKIconMarkerView *)overlayView];
+
     } else {
         NSLog(@"iOS - 暂不支持%@点击回调",NSStringFromClass([overlayView class]));
         return;

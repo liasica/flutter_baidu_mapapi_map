@@ -8,12 +8,14 @@ import 'package:flutter_baidu_mapapi_map/src/models/overlays/bmf_geodesicline.da
 import 'package:flutter_baidu_mapapi_map/src/models/overlays/bmf_gradientcircle.dart';
 import 'package:flutter_baidu_mapapi_map/src/models/overlays/bmf_gradientline.dart';
 import 'package:flutter_baidu_mapapi_map/src/models/overlays/bmf_ground.dart';
+import 'package:flutter_baidu_mapapi_map/src/models/overlays/bmf_iconmarker.dart';
 import 'package:flutter_baidu_mapapi_map/src/models/overlays/bmf_multipoint_overlay.dart';
 import 'package:flutter_baidu_mapapi_map/src/models/overlays/bmf_overlay.dart';
 import 'package:flutter_baidu_mapapi_map/src/models/overlays/bmf_polygon.dart';
 import 'package:flutter_baidu_mapapi_map/src/models/overlays/bmf_polyline.dart';
 import 'package:flutter_baidu_mapapi_map/src/models/overlays/bmf_prism_overlay.dart';
 import 'package:flutter_baidu_mapapi_map/src/models/overlays/bmf_text.dart';
+import 'package:flutter_baidu_mapapi_map/src/models/overlays/bmf_textmarker.dart';
 import 'package:flutter_baidu_mapapi_map/src/models/overlays/bmf_tile.dart';
 import 'package:flutter_baidu_mapapi_map/src/models/overlays/bmf_trace_overlay.dart';
 import 'package:flutter_baidu_mapapi_map/src/private/mapdispatcher/bmf_map_method_id.dart'
@@ -61,6 +63,44 @@ class BMFOverlayDispatcher {
               BMFOverlayMethodId.kMapAddOverlaysMethod,
               overlays.map((overlay) => overlay.toMap()).toList() as dynamic))
           as bool;
+    } on PlatformException catch (e) {
+      print(e.toString());
+    }
+    return result;
+  }
+
+  /// 地图添加Marker
+  Future<bool> addTextMarker(
+      MethodChannel _mapChannel, BMFTextMarker marker) async {
+    ArgumentError.checkNotNull(_mapChannel, "_mapChannel");
+    ArgumentError.checkNotNull(marker, "marker");
+
+    marker.methodChannel = _mapChannel;
+
+    bool result = false;
+    try {
+      result = (await _mapChannel.invokeMethod(
+          BMFOverlayMethodId.kMapAddTextMarkerMethod,
+          marker.toMap() as dynamic)) as bool;
+    } on PlatformException catch (e) {
+      print(e.toString());
+    }
+    return result;
+  }
+
+  /// 地图添加Marker
+  Future<bool> addIconMarker(
+      MethodChannel _mapChannel, BMFIconMarker marker) async {
+    ArgumentError.checkNotNull(_mapChannel, "_mapChannel");
+    ArgumentError.checkNotNull(marker, "marker");
+
+    marker.methodChannel = _mapChannel;
+
+    bool result = false;
+    try {
+      result = (await _mapChannel.invokeMethod(
+          BMFOverlayMethodId.kMapAddIconMarkerMethod,
+          marker.toMap() as dynamic)) as bool;
     } on PlatformException catch (e) {
       print(e.toString());
     }
@@ -401,6 +441,20 @@ class BMFOverlayDispatcher {
       result = (await _mapChannel.invokeMethod(
           BMFOverlayMethodId.kMapRemoveOverlayMethod,
           {'id': overlayId} as dynamic)) as bool;
+    } on PlatformException catch (e) {
+      print(e.toString());
+    }
+    return result;
+  }
+
+  /// map 清除所有的overlay
+  Future<bool> clearOverlays(MethodChannel _mapChannel) async {
+    ArgumentError.checkNotNull(_mapChannel, "_mapChannel");
+
+    bool result = false;
+    try {
+      result = (await _mapChannel
+          .invokeMethod(BMFOverlayMethodId.kMapClearMethod)) as bool;
     } on PlatformException catch (e) {
       print(e.toString());
     }

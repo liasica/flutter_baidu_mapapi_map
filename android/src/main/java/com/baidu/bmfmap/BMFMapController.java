@@ -15,6 +15,7 @@ import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.LogoPosition;
 import com.baidu.mapapi.map.MapLanguage;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
+import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.map.OverlayUtil;
 import com.baidu.mapapi.map.UiSettings;
@@ -122,6 +123,7 @@ public class BMFMapController implements MethodChannel.MethodCallHandler, BaiduM
     public BaiduMap getBaiduMap() {
         return mBaiduMap;
     }
+
 
     public MethodChannel getMethodChannel() {
         return mMethodChannel;
@@ -313,8 +315,7 @@ public class BMFMapController implements MethodChannel.MethodCallHandler, BaiduM
     @Override
     public void setDoubleClickGesturesCenter(Boolean enabled) {
         if (mUiSettings != null && enabled != null) {
-            // TODO : 7.6.2功能添加后才可以支持，暂时注释
-//            mUiSettings.setDoubleClickGesturesCenter(enabled);
+            mUiSettings.setDoubleClickGesturesCenter(enabled);
         }
     }
 

@@ -5,6 +5,10 @@
 
 /// map添加overlays
 FOUNDATION_EXPORT NSString *const kBMFMapAddOverlaysMethod;
+/// map添加TextMarker
+FOUNDATION_EXPORT NSString *const kBMFMapAddTextMarkerMethod;
+/// map添加IconMarker
+FOUNDATION_EXPORT NSString *const kBMFMapAddIconMarkerMethod;
 /// map添加polyline
 FOUNDATION_EXPORT NSString *const kBMFMapAddPolylineMethod;
 /// map添加arcline
@@ -39,6 +43,8 @@ FOUNDATION_EXPORT NSString *const kBMFMapGetOverlayBoundsMethod;
 
 /// map删除指定id的overlay
 FOUNDATION_EXPORT NSString *const kBMFMapRemoveOverlayMethod;
+/// map删除所有的overlay
+FOUNDATION_EXPORT NSString *const kBMFMapClearOverlayMethod;
 /// map删除指定id的traceOverlay
 FOUNDATION_EXPORT NSString *const kBMFMapRemoveTraceOverlayMethod;
 /// map删除指定id的瓦片图(适配android)

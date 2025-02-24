@@ -57,6 +57,14 @@ class BMFMapStateMethodId {
   /// 设定地图的显示范围,并使mapRect四周保留insets指定的边界区域
   static const kMapSetVisibleMapBoundsWithPaddingMethod =
       'flutter_bmfmap/map/setVisibleMapBoundsWithPadding';
+
+  /// 根据当前mapView的窗口大小，预留insets指定的边界区域后，将mapRect指定的地理范围显示在剩余的区域内，并尽量充满
+  static const kMapFitVisibleMapBoundsWithPaddingMethod =
+      'flutter_bmfmap/map/fitVisibleMapRectWithPadding';
+
+  /// 设置地图中心点在地图中的屏幕坐标位置
+  static const kMapSetMapCenterToScreenPtMethod =
+      'flutter_bmfmap/map/setMapCenterToScreenPt';
 }
 
 /// 地图layer方法集合
@@ -398,6 +406,12 @@ class BMFOverlayMethodId {
   /// 添加overlays
   static const kMapAddOverlaysMethod = 'flutter_bmfmap/overlay/addOverlays';
 
+  /// 添加TextMarker
+  static const kMapAddTextMarkerMethod = 'flutter_bmfmap/overlay/addTextMarker';
+
+  /// 添加IconMarker
+  static const kMapAddIconMarkerMethod = 'flutter_bmfmap/overlay/addIconMarker';
+
   /// 添加polyline
   static const kMapAddPolylineMethod = 'flutter_bmfmap/overlay/addPolyline';
 
@@ -463,6 +477,9 @@ class BMFOverlayMethodId {
 
   /// 删除overlay
   static const kMapRemoveOverlayMethod = 'flutter_bmfmap/overlay/removeOverlay';
+
+  /// 清除所有的overlay
+  static const kMapClearMethod = 'flutter_bmfmap/overlay/clear';
 
   /// 删除trace overlay
   static const kMapRemoveTraceOverlayMethod =

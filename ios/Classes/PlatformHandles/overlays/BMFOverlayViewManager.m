@@ -25,6 +25,8 @@
 #import "BMFTraceOverlay.h"
 #import "BMFText.h"
 #import "BMFGroundOverlay.h"
+#import "BMFTextMarker.h"
+#import "BMFIconMarker.h"
 
 @interface BMFOverlayViewManager ()<BMKMultiPointOverlayViewDelegate, BMKTraceOverlayAnimationDelegate, BMKPrismOverlayViewDelegate>
 
@@ -84,6 +86,13 @@ static  BMFOverlayViewManager *_instance = nil;
     return (BMFMultiPointOverlayModel *)view.multiPointOverlay.flutterModel;
 }
 
++ (nullable BMFTextMarkerModel *)textMarkerModelWith:(BMKTextMarkerView *)view {
+    return (BMFTextMarkerModel *)(((BMKTextMarker *)view.marker).flutterModel);
+}
+
++ (nullable BMFIconMarkerModel *)iconMarkerModelWith:(BMKIconMarkerView *)view {
+    return (BMFIconMarkerModel *)(((BMKIconMarker *)view.marker).flutterModel);
+}
 
 #pragma mark -view
 + (BMKMultiColorPolylineView *)multiColorPolylineViewForMultiPolyline:(BMKMultiPolyline *)multiPolyline {
@@ -381,6 +390,23 @@ static  BMFOverlayViewManager *_instance = nil;
     return view;
 }
 
+
++ (BMKTextMarkerView *)viewForTextMarker:(BMKTextMarker *)textMarker {
+    BMFTextMarkerModel *model = (BMFTextMarkerModel *)textMarker.flutterModel;
+    BMKTextMarkerView *view = [[BMKTextMarkerView alloc] initWithMarker:textMarker];
+    view.isClickable = model.isClickable;
+    view.draggable = model.draggable;
+    return view;
+}
+
++ (BMKIconMarkerView *)viewForIconMarker:(BMKIconMarker *)iconMarker {
+    BMFIconMarkerModel *model = (BMFIconMarkerModel *)iconMarker.flutterModel;
+    BMKIconMarkerView *view = [[BMKIconMarkerView alloc] initWithMarker:iconMarker];
+    view.isClickable = model.isClickable;
+    view.draggable = model.draggable;
+    return view;
+}
+
 + (BMKOverlayView *)mapView:(BMKMapView *)mapView viewForOverlay:(id<BMKOverlay>)overlay {
     if ([overlay isKindOfClass:[BMKGeodesicLine class]]) {
         return [BMFOverlayViewManager viewForGeodesicLine:(BMKGeodesicLine *)overlay];
@@ -430,6 +456,14 @@ static  BMFOverlayViewManager *_instance = nil;
     else if ([overlay isKindOfClass:[BMKText class]]) {
         return [BMFOverlayViewManager viewForText:(BMKText *)overlay];
     }
+    else if ([overlay isKindOfClass:[BMKTextMarker class]]) {
+        return [BMFOverlayViewManager viewForTextMarker:(BMKTextMarker *)overlay];
+    }
+    else if ([overlay isKindOfClass:[BMKIconMarker class]]) {
+        return [BMFOverlayViewManager viewForIconMarker:(BMKIconMarker *)overlay];
+    }
+
+    
     return nil;
 }
 

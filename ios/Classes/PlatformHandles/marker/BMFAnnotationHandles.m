@@ -626,6 +626,12 @@ static BMFAnnotationHandles *_instance = nil;
         [view setRotation:value];
         result(@YES);
     }
+    else if ([member isEqualToString:@"displayPriority"]) {
+        BMKPinAnnotationView *view = (BMKPinAnnotationView *)[_mapView viewForAnnotation:annotation];
+        CGFloat value = [[call.arguments safeObjectForKey:@"value"] floatValue];
+        view.displayPriority = value;
+        result(@YES);
+    }
     else {
         NSLog(@"ios - 暂不支持设置%@", member);
         result(@YES);

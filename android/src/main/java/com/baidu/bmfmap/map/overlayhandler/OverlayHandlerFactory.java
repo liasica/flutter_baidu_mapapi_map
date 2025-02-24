@@ -167,6 +167,11 @@ public class OverlayHandlerFactory {
 //                overlayHandler = overlayHandlerHashMap.get(OverlayHandlerType.OVERLAY_COMMON_HANDLER);
                 removeOneOverLayById(call, result);
                 break;
+            case OverlayProtocol.MAP_REMOVE_ALL_OVERLAY_METHOD:
+                if (mBmfMapController != null && mBmfMapController.getBaiduMap() != null) {
+                    mBmfMapController.getBaiduMap().clear();
+                }
+                break;
             default:
                 break;
         }

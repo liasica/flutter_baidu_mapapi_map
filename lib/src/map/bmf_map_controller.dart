@@ -483,6 +483,39 @@ extension MapExtension on BMFMapController {
     );
   }
 
+  /// 根据当前mapView的窗口大小，预留insets指定的边界区域后，将mapRect指定的地理范围显示在剩余的区域内，并尽量充满 since 3.9.0
+  /// (ios 独有)
+  /// [BMFCoordinateBounds]fitVisibleMapBounds 要设定的地图范围(东北，西南)角坐标
+  ///
+  /// [EdgeInsets]insets 指定的四周边界大小
+  ///
+  /// animated 是否采用动画效果
+  ///
+  /// bool 成功返回true 失败false
+  Future<bool> fitVisibleMapRectWithPadding({
+    required BMFCoordinateBounds fitVisibleMapBounds,
+    required EdgeInsets insets,
+    required bool animated,
+  }) async {
+    return await BMFMapDispatcherFactory.instance.mapStatusDispatcher
+        .fitVisibleMapRectWithPadding(
+      _mapChannel,
+      fitVisibleMapBounds,
+      insets,
+      animated,
+    );
+  }
+
+  /// 设置地图中心点在地图中的屏幕坐标位置 since 3.9.0
+  ///
+  /// point 要设定的地图中心点位置，为屏幕坐标，设置的中心点不能超过屏幕范围，否则无效
+  Future<bool> setMapCenterToScreenPt({
+    required BMFPoint point,
+  }) async {
+    return await BMFMapDispatcherFactory.instance.mapStatusDispatcher
+        .setMapCenterToScreenPt(_mapChannel, point);
+  }
+
   /// 设置显示在指定相对于MapView的padding中的地图地理范围
   ///
   /// [BMFCoordinateBounds]visibleMapBounds 要设定的地图范围(东北，西南)角坐标
@@ -875,6 +908,26 @@ extension OverlayExtension on BMFMapController {
         .addOverlays(_mapChannel, overlays);
   }
 
+  /// 地图添加TextMarker
+  ///
+  /// [BMFTextMarker] marker textMarker
+  ///
+  /// bool 成功返回true 失败false
+  Future<bool> addTextMarker(BMFTextMarker marker) async {
+    return await BMFMapDispatcherFactory.instance.overlayDispatcher
+        .addTextMarker(_mapChannel, marker);
+  }
+
+  /// 地图添加IconMarker
+  ///
+  /// [BMFIconMarker] marker iconMarker
+  ///
+  /// bool 成功返回true 失败false
+  Future<bool> addIconMarker(BMFIconMarker marker) async {
+    return await BMFMapDispatcherFactory.instance.overlayDispatcher
+        .addIconMarker(_mapChannel, marker);
+  }
+
   /// 地图添加Polyine
   ///
   /// [BMFPolyline] polyline 折线
@@ -1021,6 +1074,14 @@ extension OverlayExtension on BMFMapController {
   Future<bool> removeOverlay(String overlayId) async {
     return await BMFMapDispatcherFactory.instance.overlayDispatcher
         .removeOverlay(_mapChannel, overlayId);
+  }
+
+  /// 地图删除overlay
+  ///
+  /// bool 成功返回true 失败false
+  Future<bool> clearOverlays() async {
+    return await BMFMapDispatcherFactory.instance.overlayDispatcher
+        .clearOverlays(_mapChannel);
   }
 
   /// 地图指定删除trace overlay

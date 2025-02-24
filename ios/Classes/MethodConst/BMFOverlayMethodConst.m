@@ -5,6 +5,8 @@
 
 
 NSString *const kBMFMapAddOverlaysMethod = @"flutter_bmfmap/overlay/addOverlays";
+NSString *const kBMFMapAddTextMarkerMethod = @"flutter_bmfmap/overlay/addTextMarker";
+NSString *const kBMFMapAddIconMarkerMethod = @"flutter_bmfmap/overlay/addIconMarker";
 NSString *const kBMFMapAddPolylineMethod = @"flutter_bmfmap/overlay/addPolyline";
 NSString *const kBMFMapAddArcineMethod = @"flutter_bmfmap/overlay/addArcline";
 NSString *const kBMFMapAddPolygonMethod = @"flutter_bmfmap/overlay/addPolygon";
@@ -23,6 +25,8 @@ NSString *const kBMFMapAddGradientCircleMethod = @"flutter_bmfmap/overlay/addGra
 NSString *const kBMFMapGetOverlayBoundsMethod = @"flutter_bmfmap/overlay/getOverlayBounds";
 
 NSString *const kBMFMapRemoveOverlayMethod = @"flutter_bmfmap/overlay/removeOverlay";
+NSString *const kBMFMapClearOverlayMethod = @"flutter_bmfmap/overlay/clear";
+
 NSString *const kBMFMapRemoveTraceOverlayMethod = @"flutter_bmfmap/overlay/removeTraceOverlay";
 NSString *const kBMFMapRemoveTileMethod = @"flutter_bmfmap/overlay/removeTile";
 

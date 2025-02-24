@@ -51,7 +51,6 @@ class BMFMarker extends BMFOverlay {
   /// marker位置经纬度
   late BMFCoordinate position;
 
-  /// TODO ???  Android为逆时针？
   /// marker的旋转角度 范围：顺时针0~360 since 3.8.0
   double? rotation;
 
@@ -358,7 +357,8 @@ class BMFMarker extends BMFOverlay {
     position = BMFCoordinate.fromMap(map['position']);
     title = map['title'];
     subtitle = map["subtitle"];
-    rotation = map['rotation']?.toDouble();
+    rotation =
+        map['rotation'] != null ? double.tryParse("${map['rotation']}") : null;
     isLockedToScreen = map['isLockedToScreen'] as bool?;
     screenPointToLock = map['screenPointToLock'] == null
         ? null
@@ -806,6 +806,24 @@ extension BMFMarkerUpdateExtension on BMFMarker {
 
     if (ret) {
       this.rotate = rotate;
+    }
+
+    return ret;
+  }
+  
+  /// 更新marker展示优先级
+  ///
+  /// iOS独有
+  Future<bool> updateDisplayPriority(int number) async {
+    bool ret = await BMFMapDispatcherFactory.instance.markerDispatcher
+        .updateMarkerMember(this.methodChannel, {
+      'id': this.id,
+      'member': 'displayPriority',
+      'value': number,
+    });
+
+    if (ret) {
+      this.displayPriority = number;
     }
 
     return ret;

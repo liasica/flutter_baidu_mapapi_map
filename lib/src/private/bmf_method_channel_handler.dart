@@ -327,6 +327,12 @@ class BMFMethodChannelHandler {
               case BMFOverlayType.Arcline:
                 overlay = BMFArcLine.fromMap(call.arguments['overlay']);
                 break;
+              case BMFOverlayType.TextMarker:
+                overlay = BMFTextMarker.fromMap(call.arguments['overlay']);
+                break;
+              case BMFOverlayType.IconMarker:
+                overlay = BMFIconMarker.fromMap(call.arguments['overlay']);
+                break;
               default:
                 print('overlay点击回调无效');
                 break;
