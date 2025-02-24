@@ -27,6 +27,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+@interface BMFAddTextMarker : NSObject<BMFMapViewHandler>
+
+@end
+
+@interface BMFAddIconMarker : NSObject<BMFMapViewHandler>
+
+@end
+
 @interface BMFAddArcline : NSObject<BMFMapViewHandler>
 
 @end
@@ -82,6 +90,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 #pragma mark - remove
 @interface BMFRemoveOverlay : NSObject<BMFMapViewHandler>
+
+@end
+
+@interface BMFClearOverlay : NSObject<BMFMapViewHandler>
 
 @end
 

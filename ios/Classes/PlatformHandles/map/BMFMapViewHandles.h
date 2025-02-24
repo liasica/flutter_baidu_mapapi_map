@@ -83,11 +83,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+@interface BMFFitVisibleMapRectWithPadding : NSObject<BMFMapViewHandler>
+
+@end
+
 @interface BMFSetVisibleMapBoundsWithPadding : NSObject<BMFMapViewHandler>
 
 @end
 
 @interface BMFSetMapStatus : NSObject<BMFMapViewHandler>
+
+@end
+
+@interface BMFSetMapCenterToScreenPt : NSObject<BMFMapViewHandler>
 
 @end
 

@@ -48,8 +48,11 @@ NSString *const kBMFMapTakeSnapshotWithRectMethod = @"flutter_bmfmap/map/takeSna
 NSString *const kBMFMapSetCompassImageMethod = @"flutter_bmfmap/map/setCompassImage";
 NSString *const kBMFMapSetVisibleMapBoundsMethod = @"flutter_bmfmap/map/setVisibleMapBounds";
 NSString *const kBMFMapSetVisibleMapBoundsWithPaddingMethod = @"flutter_bmfmap/map/setVisibleMapBoundsWithPadding";
+NSString *const kBMFMapFitVisibleMapRectWithPaddingMethod = @"flutter_bmfmap/map/fitVisibleMapRectWithPadding";
+
 NSString *const kBMFMapSetMapStatusMethod = @"flutter_bmfmap/map/setMapStatus";
 NSString *const kBMFMapGetMapStatusMethod = @"flutter_bmfmap/map/getMapStatus";
+NSString *const kBMFMapSetMapCenterToScreenPtMethod = @"flutter_bmfmap/map/setMapCenterToScreenPt";
 
 // 室内地图
 NSString *const kBMFMapShowBaseIndoorMapMethod = @"flutter_bmfmap/map/showBaseIndoorMap";

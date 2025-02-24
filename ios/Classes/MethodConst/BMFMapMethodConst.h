@@ -95,11 +95,14 @@ FOUNDATION_EXPORT NSString *const kBMFMapSetCompassImageMethod;
 FOUNDATION_EXPORT NSString *const kBMFMapSetVisibleMapBoundsMethod;
 /// 设定地图的显示范围,并使bounds四周保留insets指定的边界区域
 FOUNDATION_EXPORT NSString *const kBMFMapSetVisibleMapBoundsWithPaddingMethod;
+/// 根据当前mapView的窗口大小，预留insets指定的边界区域后，将mapRect指定的地理范围显示在剩余的区域内，并尽量充满
+FOUNDATION_EXPORT NSString *const kBMFMapFitVisibleMapRectWithPaddingMethod;
 /// 设置mapStatus
 FOUNDATION_EXPORT NSString *const kBMFMapSetMapStatusMethod;
 /// 获取mapStatus
 FOUNDATION_EXPORT NSString *const kBMFMapGetMapStatusMethod;
-
+/// 设置地图中心点在地图中的屏幕坐标位置
+FOUNDATION_EXPORT NSString *const kBMFMapSetMapCenterToScreenPtMethod;
 
 // 室内地图
 /// map展示室内地图

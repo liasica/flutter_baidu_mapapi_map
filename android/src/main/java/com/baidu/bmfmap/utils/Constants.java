@@ -120,6 +120,10 @@ public class Constants {
              */
             public static final String sMapRemoveOverlayMethod =
                     "flutter_bmfmap/overlay/removeOverlay";
+
+            public static final String MAP_REMOVE_ALL_OVERLAY_METHOD =
+                    "flutter_bmfmap/overlay/clear";
+
         }
 
         /**

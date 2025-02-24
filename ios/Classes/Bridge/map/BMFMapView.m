@@ -24,6 +24,7 @@
 }
 
 + (instancetype)viewWithFrame:(CGRect)frame dic:(nullable NSDictionary *)dic {
+    
     BMFMapView *map = [[BMFMapView alloc] initWithFrame:frame];
     map.mapViewOptions = dic;
     [map updateMapViewWith:dic];

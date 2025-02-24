@@ -30,6 +30,8 @@
 #import "BMFMultiPointOverlay.h"
 #import "BMFTraceOverlay.h"
 #import "BMFText.h"
+#import "BMFTextMarker.h"
+#import "BMFIconMarker.h"
 
 @interface BMFOverlayHandles ()
 {
@@ -67,6 +69,8 @@ static  BMFOverlayHandles *_instance = nil;
         _handles = @{
             kBMFMapAddOverlaysMethod: NSStringFromClass([BMFAddOverlays class]),
             kBMFMapAddPolylineMethod: NSStringFromClass([BMFAddPolyline class]),
+            kBMFMapAddTextMarkerMethod: NSStringFromClass([BMFAddTextMarker class]),
+            kBMFMapAddIconMarkerMethod: NSStringFromClass([BMFAddIconMarker class]),
             kBMFMapAddArcineMethod: NSStringFromClass([BMFAddArcline class]),
             kBMFMapAddPolygonMethod: NSStringFromClass([BMFAddPolygon class]),
             kBMFMapAddCircleMethod: NSStringFromClass([BMFAddCircle class]),
@@ -82,6 +86,7 @@ static  BMFOverlayHandles *_instance = nil;
             kBMFMapAddGradientCircleMethod: NSStringFromClass([BMFAddCircle class]),
             kBMFMapGetOverlayBoundsMethod: NSStringFromClass([BMFGetOverlayBounds class]),
             kBMFMapRemoveOverlayMethod: NSStringFromClass([BMFRemoveOverlay class]),
+            kBMFMapClearOverlayMethod: NSStringFromClass([BMFClearOverlay class]),
             kBMFMapRemoveTraceOverlayMethod: NSStringFromClass([BMFRemoveTraceOverlay class]),
             kBMFMapRemoveTileMethod: NSStringFromClass([BMFRemoveTileOverlay class]),
             kBMFMapUpdatePolylineMemberMethod: NSStringFromClass([BMFUpdatePolyline class]),
@@ -206,6 +211,55 @@ static  BMFOverlayHandles *_instance = nil;
 }
 
 @end
+
+@implementation BMFAddTextMarker
+
+@synthesize _mapView;
+
+- (nonnull NSObject<BMFMapViewHandler> *)initWith:(nonnull BMFMapView *)mapView {
+    _mapView = mapView;
+    return self;
+}
+
+- (void)handleMethodCall:(nonnull FlutterMethodCall *)call result:(nonnull FlutterResult)result {
+    BMKTextMarker *marker = [BMKTextMarker overlayWithDictionary:call.arguments];
+    if (marker) {
+        [_mapView addOverlay:marker];
+        if (marker.animation) {
+            [marker.animation start];
+        }
+        result(@YES);
+    } else {
+        result(@NO);
+    }
+}
+
+@end
+
+@implementation BMFAddIconMarker
+
+@synthesize _mapView;
+
+- (nonnull NSObject<BMFMapViewHandler> *)initWith:(nonnull BMFMapView *)mapView {
+    _mapView = mapView;
+    return self;
+}
+
+- (void)handleMethodCall:(nonnull FlutterMethodCall *)call result:(nonnull FlutterResult)result {
+    BMKIconMarker *marker = [BMKIconMarker overlayWithDictionary:call.arguments];
+    if (marker) {
+        [_mapView addOverlay:marker];
+        if (marker.animation) {
+            [marker.animation start];
+        }
+        result(@YES);
+    } else {
+        result(@NO);
+    }
+}
+
+@end
+
 
 @implementation BMFAddArcline
 
@@ -588,7 +642,12 @@ static  BMFOverlayHandles *_instance = nil;
         else if ([obj isKindOfClass:[BMKText class]]) { // text
             overlayID = ((BMFTextModel *)((id<BMFOverlay> )obj).flutterModel).Id;
         }
-        
+        else if ([obj isKindOfClass:[BMKTextMarker class]]) { // text
+            overlayID = ((BMFTextMarkerModel *)((id<BMFOverlay> )obj).flutterModel).Id;
+        }
+        else if ([obj isKindOfClass:[BMKIconMarker class]]) { // text
+            overlayID = ((BMFIconMarkerModel *)((id<BMFOverlay> )obj).flutterModel).Id;
+        }
         if (overlayID) {
             if ([ID isEqualToString:overlayID]) {
                 [weakMapView removeOverlay:obj];
@@ -598,6 +657,23 @@ static  BMFOverlayHandles *_instance = nil;
             }
         }
     }];
+}
+
+@end
+
+@implementation BMFClearOverlay
+
+@synthesize _mapView;
+
+- (nonnull NSObject<BMFMapViewHandler> *)initWith:(nonnull BMFMapView *)mapView {
+    _mapView = mapView;
+    return self;
+}
+
+- (void)handleMethodCall:(nonnull FlutterMethodCall *)call result:(nonnull FlutterResult)result {
+
+    [_mapView removeOverlays:_mapView.overlays];
+    result(@YES);
 }
 
 @end

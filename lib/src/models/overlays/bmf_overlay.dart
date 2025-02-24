@@ -18,6 +18,8 @@ enum BMFOverlayType {
   /// 3d模型
   ThreeDModel,
   GradientLine,
+  TextMarker,
+  IconMarker
 }
 
 /// overlay的外接矩形 since 3.1.0
@@ -35,13 +37,9 @@ class BMFOverlay implements BMFModel {
   late String _id;
 
   /// overlay是否可见
-  ///
-  /// Android独有
   bool? visible;
 
   /// 元素的堆叠顺序
-  ///
-  /// Android独有
   int? zIndex;
 
   /// 类名

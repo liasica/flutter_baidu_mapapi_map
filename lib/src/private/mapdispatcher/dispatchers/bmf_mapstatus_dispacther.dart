@@ -395,4 +395,55 @@ class BMFMapStatusDispatcher {
     }
     return result;
   }
+
+  /// 根据当前mapView的窗口大小，预留insets指定的边界区域后，将mapRect指定的地理范围显示在剩余的区域内，并尽量充满
+  ///
+  /// fitVisibleMapBounds 要设定的地图范围(东北，西南)角坐标
+  /// insets 指定的四周边界大小
+  /// animated 是否采用动画效果
+  Future<bool> fitVisibleMapRectWithPadding(
+      MethodChannel _mapChannel,
+      BMFCoordinateBounds fitVisibleMapBounds,
+      EdgeInsets insets,
+      bool animated) async {
+    ArgumentError.checkNotNull(_mapChannel, "_mapChannel");
+    ArgumentError.checkNotNull(fitVisibleMapBounds, "fitVisibleMapBounds");
+    ArgumentError.checkNotNull(insets, "insets");
+    ArgumentError.checkNotNull(animated, "animated");
+
+    bool result = false;
+    try {
+      result = (await _mapChannel.invokeMethod(
+          BMFMapStateMethodId.kMapFitVisibleMapBoundsWithPaddingMethod,
+          {
+            'fitVisibleMapBounds': fitVisibleMapBounds.toMap(),
+            'insets': BMFEdgeInsets.fromEdgeInsets(insets).toMap(),
+            'animated': animated
+          } as dynamic)) as bool;
+    } on PlatformException catch (e) {
+      print(e.toString());
+    }
+    return result;
+  }
+
+  /// 设置地图中心点在地图中的屏幕坐标位置
+  ///
+  /// point 要设定的地图中心点位置，为屏幕坐标，设置的中心点不能超过屏幕范围，否则无效
+  Future<bool> setMapCenterToScreenPt(
+      MethodChannel _mapChannel, BMFPoint point) async {
+    ArgumentError.checkNotNull(_mapChannel, "_mapChannel");
+    ArgumentError.checkNotNull(point, "point");
+
+    bool result = false;
+    try {
+      result = (await _mapChannel.invokeMethod(
+          BMFMapStateMethodId.kMapSetMapCenterToScreenPtMethod,
+          {
+            'point': point.toMap(),
+          } as dynamic)) as bool;
+    } on PlatformException catch (e) {
+      print(e.toString());
+    }
+    return result;
+  }
 }

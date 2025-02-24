@@ -21,6 +21,8 @@
 @class BMFPolygonModel;
 @class BMFGroundModel;
 @class FlutterMethodChannel;
+@class BMFTextMarkerModel;
+@class BMFIconMarkerModel;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -35,7 +37,9 @@ typedef NS_ENUM(int, BMFOverlayType) {
     kBMFOverlayMultiPoint,        ///< MultiPoint
     kBMFOverlayPrism,             ///<3d棱柱
     kBMFOverlay3Dmodel,           ///< 3DModel
-    kBMFOverlayGradientLine       ///<渐变线
+    kBMFOverlayGradientLine,      ///<渐变线
+    kBMFOverlayTextMarker,         ///<textMarker
+    kBMFOverlayIconMarker         ///<iconMarker
 };
 
 @interface BMFOverlayViewManager : NSObject
@@ -57,6 +61,10 @@ typedef NS_ENUM(int, BMFOverlayType) {
 + (nullable BMFPolygonModel *)polygonModelWith:(BMKPolygonView *)view;
 
 + (nullable BMFGroundModel *)groundModelWith:(BMKGroundOverlayView *)view;
+
++ (nullable BMFTextMarkerModel *)textMarkerModelWith:(BMKTextMarkerView *)view;
+
++ (nullable BMFIconMarkerModel *)iconMarkerModelWith:(BMKIconMarkerView *)view;
 
 @end
 

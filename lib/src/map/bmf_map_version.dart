@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/services.dart';
 
 /// 获取原生地图Map组件版本号
@@ -53,20 +50,24 @@ class BMFAndroidVersion {
   static set setAndroidVersion(bool isAndroidVersion) =>
       mIsAndroidVersion = isAndroidVersion;
 
+  static const kGetAndroidVersion = 'flutter_bmfbase/sdk/getAndroidSdkVersion';
+
   /// 初始化时获取系统版本，适配BMFMapWidget在flutter sdk升级3.0之后兼容底版本手机问题。
   /// Andriod 10 以下手机上在使用BMFMapWidget的时，使用textureMapview渲染。
   /// Android 10 及以上机型则使用surfaceMapView渲染。
   /// 默认 mIsAndroidVersion 是false，使用textureMapview渲染
   static Future<void> initAndroidVersion() async {
-    DeviceInfoPlugin deviceInfo = new DeviceInfoPlugin();
-    if (Platform.isAndroid) {
-      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-      final sdkVersion = androidInfo.version.sdkInt;
-      if (sdkVersion >= 29) {
+    try {
+      final int? sdkVersion = await MethodChannel('flutter_bmfbase')
+          .invokeMethod(kGetAndroidVersion);
+      print('Android SDK Version: $sdkVersion');
+      if (sdkVersion! >= 29) {
         setAndroidVersion = true;
       } else {
         setAndroidVersion = false;
       }
+    } on PlatformException catch (e) {
+      print("Failed to get Android SDK version: '${e.message}'.");
     }
   }
 }
