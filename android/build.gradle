@@ -42,6 +42,7 @@ rootProject.allprojects {
 //apply plugin: 'com.android.library'
 
 android {
+    namespace 'com.baidu.mapapi.map'
     compileSdkVersion 31
 
     defaultConfig {

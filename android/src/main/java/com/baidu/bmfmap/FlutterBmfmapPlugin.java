@@ -23,7 +23,6 @@ import io.flutter.embedding.engine.plugins.lifecycle.FlutterLifecycleAdapter;
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
-import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 /**
  * FlutterBmfmapPlugin
@@ -54,45 +53,6 @@ public class FlutterBmfmapPlugin implements FlutterPlugin, ActivityAware,
 
     public static FlutterAssets getFlutterAssets() {
         return flutterAssets;
-    }
-
-    // This static function is optional and equivalent to onAttachedToEngine. It supports the old
-    // pre-Flutter-1.12 Android projects. You are encouraged to continue supporting
-    // plugin registration via this function while apps migrate to use the new Android APIs
-    // post-flutter-1.12 via https://flutter.dev/go/android-project-migration.
-    //
-    // It is encouraged to share logic between onAttachedToEngine and registerWith to keep
-    // them functionally equivalent. Only one of onAttachedToEngine or registerWith will be called
-    // depending on the user's project. onAttachedToEngine or registerWith must both be defined
-    // in the same class.
-    public static void registerWith(Registrar registrar) {
-        OfflineHandler offlineHandler = new OfflineHandler();
-        offlineHandler.init(registrar.messenger());
-
-        final Activity activity = registrar.activity();
-        if (activity == null) {
-            return;
-        }
-
-        LifecycleProxy lifecycleProxy;
-        if (activity instanceof LifecycleOwner) {
-            lifecycleProxy = new LifecycleProxy() {
-                @Override
-                public Lifecycle getLifecycle() {
-                    return ((LifecycleOwner) activity).getLifecycle();
-                }
-            };
-        } else {
-            lifecycleProxy = new ActivityLifecycleProxy(activity);
-        }
-
-        registrar.platformViewRegistry().registerViewFactory(
-                Constants.ViewType.sMapView,
-                new MapViewFactory(registrar.messenger(), lifecycleProxy));
-
-        registrar.platformViewRegistry().registerViewFactory(
-                Constants.ViewType.sTextureMapView,
-                new TextureMapViewFactory(registrar.messenger(), lifecycleProxy));
     }
 
     @Override

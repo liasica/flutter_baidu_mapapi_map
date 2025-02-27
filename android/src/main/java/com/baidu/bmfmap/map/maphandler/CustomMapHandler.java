@@ -15,9 +15,10 @@ import com.baidu.mapapi.map.MapCustomStyleOptions;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
+
+import io.flutter.FlutterInjector;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
-import io.flutter.view.FlutterMain;
 
 public class CustomMapHandler extends BMapHandler {
     
@@ -118,7 +119,7 @@ public class CustomMapHandler extends BMapHandler {
         String parentPath = null;
         String customStyleFileName = null;
         try {
-            customStyleFileName = FlutterMain.getLookupKeyForAsset(customStyleFilePath);
+            customStyleFileName = FlutterInjector.instance().flutterLoader().getLookupKeyForAsset(customStyleFilePath);
             inputStream = context.getAssets().open(customStyleFileName);
             byte[] buffer = new byte[inputStream.available()];
             inputStream.read(buffer);
