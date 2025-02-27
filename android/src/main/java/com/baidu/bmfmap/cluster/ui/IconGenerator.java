@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.baidu.flutter_baidu_mapapi_map.R;
+import com.baidu.mapapi.map.R;
 
 
 /**
