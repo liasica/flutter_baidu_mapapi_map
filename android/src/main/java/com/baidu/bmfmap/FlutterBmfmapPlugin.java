@@ -22,7 +22,6 @@ import io.flutter.embedding.engine.plugins.lifecycle.FlutterLifecycleAdapter;
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
-import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 /**
  * FlutterBmfmapPlugin
@@ -44,35 +43,6 @@ public class FlutterBmfmapPlugin implements FlutterPlugin, ActivityAware,
     // them functionally equivalent. Only one of onAttachedToEngine or registerWith will be called
     // depending on the user's project. onAttachedToEngine or registerWith must both be defined
     // in the same class.
-    public static void registerWith(Registrar registrar) {
-        OfflineHandler offlineHandler = new OfflineHandler();
-        offlineHandler.init(registrar.messenger());
-
-        final Activity activity = registrar.activity();
-        if (activity == null) {
-            return;
-        }
-
-        LifecycleProxy lifecycleProxy;
-        if (activity instanceof LifecycleOwner) {
-            lifecycleProxy = new LifecycleProxy() {
-                @Override
-                public Lifecycle getLifecycle() {
-                    return ((LifecycleOwner) activity).getLifecycle();
-                }
-            };
-        } else {
-            lifecycleProxy = new ActivityLifecycleProxy(activity);
-        }
-
-        registrar.platformViewRegistry().registerViewFactory(
-                Constants.ViewType.sMapView,
-                new MapViewFactory(registrar.messenger(), lifecycleProxy));
-
-        registrar.platformViewRegistry().registerViewFactory(
-                Constants.ViewType.sTextureMapView,
-                new TextureMapViewFactory(registrar.messenger(), lifecycleProxy));
-    }
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {

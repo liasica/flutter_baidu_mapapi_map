@@ -65,6 +65,10 @@ class BMFMapStateMethodId {
   /// 设置地图中心点在地图中的屏幕坐标位置
   static const kMapSetMapCenterToScreenPtMethod =
       'flutter_bmfmap/map/setMapCenterToScreenPt';
+
+  /// 地图刷新
+  static const kMapRefreshMethod =
+      'flutter_bmfmap/map/mapRefresh';
 }
 
 /// 地图layer方法集合

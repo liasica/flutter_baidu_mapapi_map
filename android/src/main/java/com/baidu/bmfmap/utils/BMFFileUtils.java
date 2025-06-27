@@ -8,8 +8,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import io.flutter.FlutterInjector;
 
-import io.flutter.view.FlutterMain;
 
 public class BMFFileUtils {
 
@@ -44,7 +44,7 @@ public class BMFFileUtils {
         }
 
         String parentPath = mContext.getCacheDir().getAbsolutePath();
-        String resPath = FlutterMain.getLookupKeyForAsset(path);
+        String resPath = FlutterInjector.instance().flutterLoader().getLookupKeyForAsset(path);
         String copyPath = parentPath + File.separator + resPath;
 
         copyFilesAssets(resPath, copyPath);

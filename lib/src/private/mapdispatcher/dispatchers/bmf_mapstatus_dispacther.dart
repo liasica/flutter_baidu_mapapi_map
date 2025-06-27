@@ -446,4 +446,18 @@ class BMFMapStatusDispatcher {
     }
     return result;
   }
+
+  /// map强制刷新（Android独有）
+  Future<bool> mapRefresh(MethodChannel _mapChannel) async {
+    ArgumentError.checkNotNull(_mapChannel, "_mapChannel");
+
+    bool result = false;
+    try {
+      result = (await _mapChannel
+          .invokeMethod(BMFMapStateMethodId.kMapRefreshMethod)) as bool;
+    } on PlatformException catch (e) {
+      print(e.toString());
+    }
+    return result;
+  }
 }

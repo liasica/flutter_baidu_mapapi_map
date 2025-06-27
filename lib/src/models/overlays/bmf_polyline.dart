@@ -421,7 +421,7 @@ extension BMFPolylineUpdate on BMFPolyline {
     return ret;
   }
 
-  /// 更新纹理textures (iOS 暂不支持)
+  /// 更新纹理textures
   Future<bool> updateTextures(List<String> textures) async {
     ArgumentError.checkNotNull(textures, "textures");
 

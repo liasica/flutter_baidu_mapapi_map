@@ -516,6 +516,12 @@ extension MapExtension on BMFMapController {
         .setMapCenterToScreenPt(_mapChannel, point);
   }
 
+  /// 强制刷新地图 (Android独有) since3.9.2
+  Future<bool> mapRefresh() async {
+    return await BMFMapDispatcherFactory.instance.mapStatusDispatcher
+        .mapRefresh(_mapChannel);
+  }
+
   /// 设置显示在指定相对于MapView的padding中的地图地理范围
   ///
   /// [BMFCoordinateBounds]visibleMapBounds 要设定的地图范围(东北，西南)角坐标
@@ -1275,7 +1281,6 @@ extension ClusterMarkerExtension on BMFMapController {
   }
 
   /// 获取指定级别下聚合后的BMFCluster对象 since 3.7.0
-  /// IOS独有接口，Android暂不支持
   /// [int] clusterZoom 地图级别
   Future<List<BMFClusterInfo?>> getClusterOnZoomLevel(int clusterZoom) async {
     return await BMFMapDispatcherFactory.instance.mapClusterMarkerDispatcher

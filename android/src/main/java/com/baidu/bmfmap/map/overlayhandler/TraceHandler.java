@@ -327,7 +327,7 @@ public class TraceHandler extends OverlayHandler implements TraceAnimationListen
 
         final TraceOverlay overlay = baiduMap.addTraceOverlay(traceOptions, new TraceAnimationListener() {
             @Override
-            public void onTraceAnimationUpdate(int percent) {
+            public void onTraceAnimationUpdate(float percent) {
                 MethodChannel methodChannel = mMapController.getMethodChannel();
                 if (null == methodChannel) {
                     return;
@@ -607,7 +607,7 @@ public class TraceHandler extends OverlayHandler implements TraceAnimationListen
     }
     
     @Override
-    public void onTraceAnimationUpdate(int i) {
+    public void onTraceAnimationUpdate(float i) {
 
     }
 

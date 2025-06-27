@@ -147,6 +147,15 @@ public class ClusterManager<T extends ClusterItem> implements
         }
     }
 
+    public Set<? extends Cluster<T>> getClusterOnZoomLevel(int zoomLevel) {
+        mAlgorithmLock.writeLock().lock();
+        try {
+            return mAlgorithm.getClusters(zoomLevel);
+        } finally {
+            mAlgorithmLock.writeLock().unlock();
+        }
+    }
+
     /**
      * Force a re-cluster. You may want to call this after adding new item(s).
      */

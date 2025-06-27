@@ -78,7 +78,8 @@ public class OverlayHandler {
         if (mOverlayMap != null) {
             mOverlayMap.remove(id);
         }
-
+        result.success(true);
+        
         if (Env.DEBUG) {
             Log.d(TAG, "remove Overlay success");
         }

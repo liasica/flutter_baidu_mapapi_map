@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter_baidu_mapapi_base/flutter_baidu_mapapi_base.dart'
@@ -309,8 +308,7 @@ class BMFMarker extends BMFOverlay {
     position = BMFCoordinate.fromMap(map['position']);
     title = map['title'];
     subtitle = map["subtitle"];
-    rotation =
-        map['rotation'] != null ? double.tryParse("${map['rotation']}") : null;
+    rotation = double.parse(map['rotation'].toString());
     isLockedToScreen = map['isLockedToScreen'] as bool?;
     screenPointToLock = map['screenPointToLock'] == null
         ? null
@@ -483,12 +481,9 @@ extension BMFMarkerUpdateExtension on BMFMarker {
 
   /// 更新是否锁定在屏幕上的位置
   ///
-  /// iOS独有
+  ///
   Future<bool> updateIsLockedToScreen(
       bool isLockedToScreen, BMFPoint? screenPointToLock) async {
-    if (!Platform.isIOS) {
-      return false;
-    }
     bool ret = await BMFMapDispatcherFactory.instance.markerDispatcher
         .updateMarkerMember(this.methodChannel, {
       'id': this.id,

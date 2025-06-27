@@ -69,7 +69,7 @@ class _BMFMapWidgetState extends State<BMFMapWidget> {
               ) {
             return AndroidViewSurface(
               controller: controller as AndroidViewController,
-              gestureRecognizers: const <Factory<OneSequenceGestureRecognizer>>{},
+              gestureRecognizers: _gestureRecognizers,
               hitTestBehavior: PlatformViewHitTestBehavior.opaque,
             );
           },

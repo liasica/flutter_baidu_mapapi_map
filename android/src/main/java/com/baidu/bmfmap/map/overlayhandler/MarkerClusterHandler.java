@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
@@ -73,23 +74,62 @@ public class MarkerClusterHandler extends OverlayHandler implements
         switch (methodId) {
             case Constants.MethodProtocol.ClusterProtocol.SET_CLUSTER_MARKER_COORDINATE_METHOD:
                 ret = addClusters(call);
+                result.success(ret);
                 break;
             case Constants.MethodProtocol.ClusterProtocol.SET_MAX_DISTANCE_ZOOM_METHOD:
                 ret = setMaxDistanceZoom(call);
+                result.success(ret);
                 break;
             case Constants.MethodProtocol.ClusterProtocol.CLEAN_CLUSTER_METHOD:
                 ret = cleanCluster(call);
+                result.success(ret);
                 break;
             case Constants.MethodProtocol.ClusterProtocol.UPDATE_CLUSTERS_METHOD:
                 ret = updateCluster(call);
+                result.success(ret);
+                break;
+            case Constants.MethodProtocol.ClusterProtocol.GET_CLUSTER_ON_ZOOM_LEVEL_METHOD:
+                ret = getClusterOnZoomLevel(call, result);
                 break;
             default:
                 break;
         }
-
-        result.success(ret);
     }
 
+
+    private boolean getClusterOnZoomLevel(MethodCall call, MethodChannel.Result result) {
+        if (null == call || mClusterManager == null) {
+            return false;
+        }
+
+        Map<String, Object> argument = call.arguments();
+        if (null == argument) {
+            return false;
+        }
+
+        Integer zoomLevel = (Integer) argument.get("zoomLevel");
+        if (null == zoomLevel) {
+            return false;
+        }
+
+        List<HashMap<String, Object>> clusterInfoList = new ArrayList<>();
+        Set<? extends Cluster<MyItem>> clusters = mClusterManager.getClusterOnZoomLevel(zoomLevel);
+        for (Cluster<MyItem> cluster : clusters) {
+            if (cluster == null) {
+                continue;
+            }
+
+            HashMap<String, Object> clusterItem = getClusterItem(cluster.getPosition(), cluster.getSize());
+            if (clusterItem == null) {
+                continue;
+            }
+
+            clusterInfoList.add(clusterItem);
+        }
+
+        result.success(clusterInfoList);
+        return true;
+    }
 
     private boolean updateCluster(MethodCall call) {
         if (null == call || mClusterManager == null) {
@@ -327,6 +367,20 @@ public class MarkerClusterHandler extends OverlayHandler implements
         return true;
     }
 
+    private HashMap<String, Object> getClusterItem(LatLng position, int size) {
+        if (position == null) {
+            return null;
+        }
+
+        HashMap<String, Object> itemMap = new HashMap<>();
+        HashMap<String, Double> coord = new HashMap<>();
+        coord.put("latitude", position.latitude);
+        coord.put("longitude", position.longitude);
+        itemMap.put("coordinate", coord);
+        itemMap.put("size", size);
+
+        return itemMap;
+    }
 
     private HashMap<String, Object> getClusterInfo(LatLng position, Bundle bundle, boolean isItem) {
         HashMap<String, Object> clusterInfoMap = new HashMap<>();

@@ -1,3 +1,38 @@
+## 3.9.4
+修复：
+
+1、iOS点击marker回调失效问题
+
+## 3.9.3
+适配：
+
+1、兼容Flutter SDK（Channel stable, 3.19.6）
+
+## 3.9.2
+适配：
+
+1、升级适配Flutter SDK（Channel stable, 3.29.2）
+
+2、Android适配gradle8+，增加namespace配置
+
+3、Android更新检索回调逻辑
+
+4、修复已知问题
+
+## 3.9.1
+
+新增：
+
+1、公交线路检索新增起点uid和终点uid；
+
+2、iOS支持更新polyline纹理图片；
+
+3、升级native SDK版本；
+
+修复：
+
+1、修复已知问题；
+
 ## 3.9.0
 
 新增：
