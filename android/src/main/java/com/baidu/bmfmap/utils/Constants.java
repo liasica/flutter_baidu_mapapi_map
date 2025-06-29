@@ -723,6 +723,10 @@ public class Constants {
 
             // 获取基础地图审图号
             public static final String MAP_APPROVAL_NUMBER = "flutter_bmfmap/map/getMapApprovalNumber";
+            /**
+             * 地图刷新，Flutter用于主动刷新地图
+             */
+            public static final String MAP_REFRESH = "flutter_bmfmap/map/mapRefresh";
 
         }
 

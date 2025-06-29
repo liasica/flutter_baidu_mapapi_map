@@ -110,6 +110,7 @@ public class OverlayHandlerFactory {
             case Constants.MethodProtocol.ClusterProtocol.SET_MAX_DISTANCE_ZOOM_METHOD:
             case Constants.MethodProtocol.ClusterProtocol.CLEAN_CLUSTER_METHOD:
             case Constants.MethodProtocol.ClusterProtocol.UPDATE_CLUSTERS_METHOD:
+            case Constants.MethodProtocol.ClusterProtocol.GET_CLUSTER_ON_ZOOM_LEVEL_METHOD:
                 overlayHandler =
                         overlayHandlerHashMap.get(OverlayHandlerType.CLUSTER_HANDLER);
                 break;
@@ -207,11 +208,12 @@ public class OverlayHandlerFactory {
         }
 
         overlay.remove();
-
+        result.success(true);
+        
         if (Env.DEBUG) {
             Log.d(TAG, "remove Overlay success");
         }
-
+        
         return true;
     }
 

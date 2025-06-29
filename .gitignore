@@ -47,3 +47,6 @@ build/
 /build/
 .cxx/
 .gradle/
+local.properties
+example/ios/Flutter/ephemeral/flutter_lldb_helper.py
+example/ios/Flutter/ephemeral/flutter_lldbinit

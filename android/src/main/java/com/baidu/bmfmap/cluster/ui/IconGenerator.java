@@ -15,7 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.baidu.mapapi.map.R;
+import com.baidu.bmfmap.R;
 
 
 /**

@@ -187,10 +187,12 @@ public class CustomMapHandler extends BMapHandler {
         if (mMapController != null && mMapController.getFlutterMapViewWrapper() != null) {
             mMapController.getFlutterMapViewWrapper().setMapCustomStyle(mapCustomStyleOptions,
                     new CustomMapStyleCallBack() {
+                        boolean isPreloaded = false;
+                        String preloadPath = null;
                 @Override
                 public boolean onPreLoadLastCustomMapStyle(String path) {
-                    reslutMap.put("preloadPath", path);
-                    result.success(reslutMap);
+                    isPreloaded = true;
+                    preloadPath = path;
                     return false;
                 }
 
@@ -198,7 +200,14 @@ public class CustomMapHandler extends BMapHandler {
                 public boolean onCustomMapStyleLoadSuccess(boolean b, String path) {
                     reslutMap.put("styHasUpdate", String.valueOf(b));
                     reslutMap.put("successPath", path);
+                    if (isPreloaded) {
+                        reslutMap.put("preloadPath", path);
+                    }
                     result.success(reslutMap);
+                    // 防止在线加载后Flutter不刷新地图
+                    if (mMapController.getBaiduMap() != null) {
+                        mMapController.getBaiduMap().mapRefresh();
+                    }
                     return false;
                 }
 
@@ -207,6 +216,9 @@ public class CustomMapHandler extends BMapHandler {
                     String sStatus = String.valueOf(status);
                     reslutMap.put("errorCode", sStatus);
                     reslutMap.put("errorPath", path);
+                    if (isPreloaded) {
+                        reslutMap.put("preloadPath", path);
+                    }
                     result.success(reslutMap);
                     return false;
                 }

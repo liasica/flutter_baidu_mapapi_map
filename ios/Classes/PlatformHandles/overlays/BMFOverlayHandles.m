@@ -923,8 +923,38 @@ static  BMFOverlayHandles *_instance = nil;
         BMKPolylineView *view = (BMKPolylineView *)[_mapView viewForOverlay:polyline];
         view.lineBloomAlpha = [[call.arguments safeObjectForKey:@"value"] floatValue];
         result(@YES);
-    }
-    else {
+    } else if ([member isEqualToString:@"textures"]) {
+        if (polyline.lineType == kBMFTexturesLine) {
+            
+            BMKMultiTexturePolylineView *view = (BMKMultiTexturePolylineView *)[_mapView viewForOverlay:polyline];
+            NSArray *textures = (NSArray *)[call.arguments safeObjectForKey:@"value"];
+            if (textures.count <= 0) {
+                result(@NO);
+                return;
+            }
+            NSMutableArray<UIImage *> *images = [NSMutableArray array];
+            size_t imagesCount = textures.count;
+            NSString *imagePath = nil;
+            for (size_t i = 0; i < imagesCount; i++) {
+                imagePath = textures[i];
+                UIImage *image = [UIImage imageWithContentsOfFile:[[BMFFileManager defaultCenter] pathForFlutterImageName:imagePath]];
+                [images addObject:image];
+            }
+            view.textureImages = images;
+            result(@YES);
+        } else {
+            BMKPolylineView *view = (BMKPolylineView *)[_mapView viewForOverlay:polyline];
+            NSArray *textures = (NSArray *)[call.arguments safeObjectForKey:@"value"];
+            if (textures.count <= 0) {
+                result(@NO);
+                return;
+            }
+            NSString *imagePath = [NSString stringWithString:textures[0]];
+            UIImage *image = [UIImage imageWithContentsOfFile:[[BMFFileManager defaultCenter] pathForFlutterImageName:imagePath]];
+            view.textureImage = image;
+            result(@YES);
+        }
+    } else {
         NSLog(@"ios -polyline- 暂不支持设置%@", member);
         result(@YES);
     }

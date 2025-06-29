@@ -79,9 +79,21 @@ public class MapStateHandler extends BMapHandler {
             case Constants.MethodProtocol.MapStateProtocol.MAP_APPROVAL_NUMBER:
                 getMapApprovalNumber(result);
                 break;
+            case Constants.MethodProtocol.MapStateProtocol.MAP_REFRESH:
+                mapRefresh(result);
+                break;
             default:
                 break;
         }
+    }
+
+    private void mapRefresh(MethodChannel.Result result) {
+        if (null == mBaiduMap || null == result) {
+            return;
+        }
+
+        mBaiduMap.mapRefresh();
+        result.success(true);
     }
 
     private void getMapApprovalNumber(MethodChannel.Result result) {
