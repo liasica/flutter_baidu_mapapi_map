@@ -587,6 +587,7 @@ public class MapListener implements BaiduMap.OnMapClickListener, BaiduMap.OnMapL
         markerMap.put("isPerspective", marker.isPerspective());
         markerMap.put("screenPointToLock",
                 FlutterDataConveter.pointToMap(marker.getFixedPosition()));
+        markerMap.put("rotation", marker.getRotate());
         HashMap<String, Object> customMap =
                 (HashMap<String, Object>) bundle.getSerializable("customMap");
         if (customMap != null && customMap.size() > 0) {

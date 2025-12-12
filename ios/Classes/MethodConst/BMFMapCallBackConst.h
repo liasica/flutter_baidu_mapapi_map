@@ -11,6 +11,8 @@ FOUNDATION_EXPORT NSString *const kBMFMapDidLoadCallback;
 FOUNDATION_EXPORT NSString *const kBMFMapDidRenderCallback;
 /// 地图渲染每一帧画面过程中，以及每次需要重绘地图时（例如添加覆盖物）都会调用此接口
 FOUNDATION_EXPORT NSString *const kBMFMapOnDrawMapFrameCallback;
+/// 地图绘制出有效数据时调用此接口
+FOUNDATION_EXPORT NSString *const kBMFMapDidRenderValidDataCallback;
 
 
 /// 地图区域即将改变时会调用此接口

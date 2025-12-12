@@ -355,13 +355,6 @@ public class MarkerHandler extends OverlayHandler {
             markerOptions.poiCollided(isOpenCollisionDetectionWithMapPOI);
         }
 
-        // 开启marker碰撞检测
-        Boolean isOpenCollisionDetectionWithPaoPaoView =
-                new TypeConverter<Boolean>().getValue(markerOptionsMap, "isOpenCollisionDetectionWithPaoPaoView");
-        if (null != isOpenCollisionDetectionWithPaoPaoView) {
-            markerOptions.isJoinCollision(isOpenCollisionDetectionWithPaoPaoView);
-        }
-
         // 设置marker的title since 3.5.0
         Map<String, Object> titleOptionsMap =
                 new TypeConverter<Map<String, Object>>().getValue(markerOptionsMap, "titleOptions");

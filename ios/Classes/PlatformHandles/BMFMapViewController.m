@@ -157,6 +157,13 @@ static NSString * const kProjectionMethods = @"flutter_bmfmap/projection/";
     
 }
 
+- (void)mapViewDidRenderValidData:(BMKMapView *)mapView withError:(NSError *)error {
+    if (!_channel) return;
+    if (error) {
+        [_channel invokeMethod:kBMFMapDidRenderValidDataCallback arguments:@{@"isValid": @NO, @"errorCode": @(error.code), @"errorMessage": error.userInfo[@"NSLocalizedDescription"]} result:nil];
+    }
+}
+
 /// 地图区域即将改变时会调用此接口
 - (void)mapView:(BMKMapView *)mapView regionWillChangeAnimated:(BOOL)animated {
     if (!_channel) return;

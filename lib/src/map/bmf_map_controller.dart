@@ -517,9 +517,11 @@ extension MapExtension on BMFMapController {
   }
 
   /// 强制刷新地图 (Android独有) since3.9.2
-  Future<bool> mapRefresh() async {
+  /// 增加刷新时间参数，默认300ms
+  Future<bool> mapRefresh({int? refreshDelay}) async {
+    final delay = refreshDelay ?? 300;
     return await BMFMapDispatcherFactory.instance.mapStatusDispatcher
-        .mapRefresh(_mapChannel);
+        .mapRefresh(_mapChannel, delay);
   }
 
   /// 设置显示在指定相对于MapView的padding中的地图地理范围
@@ -1364,8 +1366,6 @@ extension MapCallbackExtension on BMFMapController {
   /// 设置地图绘制出有效数据的监听回调接口
   ///
   /// [BMFMapRenderValidDataCallback] callback 回调接口
-  ///
-  /// ios不支持该接口
   void setMapRenderValidDataCallback(
       {required BMFMapRenderValidDataCallback callback}) {
     _methodChannelHandler.setMapRenderValidDataCallback(callback);

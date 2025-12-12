@@ -206,7 +206,7 @@ public class CustomMapHandler extends BMapHandler {
                     result.success(reslutMap);
                     // 防止在线加载后Flutter不刷新地图
                     if (mMapController.getBaiduMap() != null) {
-                        mMapController.getBaiduMap().mapRefresh();
+                        mMapController.getBaiduMap().mapRefresh(300);
                     }
                     return false;
                 }
