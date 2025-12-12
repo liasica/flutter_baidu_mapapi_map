@@ -7,6 +7,7 @@
 NSString *const kBMFMapDidLoadCallback = @"flutter_bmfmap/map/mapViewDidFinishLoad";
 NSString *const kBMFMapDidRenderCallback = @"flutter_bmfmap/map/mapViewDidFinishRender";
 NSString *const kBMFMapOnDrawMapFrameCallback = @"flutter_bmfmap/map/mapViewOnDrawMapFrame";
+NSString *const kBMFMapDidRenderValidDataCallback = @"flutter_bmfmap/map/mapRenderValidDataCallback";
 
 NSString *const kBMFMapRegionWillChangeCallback = @"flutter_bmfmap/map/mapViewRegionWillChange";
 NSString *const kBMFMapRegionWillChangeWithReasonCallback = @"flutter_bmfmap/map/mapViewRegionWillChangeWithReason";

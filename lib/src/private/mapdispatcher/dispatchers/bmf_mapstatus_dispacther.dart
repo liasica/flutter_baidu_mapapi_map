@@ -448,13 +448,17 @@ class BMFMapStatusDispatcher {
   }
 
   /// map强制刷新（Android独有）
-  Future<bool> mapRefresh(MethodChannel _mapChannel) async {
+  Future<bool> mapRefresh(MethodChannel _mapChannel, int? refreshDelay) async {
     ArgumentError.checkNotNull(_mapChannel, "_mapChannel");
+    ArgumentError.checkNotNull(refreshDelay, "refreshDelay");
 
     bool result = false;
     try {
       result = (await _mapChannel
-          .invokeMethod(BMFMapStateMethodId.kMapRefreshMethod)) as bool;
+          .invokeMethod(BMFMapStateMethodId.kMapRefreshMethod,
+      {
+        'refreshDelay': refreshDelay
+      })) as bool;
     } on PlatformException catch (e) {
       print(e.toString());
     }

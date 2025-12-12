@@ -89,7 +89,7 @@ public class MarkerClusterHandler extends OverlayHandler implements
                 result.success(ret);
                 break;
             case Constants.MethodProtocol.ClusterProtocol.GET_CLUSTER_ON_ZOOM_LEVEL_METHOD:
-                ret = getClusterOnZoomLevel(call, result);
+                getClusterOnZoomLevel(call, result);
                 break;
             default:
                 break;
@@ -137,12 +137,9 @@ public class MarkerClusterHandler extends OverlayHandler implements
         }
 
         mClusterManager.clearItems();
-        boolean ret = addClusters(call);
-        if (ret) {
-            mClusterManager.cluster();
-        }
+        addClusters(call);
 
-        return ret;
+        return true;
     }
 
     private boolean cleanCluster(MethodCall call) {
@@ -267,6 +264,7 @@ public class MarkerClusterHandler extends OverlayHandler implements
         }
 
         mClusterManager.addItems(items);
+        mClusterManager.cluster();
         return true;
     }
 

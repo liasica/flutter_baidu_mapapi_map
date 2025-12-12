@@ -80,19 +80,27 @@ public class MapStateHandler extends BMapHandler {
                 getMapApprovalNumber(result);
                 break;
             case Constants.MethodProtocol.MapStateProtocol.MAP_REFRESH:
-                mapRefresh(result);
+                mapRefresh(call, result);
                 break;
             default:
                 break;
         }
     }
 
-    private void mapRefresh(MethodChannel.Result result) {
+    private void mapRefresh(MethodCall call, MethodChannel.Result result) {
         if (null == mBaiduMap || null == result) {
+            result.success(false);
             return;
         }
 
-        mBaiduMap.mapRefresh();
+        Map<String, Object> argument = call.arguments();
+        if (null == argument || !argument.containsKey("refreshDelay")) {
+            result.success(false);
+            return;
+        }
+
+        int refreshDelay = (int) argument.get("refreshDelay");
+        mBaiduMap.mapRefresh(refreshDelay);
         result.success(true);
     }
 
