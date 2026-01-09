@@ -266,7 +266,7 @@ class BMFPolyline extends BMFOverlay implements BMFOverlayBoundsInterface {
       });
     }
 
-    width = map['width'] as int?;
+    width = (map['width'] as num?)?.toInt();
     dottedLine = map['dottedLine'] as bool?;
     lineDashType = BMFLineDashType.values[map['lineDashType'] as int];
     lineCapType = BMFLineCapType.values[map['lineCapType'] as int];

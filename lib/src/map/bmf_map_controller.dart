@@ -1159,6 +1159,21 @@ extension LayerExtension on BMFMapController {
     return await BMFMapDispatcherFactory.instance.mapLayerDispatcher
         .switchLayerOrder(_mapChannel, layer, otherLayer);
   }
+
+  /// 更改overlay版本
+  /// Android独有
+  /// 默认overlay2.0
+  Future<void> setOverlayUpgrade(bool isUpgrade) async {
+    await BMFMapDispatcherFactory.instance.mapLayerDispatcher
+    .setOverlayUpgrade(_mapChannel, isUpgrade);
+  }
+
+  /// 获取overlay版本
+  /// Android独有
+  Future<bool> getOverlayUpgrade() async {
+    return await BMFMapDispatcherFactory.instance.mapLayerDispatcher
+        .getOverlayUpgrade(_mapChannel);
+  }
 }
 
 /// 粒子效果图层
@@ -1250,6 +1265,22 @@ extension ProjectionExtension on BMFMapController {
 
 /// 聚合marker相关
 extension ClusterMarkerExtension on BMFMapController {
+  /// 设置聚合是否展示 since 3.9.8
+  /// Android独有
+  /// [bool] isClusterVisible 是否展示聚合 默认展示
+  /// [bool] shouldRefreshCluster 是否需要主动刷新聚合
+  Future<bool> setClusterVisible(bool isClusterVisible, bool shouldRefreshCluster) async {
+    return await BMFMapDispatcherFactory.instance.mapClusterMarkerDispatcher
+        .setClusterVisible(_mapChannel, isClusterVisible, shouldRefreshCluster);
+  }
+
+  /// 获取聚合是否展示 since 3.9.8
+  /// Android独有
+  Future<bool> getClusterVisible() async {
+    return await BMFMapDispatcherFactory.instance.mapClusterMarkerDispatcher
+        .getClusterVisible(_mapChannel);
+  }
+
   /// 设置需要聚合的marker经纬度 since 3.7.0
   ///
   /// [BMFCoordinate] coordinates 地理坐标集合

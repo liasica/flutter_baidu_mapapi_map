@@ -3,8 +3,6 @@ package com.baidu.bmfmap.map.overlayhandler;
 import static com.baidu.bmfmap.utils.Constants.MethodProtocol.ClusterProtocol.CLUSTER_CLICK_ITEM_METHOD;
 import static com.baidu.bmfmap.utils.Constants.MethodProtocol.ClusterProtocol.CLUSTER_CLICK_METHOD;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -14,19 +12,16 @@ import androidx.annotation.Nullable;
 
 import com.baidu.bmfmap.BMFMapController;
 import com.baidu.bmfmap.cluster.clustering.Cluster;
-import com.baidu.bmfmap.cluster.clustering.ClusterItem;
 import com.baidu.bmfmap.cluster.clustering.ClusterManager;
 import com.baidu.bmfmap.map.MapListener;
+import com.baidu.bmfmap.utils.BMFClusterItem;
+import com.baidu.bmfmap.utils.BMFClusterItemProcessor;
 import com.baidu.bmfmap.utils.Constants;
 import com.baidu.bmfmap.utils.Env;
-import com.baidu.bmfmap.utils.converter.FlutterDataConveter;
-import com.baidu.mapapi.map.BitmapDescriptor;
-import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -35,8 +30,8 @@ import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 
 public class MarkerClusterHandler extends OverlayHandler implements
-        ClusterManager.OnClusterClickListener<MarkerClusterHandler.MyItem>,
-        ClusterManager.OnClusterItemClickListener<MarkerClusterHandler.MyItem> {
+        ClusterManager.OnClusterClickListener<BMFClusterItem>,
+        ClusterManager.OnClusterItemClickListener<BMFClusterItem> {
 
     private static final String TAG = "MarkerClusterHandler";
 
@@ -44,7 +39,7 @@ public class MarkerClusterHandler extends OverlayHandler implements
 
     public MarkerClusterHandler(BMFMapController bmfMapController) {
         super(bmfMapController);
-        mClusterManager = new ClusterManager<MyItem>(bmfMapController.getContext(), mBaiduMap);
+        mClusterManager = new ClusterManager<BMFClusterItem>(bmfMapController.getContext(), mBaiduMap);
         MapListener mapListener = bmfMapController.getMapListener();
         if (null != mapListener) {
             // 设置maker点击时的响应
@@ -91,11 +86,44 @@ public class MarkerClusterHandler extends OverlayHandler implements
             case Constants.MethodProtocol.ClusterProtocol.GET_CLUSTER_ON_ZOOM_LEVEL_METHOD:
                 getClusterOnZoomLevel(call, result);
                 break;
+            case Constants.MethodProtocol.ClusterProtocol.SET_CLUSTER_VISIBLE_METHOD:
+                ret = setClusterVisible(call, result);
+                result.success(ret);
+                break;
+            case Constants.MethodProtocol.ClusterProtocol.GET_CLUSTER_VISIBLE_METHOD:
+                getClusterVisible(call, result);
+                break;
             default:
                 break;
         }
     }
 
+    private boolean setClusterVisible(MethodCall call, MethodChannel.Result result) {
+        if (null == call || mClusterManager == null) {
+            return false;
+        }
+
+        Map<String, Object> argument = call.arguments();
+        if (null == argument) {
+            return false;
+        }
+
+        mClusterManager.setClusterVisible((Boolean) argument.get("isClusterVisible"));
+
+        boolean shouldRefreshCluster = (Boolean) argument.get("shouldRefreshCluster");
+        if (shouldRefreshCluster) {
+            mClusterManager.cluster();
+        }
+
+        return true;
+    }
+
+    private void getClusterVisible(MethodCall call, MethodChannel.Result result) {
+        if (mClusterManager == null) {
+            return;
+        }
+        result.success(mClusterManager.getClusterVisible());
+    }
 
     private boolean getClusterOnZoomLevel(MethodCall call, MethodChannel.Result result) {
         if (null == call || mClusterManager == null) {
@@ -113,8 +141,8 @@ public class MarkerClusterHandler extends OverlayHandler implements
         }
 
         List<HashMap<String, Object>> clusterInfoList = new ArrayList<>();
-        Set<? extends Cluster<MyItem>> clusters = mClusterManager.getClusterOnZoomLevel(zoomLevel);
-        for (Cluster<MyItem> cluster : clusters) {
+        Set<? extends Cluster<BMFClusterItem>> clusters = mClusterManager.getClusterOnZoomLevel(zoomLevel);
+        for (Cluster<BMFClusterItem> cluster : clusters) {
             if (cluster == null) {
                 continue;
             }
@@ -190,86 +218,35 @@ public class MarkerClusterHandler extends OverlayHandler implements
             return false;
         }
 
-//        String id = new TypeConverter<String>().getValue(argument, "id");
-//        if (TextUtils.isEmpty(id)) {
-//            return false;
-//        }
-
         if (!argument.containsKey("clusterInfos")) {
             return false;
         }
 
         List<Object> clusterInfos = (List<Object>) argument.get("clusterInfos");
 
-        List<MyItem> items = new ArrayList<>();
-        Iterator itr = clusterInfos.iterator();
-        while (itr.hasNext()) {
-            Map<String, Object> clusterInfo = (Map<String, Object>) itr.next();
-            if (clusterInfo == null) {
-                continue;
-            }
-            Map<String, Object> coordinate = (Map<String, Object>) clusterInfo.get("coordinate");
-            LatLng latLng = FlutterDataConveter.mapToLatlng(coordinate);
-            if (latLng == null) {
-                continue;
-            }
-
-            String icon = null;
-            byte[] iconData = null;
-
-            if (clusterInfo.containsKey("icon")) {
-                icon = (String) clusterInfo.get("icon");
-            }
-
-            if (clusterInfo.containsKey("iconData")) {
-                iconData = (byte[]) clusterInfo.get("iconData");
-            }
-
-            BitmapDescriptor bitmapDescriptor = null;
-            if (!TextUtils.isEmpty(icon)) {
-                bitmapDescriptor =
-                        BitmapDescriptorFactory.fromAsset("flutter_assets/" + icon);
-            } else {
-                if (null == iconData || iconData.length <= 0) {
-                    return false;
-                }
-                Bitmap bitmap = BitmapFactory.decodeByteArray(iconData, 0, iconData.length);
-                if (bitmap == null) {
-                    return false;
+        if (mMapController.getProcessor() != null) {
+            mMapController.getProcessor().processClusterInfosAsync(clusterInfos,
+                    new BMFClusterItemProcessor.ProcessCallback() {
+                @Override
+                public void onSuccess(List<BMFClusterItem> items) {
+                    if (null != items && !items.isEmpty()) {
+                        mClusterManager.addItems(items);
+                        mClusterManager.cluster();
+                    }
                 }
 
-                bitmapDescriptor = BitmapDescriptorFactory.fromBitmap(bitmap);
-            }
-
-            if (null == bitmapDescriptor) {
-                return false;
-            }
-
-            Bundle bundle = new Bundle();
-            if (!TextUtils.isEmpty(icon)) {
-                bundle.putString("icon", icon);
-            }
-            if ((iconData != null && iconData.length > 0)) {
-                bundle.putByteArray("iconData", iconData);
-            }
-
-            items.add(new MyItem(latLng, bitmapDescriptor, bundle));
+                @Override
+                public void onError(String error) {
+                    Log.d(TAG, error);
+                }
+            });
         }
 
-        if (null == items || items.size() == 0) {
-            if (Env.DEBUG) {
-                Log.d(TAG, "items is null");
-            }
-            return false;
-        }
-
-        mClusterManager.addItems(items);
-        mClusterManager.cluster();
         return true;
     }
 
     @Override
-    public boolean onClusterClick(Cluster<MyItem> cluster) {
+    public boolean onClusterClick(Cluster<BMFClusterItem> cluster) {
         if (mMapController == null) {
             return false;
         }
@@ -281,7 +258,7 @@ public class MarkerClusterHandler extends OverlayHandler implements
             return false;
         }
 
-        for (MyItem item : cluster.getItems()) {
+        for (BMFClusterItem item : cluster.getItems()) {
             LatLng position = item.getPosition();
             Bundle bundle = item.getExtras();
             if (position == null || bundle == null) {
@@ -320,7 +297,7 @@ public class MarkerClusterHandler extends OverlayHandler implements
     }
 
     @Override
-    public boolean onClusterItemClick(MyItem item) {
+    public boolean onClusterItemClick(BMFClusterItem item) {
         if (mMapController == null) {
             return false;
         }
@@ -410,32 +387,4 @@ public class MarkerClusterHandler extends OverlayHandler implements
         return clusterInfoMap;
     }
 
-    public class MyItem implements ClusterItem {
-
-        private final LatLng mPosition;
-        private final BitmapDescriptor mIcon;
-
-        private Bundle mExtraInfo;
-
-        private MyItem(LatLng latLng, BitmapDescriptor bitmapDescriptor, Bundle extraInfo) {
-            mPosition = latLng;
-            mIcon = bitmapDescriptor;
-            mExtraInfo = extraInfo;
-        }
-
-        @Override
-        public LatLng getPosition() {
-            return mPosition;
-        }
-
-        @Override
-        public BitmapDescriptor getBitmapDescriptor() {
-            return mIcon;
-        }
-
-        @Override
-        public Bundle getExtras() {
-            return mExtraInfo;
-        }
-    }
 }

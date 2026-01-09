@@ -40,6 +40,36 @@ class BMFMapLayerDispatcher {
     return result;
   }
 
+  Future<void> setOverlayUpgrade(
+      MethodChannel _mapChannel, bool isUpgrade) async {
+    ArgumentError.checkNotNull(_mapChannel, "_mapChannel");
+    ArgumentError.checkNotNull(isUpgrade, "isUpgrade");
+
+    try {
+      await _mapChannel.invokeMethod(
+          BMFMapLayerMethId.kMapOverlayUpgradeMethod,
+          {'method': 'set', 'isUpgrade': isUpgrade}
+          as dynamic);
+    } on PlatformException catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<bool> getOverlayUpgrade(MethodChannel _mapChannel) async {
+    ArgumentError.checkNotNull(_mapChannel, "_mapChannel");
+
+    bool result = false;
+    try {
+      result = (await _mapChannel.invokeMethod(
+          BMFMapLayerMethId.kMapGetOverlayUpgradeMethod,
+          {'method': 'get'}
+          as dynamic)) as bool;
+    } on PlatformException catch (e) {
+      print(e.toString());
+    }
+    return result;
+  }
+
   Future<bool> getPoiTagEnable(
       MethodChannel _mapChannel, BMFPoiTagType type) async {
     ArgumentError.checkNotNull(_mapChannel, "_mapChannel");

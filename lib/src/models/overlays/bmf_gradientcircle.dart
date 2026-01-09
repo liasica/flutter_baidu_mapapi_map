@@ -49,7 +49,7 @@ class BMFGradientCircle extends BMFCircle {
     center = BMFCoordinate.fromMap(map['center']);
     radiusWeight = map['radiusWeight'];
     colorWeight = map['colorWeight'];
-    width = map['width'];
+    width = (map['width'] as num?)?.toInt();
     strokeColor = ColorUtil.hexToColor(map['strokeColor']);
     centerColor = ColorUtil.hexToColor(map['centerColor']);
     sideColor = ColorUtil.hexToColor(map['sideColor']);

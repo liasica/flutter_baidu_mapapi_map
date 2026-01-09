@@ -50,6 +50,7 @@ public class ClusterManager<T extends ClusterItem> implements
     private OnClusterInfoWindowClickListener<T> mOnClusterInfoWindowClickListener;
     private OnClusterItemInfoWindowClickListener<T> mOnClusterItemInfoWindowClickListener;
     private OnClusterClickListener<T> mOnClusterClickListener;
+    private boolean isClusterVisible = true;
 
     public ClusterManager(Context context, BaiduMap map) {
         this(context, map, new MarkerManager(map));
@@ -64,6 +65,19 @@ public class ClusterManager<T extends ClusterItem> implements
         mAlgorithm = new PreCachingAlgorithmDecorator<T>(new NonHierarchicalDistanceBasedAlgorithm<T>());
         mClusterTask = new ClusterTask();
         mRenderer.onAdd();
+    }
+
+    public void setClusterVisible(boolean visible) {
+        if (isClusterVisible != visible) {
+            isClusterVisible = visible;
+            if (mRenderer != null) {
+                mRenderer.setVisibilityChanged(true);
+            }
+        }
+    }
+
+    public boolean getClusterVisible() {
+        return isClusterVisible;
     }
 
     public void setMaxDistanceZoom(int maxDistanceZoom) {

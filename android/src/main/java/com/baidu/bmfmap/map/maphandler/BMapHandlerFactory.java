@@ -87,6 +87,8 @@ public class BMapHandlerFactory {
             case MapStateProtocol.MAP_MAPPING_QUALIFICATION:
             case MapStateProtocol.MAP_APPROVAL_NUMBER:
             case MapStateProtocol.MAP_REFRESH:
+            case MapStateProtocol.MAP_OVERLAY_UPGRADE:
+            case MapStateProtocol.MAP_IS_OVERLAY_UPGRADE:
                 bMapHandler = mMapHandlerHashMap.get(Constants.BMapHandlerType.MAP_STATE);
                 break;
             case MapStateProtocol.sMapZoomInMethod:

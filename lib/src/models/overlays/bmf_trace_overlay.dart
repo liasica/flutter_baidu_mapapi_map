@@ -75,7 +75,7 @@ class BMFTraceOverlay extends BMFOverlay implements BMFOverlayBoundsInterface {
     }
     traceOverlayAnimateOption =
         BMFTraceOverlayAnimateOption.formMap(map['traceOverlayAnimateOption']);
-    width = map['width'] as int;
+    width = (map['width'] as num?)?.toInt();
     strokeColor = ColorUtil.hexToColor(map['strokeColor']);
     fillColor = ColorUtil.hexToColor(map['fillColor']);
     if (map['isGradientColor'] != null) {
