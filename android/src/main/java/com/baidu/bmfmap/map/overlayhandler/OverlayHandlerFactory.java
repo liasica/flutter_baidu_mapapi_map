@@ -111,6 +111,8 @@ public class OverlayHandlerFactory {
             case Constants.MethodProtocol.ClusterProtocol.CLEAN_CLUSTER_METHOD:
             case Constants.MethodProtocol.ClusterProtocol.UPDATE_CLUSTERS_METHOD:
             case Constants.MethodProtocol.ClusterProtocol.GET_CLUSTER_ON_ZOOM_LEVEL_METHOD:
+            case Constants.MethodProtocol.ClusterProtocol.SET_CLUSTER_VISIBLE_METHOD:
+            case Constants.MethodProtocol.ClusterProtocol.GET_CLUSTER_VISIBLE_METHOD:
                 overlayHandler =
                         overlayHandlerHashMap.get(OverlayHandlerType.CLUSTER_HANDLER);
                 break;

@@ -83,6 +83,16 @@ class BMFMapLayerMethId {
 
   /// 地图交换图层顺序 since 3.6.0
   static const kSwitchLayerOrderMethod = 'flutter_bmfmap/map/switchLayerOrder';
+
+  /// 地图overlay版本更改
+  /// Android独有
+  static const kMapOverlayUpgradeMethod =
+      'flutter_bmfmap/map/overlayUpgrade';
+
+  /// 地图overlay版本获取
+  /// Android独有
+  static const kMapGetOverlayUpgradeMethod =
+      'flutter_bmfmap/map/getOverlayUpgrade';
 }
 
 /// 地图layer方法集合
@@ -700,6 +710,14 @@ class BMFProjectionMethodId {
 
 /// 聚合marker方法Id集合
 class BMFClusterMarkerMethodId {
+  /// 设置聚合是否展示
+  /// Android独有
+  static const kSetClusterVisibleMethod = 'flutter_bmfmap/marker/setClusterVisible';
+
+  /// 获取聚合是否展示
+  /// Android独有
+  static const kGetClusterVisibleMethod = 'flutter_bmfmap/marker/getClusterVisible';
+
   /// 设置聚合marker的地理坐标
   static const kSetClusterMarkerCoordinateMethod =
       'flutter_bmfmap/marker/setClusterCoordinates';

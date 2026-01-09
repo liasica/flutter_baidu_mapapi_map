@@ -39,4 +39,6 @@ public interface ClusterRenderer<T extends ClusterItem> {
      * Called when the view is removed.
      */
     void onRemove();
+
+    void setVisibilityChanged(boolean changed);
 }

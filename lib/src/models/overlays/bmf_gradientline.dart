@@ -75,7 +75,7 @@ class BMFGradientLine extends BMFOverlay implements BMFOverlayBoundsInterface {
       });
     }
 
-    width = map['width'] as int?;
+    width = (map['width'] as num?)?.toInt();
     lineDirectionCross180 = BMFLineDirectionCross180Type
         .values[map['lineDirectionCross180'] as int];
     isThined = map['isThined'] as bool?;

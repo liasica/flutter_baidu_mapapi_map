@@ -8,6 +8,7 @@ import com.baidu.bmfmap.map.TextureMapViewWrapper;
 import com.baidu.bmfmap.map.maphandler.BMapHandlerFactory;
 import com.baidu.bmfmap.map.overlayhandler.OverlayHandlerFactory;
 import com.baidu.bmfmap.utils.BMFFileUtils;
+import com.baidu.bmfmap.utils.BMFClusterItemProcessor;
 import com.baidu.bmfmap.utils.Constants;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BaiduMapOptions;
@@ -15,9 +16,7 @@ import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.LogoPosition;
 import com.baidu.mapapi.map.MapLanguage;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
-import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Overlay;
-import com.baidu.mapapi.map.OverlayUtil;
 import com.baidu.mapapi.map.UiSettings;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.model.LatLngBounds;
@@ -57,11 +56,12 @@ public class BMFMapController implements MethodChannel.MethodCallHandler, BaiduM
     private BMFFileUtils mFileUtils;
 
     public final HashMap<String, Overlay> mOverlayIdMap = new HashMap<>();
-    
+
+    private BMFClusterItemProcessor processor;
+
     public BMFMapController(int id, Context context, BinaryMessenger binaryMessenger,
                             String viewType, BaiduMapOptions options) {
         mContext = context;
-        OverlayUtil.setOverlayUpgrade(false);
         mMapViewWrapper = getFlutterMapViewWrapper(context, viewType, options);
 
         if (mMapViewWrapper != null) {
@@ -85,6 +85,12 @@ public class BMFMapController implements MethodChannel.MethodCallHandler, BaiduM
 
         mFileUtils = BMFFileUtils.getInstance();
         mFileUtils.setContext(context);
+
+        processor = new BMFClusterItemProcessor();
+    }
+
+    public BMFClusterItemProcessor getProcessor() {
+        return processor;
     }
 
     public Context getContext() {
@@ -102,6 +108,10 @@ public class BMFMapController implements MethodChannel.MethodCallHandler, BaiduM
         mOverlayHandlerFactory.release();
         if (mOverlayIdMap != null && mOverlayIdMap.size() > 0) {
             mOverlayIdMap.clear();
+        }
+        if (processor != null) {
+            processor.shutdown();
+            processor = null;
         }
     }
 

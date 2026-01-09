@@ -19,6 +19,8 @@ import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.WinRound;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.model.LatLngBounds;
+import com.baidu.mapapi.map.OverlayUtil;
+//import android.util.Log;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -82,8 +84,25 @@ public class MapStateHandler extends BMapHandler {
             case Constants.MethodProtocol.MapStateProtocol.MAP_REFRESH:
                 mapRefresh(call, result);
                 break;
+            case Constants.MethodProtocol.MapStateProtocol.MAP_OVERLAY_UPGRADE:
+                setOverlayUpgrade(call, result);
+                break;
+            case Constants.MethodProtocol.MapStateProtocol.MAP_IS_OVERLAY_UPGRADE:
+                getOverlayUpgrade(call, result);
+                break;
             default:
                 break;
+        }
+    }
+
+    private void getOverlayUpgrade(MethodCall call, MethodChannel.Result result) {
+        result.success(OverlayUtil.isOverlayUpgrade());
+    }
+
+    private void setOverlayUpgrade(MethodCall call, MethodChannel.Result result) {
+        Map<String, Object> argument = call.arguments();
+        if (null != argument || !argument.containsKey("isUpgrade")) {
+            OverlayUtil.setOverlayUpgrade((boolean) argument.get("isUpgrade"));
         }
     }
 

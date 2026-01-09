@@ -46,7 +46,7 @@ class BMFArcLine extends BMFOverlay implements BMFOverlayBoundsInterface {
         coordinates.add(BMFCoordinate.fromMap(v as Map));
       });
     }
-    width = map['width'];
+    width = (map['width'] as num?)?.toInt();
     color = ColorUtil.hexToColor(map['color']);
     lineDashType = BMFLineDashType.values[map['lineDashType'] as int];
     clickable = map['clickable'] as bool;

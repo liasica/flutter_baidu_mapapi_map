@@ -76,7 +76,7 @@ class BMFGeodesicLine extends BMFOverlay {
       coordinates = tmpCoordinates;
     }
 
-    width = map['width'] as int?;
+    width = (map['width'] as num?)?.toInt();
     strokeColor = ColorUtil.hexToColor(map['strokeColor'] as String);
     textureImage = map['textureImage'];
     lineDashType = BMFLineDashType.values[map['lineDashType'] as int];

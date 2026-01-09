@@ -115,6 +115,7 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
     private ClusterManager.OnClusterInfoWindowClickListener<T> mInfoWindowClickListener;
     private ClusterManager.OnClusterItemClickListener<T> mItemClickListener;
     private ClusterManager.OnClusterItemInfoWindowClickListener<T> mItemInfoWindowClickListener;
+    private boolean mVisibilityChanged = false;
 
     public DefaultClusterRenderer(Context context, BaiduMap map, ClusterManager<T> clusterManager) {
         mMap = map;
@@ -124,6 +125,11 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
         mIconGenerator.setTextAppearance(R.style.ClusterIcon_TextAppearance);
         mIconGenerator.setBackground(makeClusterBackground());
         mClusterManager = clusterManager;
+    }
+
+    @Override
+    public void setVisibilityChanged(boolean changed) {
+        mVisibilityChanged = changed;
     }
 
     @Override
@@ -325,8 +331,12 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
         @SuppressLint("NewApi")
         public void run() {
             if (clusters.equals(DefaultClusterRenderer.this.mClusters)) {
-                mCallback.run();
-                return;
+                if (mVisibilityChanged || mClusterManager.getClusterVisible()) {
+                    mVisibilityChanged = false;
+                } else {
+                    mCallback.run();
+                    return;
+                }
             }
 
             final MarkerModifier markerModifier = new MarkerModifier();
@@ -797,6 +807,11 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
                             markerOptions.position(item.getPosition());
                             markerOptions.icon(item.getBitmapDescriptor());
                         }
+                        if (!mClusterManager.getClusterVisible()) {
+                            markerOptions.visible(false);
+                        } else {
+                            markerOptions.visible(true);
+                        }
                         onBeforeClusterItemRendered(item, markerOptions);
                         marker = mClusterManager.getMarkerCollection().addMarker(markerOptions);
                         markerWithPosition = new MarkerWithPosition(marker);
@@ -805,6 +820,11 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
                             markerModifier.animate(markerWithPosition, animateFrom, item.getPosition());
                         }
                     } else {
+                        if (!marker.isVisible() && mClusterManager.getClusterVisible()) {
+                            marker.setVisible(true);
+                        } else if (marker.isVisible() && !mClusterManager.getClusterVisible()) {
+                            marker.setVisible(false);
+                        }
                         markerWithPosition = new MarkerWithPosition(marker);
                     }
                     onClusterItemRendered(item, marker);
@@ -817,6 +837,12 @@ public class DefaultClusterRenderer<T extends ClusterItem> implements
                     .position(animateFrom == null ? cluster.getPosition() : animateFrom);
 
             onBeforeClusterRendered(cluster, markerOptions);
+
+            if (!mClusterManager.getClusterVisible()) {
+                markerOptions.visible(false);
+            } else {
+                markerOptions.visible(true);
+            }
 
             Marker marker = mClusterManager.getClusterMarkerCollection().addMarker(markerOptions);
             mMarkerToCluster.put(marker, cluster);

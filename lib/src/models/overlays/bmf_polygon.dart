@@ -69,7 +69,7 @@ class BMFPolygon extends BMFOverlay implements BMFOverlayBoundsInterface {
       });
     }
 
-    width = map['width'];
+    width = (map['width'] as num?)?.toInt();
     strokeColor = ColorUtil.hexToColor(map['strokeColor']);
     fillColor = ColorUtil.hexToColor(map['fillColor']);
     lineDashType = BMFLineDashType.values[map['lineDashType'] as int];

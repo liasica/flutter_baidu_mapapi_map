@@ -233,7 +233,19 @@ public class Constants {
         /**
          * 点聚合类型
          */
-        public class ClusterProtocol {
+        public static class ClusterProtocol {
+            /**
+             * 设置聚合是否展示
+             */
+            public static final String SET_CLUSTER_VISIBLE_METHOD =
+                    "flutter_bmfmap/marker/setClusterVisible";
+
+            /**
+             * 获取聚合是否展示
+             */
+            public static final String GET_CLUSTER_VISIBLE_METHOD =
+                    "flutter_bmfmap/marker/getClusterVisible";
+
             /**
              * 设置聚合marker的地理坐标
              */
@@ -728,6 +740,12 @@ public class Constants {
              */
             public static final String MAP_REFRESH = "flutter_bmfmap/map/mapRefresh";
 
+            /**
+             * 地图切换overlay版本
+             */
+            public static final String MAP_OVERLAY_UPGRADE = "flutter_bmfmap/map/overlayUpgrade";
+
+            public static final String MAP_IS_OVERLAY_UPGRADE = "flutter_bmfmap/map/getOverlayUpgrade";
         }
 
         /**

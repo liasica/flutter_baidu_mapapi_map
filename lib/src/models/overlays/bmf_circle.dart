@@ -63,7 +63,7 @@ class BMFCircle extends BMFOverlay implements BMFOverlayBoundsInterface {
         super.fromMap(map) {
     center = BMFCoordinate.fromMap(map['center']);
     radius = map['radius'];
-    width = map['width'];
+    width = (map['width'] as num?)?.toInt();
     strokeColor = ColorUtil.hexToColor(map['strokeColor']);
     fillColor = ColorUtil.hexToColor(map['fillColor']);
     lineDashType = BMFLineDashType.values[map['lineDashType'] as int];
