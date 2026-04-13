@@ -32,6 +32,9 @@ enum BMFLineDashType {
 
   /// 圆点样式
   LineDashTypeDot,
+
+  /// 长矩形样式
+  LineDashTypeRectangle,
 }
 
 /// 折线跨经度180的方式枚举

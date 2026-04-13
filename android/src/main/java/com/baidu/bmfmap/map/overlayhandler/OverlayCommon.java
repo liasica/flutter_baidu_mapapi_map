@@ -17,5 +17,10 @@ public class OverlayCommon{
             * 圆点样式
             */
            public static final int sLineDashTypeDot = 2;
+
+           /**
+            * 长矩形样式
+            */
+           public static final int sLineDashTypeRectangle = 3;
        }
 }

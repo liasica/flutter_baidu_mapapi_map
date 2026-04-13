@@ -90,7 +90,7 @@ public class PolylineHandler extends OverlayHandler {
         if (baiduMap == null) {
             return false;
         }
-        
+
         if (!argument.containsKey("id")
                 || !argument.containsKey("coordinates")) {
             if (Env.DEBUG) {
@@ -269,7 +269,7 @@ public class PolylineHandler extends OverlayHandler {
         if ((linesType == SIMPLE_LINE || linesType == GRADIENT_LINE) && null == indexs) {
             return false;
         }
-        
+
         if ( (null == colors || colors.size() <= 0)
                 && (null == textures || textures.size() <= 0)) {
             return false;
@@ -476,6 +476,9 @@ public class PolylineHandler extends OverlayHandler {
                 break;
             case OverlayCommon.LineDashType.sLineDashTypeDot:
                 polylineOptions.dottedLineType(PolylineDottedLineType.DOTTED_LINE_CIRCLE);
+                break;
+            case OverlayCommon.LineDashType.sLineDashTypeRectangle:
+                polylineOptions.dottedLineType(PolylineDottedLineType.DOTTED_LINE_CIRCLE_RECTANGLE);
                 break;
             default:
                 break;
@@ -846,6 +849,9 @@ public class PolylineHandler extends OverlayHandler {
             case OverlayCommon.LineDashType.sLineDashTypeDot:
                 polyline.setDottedLineType(PolylineDottedLineType.DOTTED_LINE_CIRCLE);
                 break;
+            case OverlayCommon.LineDashType.sLineDashTypeRectangle:
+                polyline.setDottedLineType(PolylineDottedLineType.DOTTED_LINE_CIRCLE_RECTANGLE);
+                break;
             default:
                 break;
         }
@@ -949,7 +955,7 @@ public class PolylineHandler extends OverlayHandler {
         if (TextUtils.isEmpty(id)) {
             return;
         }
-        
+
         super.clean(id);
 
         List<BitmapDescriptor> bitmapDescriptors = mBitmapMap.get(id);
