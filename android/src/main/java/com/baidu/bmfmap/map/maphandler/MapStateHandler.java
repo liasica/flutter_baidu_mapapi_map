@@ -101,7 +101,7 @@ public class MapStateHandler extends BMapHandler {
 
     private void setOverlayUpgrade(MethodCall call, MethodChannel.Result result) {
         Map<String, Object> argument = call.arguments();
-        if (null != argument || !argument.containsKey("isUpgrade")) {
+        if (null != argument && argument.containsKey("isUpgrade")) {
             OverlayUtil.setOverlayUpgrade((boolean) argument.get("isUpgrade"));
         }
     }

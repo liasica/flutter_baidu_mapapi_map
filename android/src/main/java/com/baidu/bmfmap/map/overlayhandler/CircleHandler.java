@@ -238,6 +238,10 @@ public class CircleHandler extends OverlayHandler {
                 circleOptions.dottedStroke(true);
                 circleOptions.dottedStrokeType(CircleDottedStrokeType.DOTTED_LINE_CIRCLE);
                 break;
+            case OverlayCommon.LineDashType.sLineDashTypeRectangle:
+                circleOptions.dottedStroke(true);
+                circleOptions.dottedStrokeType(CircleDottedStrokeType.DOTTED_LINE_RECTANGLE);
+                break;
             default:
                 break;
         }
@@ -476,6 +480,9 @@ public class CircleHandler extends OverlayHandler {
                 break;
             case OverlayCommon.LineDashType.sLineDashTypeDot:
                 circle.setDottedStrokeType(CircleDottedStrokeType.DOTTED_LINE_CIRCLE);
+                break;
+            case OverlayCommon.LineDashType.sLineDashTypeRectangle:
+                circle.setDottedStrokeType(CircleDottedStrokeType.DOTTED_LINE_RECTANGLE);
                 break;
             default:
                 break;
