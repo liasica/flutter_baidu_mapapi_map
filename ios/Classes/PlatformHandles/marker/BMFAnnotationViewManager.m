@@ -28,10 +28,10 @@
     if ([annotation isKindOfClass:[BMFClusterAnnotation class]]) {
         BMFAnnotationModel *model = (BMFAnnotationModel *)((BMKPointAnnotation *)annotation).flutterModel;
         NSString *identifier = model.identifier ? model.identifier : NSStringFromClass([BMFClusterAnnotation class]);
-        BMKPinAnnotationView *annotationView = (BMKPinAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:identifier];
+        BMKAnnotationView *annotationView = (BMKAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:identifier];
         
         if (!annotationView) {
-            annotationView = [[BMKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:identifier];
+            annotationView = [[BMKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:identifier];
         }
         
         if (model.iconData) {

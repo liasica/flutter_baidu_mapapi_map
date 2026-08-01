@@ -19,7 +19,10 @@ enum BMFLineCapType {
   LineCapButt,
 
   /// 圆形头
-  LineCapRound
+  LineCapRound,
+  
+  /// 方形头
+  LineCapSQUARE
 }
 
 /// 虚线绘制样式

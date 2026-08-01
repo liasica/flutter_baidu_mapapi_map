@@ -230,6 +230,11 @@
         if ([dic[@"showDEMLayer"] isValidParam]) {
             self.showDEMLayer = [dic[@"showDEMLayer"] boolValue];
         }
+        // padding
+        if ([dic[@"mapPadding"] isValidParam]) {
+            UIEdgeInsets e = [[BMFEdgeInsets bmf_modelWith:dic[@"mapPadding"]] toUIEdgeInsets];
+            self.mapPadding = e;
+        }
         result = YES;
     }
     return result;

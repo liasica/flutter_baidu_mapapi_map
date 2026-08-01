@@ -173,6 +173,9 @@ public class OverlayHandlerFactory {
             case OverlayProtocol.MAP_REMOVE_ALL_OVERLAY_METHOD:
                 if (mBmfMapController != null && mBmfMapController.getBaiduMap() != null) {
                     mBmfMapController.getBaiduMap().clear();
+                    result.success(true);
+                } else {
+                    result.success(false);
                 }
                 break;
             default:

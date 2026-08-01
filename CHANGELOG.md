@@ -1,9 +1,29 @@
+## 4.0.1
+1、Android原生SDK升级至8.1.0
+
+2、IOS原生SDK升级至7.1.0
+
+3、Android修复地图网格断续问题
+
+4、iOS修复点聚合偶显卡主线程问题
+
+5、优化iOS端bmf_marker展示逻辑
+
+## 4.0.0
+1、Android原生SDK升级至8.0.0
+
+2、iOS原生SDK升级至V7.0.0
+
+3、修复已知问题
+
 ## 3.9.9
 1、iOS原生SDK升级至V6.6.7
+
 2、修复已知问题
 
 ## 3.9.8
 1、优化点聚合点数多的情况UI卡顿的问题
+
 2、修复已知问题
 
 ## 3.9.7
@@ -161,12 +181,6 @@ iOS新增：
 
 11、新增AnnotationView与地图POI碰撞接口：isOpenCollisionDetectionWithMapPOI，新增PaoPaoView参与碰撞接口：isOpenCollisionDetectionWithPaoPaoView；
 
-## 3.4.1+1
-
-修复：
-
-1、 升级device_info_plus版本至9.0.3；
-
 ## 3.4.1
 
 修复：
@@ -314,10 +328,6 @@ Android端修复LatLngBounds返回地理坐标问题。
 2、BMFMarker()构造废弃，变更为BMFMarker.icon()和BMFMarker.iconData()构造 
 
 3、新增删除traceOverlay接口，MapController.removeTraceOverlay(traceOverlay_id)；
-
-## 3.0.0+2
-
-1、修复方法名错误
 
 ## 3.0.0
 

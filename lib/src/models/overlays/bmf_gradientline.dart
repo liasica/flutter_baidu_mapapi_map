@@ -31,12 +31,35 @@ class BMFGradientLine extends BMFOverlay implements BMFOverlayBoundsInterface {
   /// 默认BMFLineDirectionCross180Type.None, 不跨经度180.
   BMFLineDirectionCross180Type? lineDirectionCross180;
 
+  /// 设置折线是否虚线(Android独有)
+  /// 渐变线暂不支持，为了支持圆头功能默认设置为false
+  bool? dottedLine;
+  
+  /// line头尾处理方式(不支持虚线) 默认普通头 LineCapButt,
+  ///
+  /// 普通头 LineCapButt,
+  /// 圆形头 LineCapRound
+  /// Android平台要想生效，必须设置dottedLine为false
+  BMFLineCapType? lineCapType;
+
+  /// line拐角处理方式（不支持虚线）默认平角衔接 LineJoinBevel,
+  ///
+  /// 平角衔接  BMFLineJoinBevel,
+  /// 尖角衔接(尖角过长(大于线宽)按平角处理) LineJoinMiter,
+  /// 圆⻆角衔接 LineJoinRound
+  ///
+  /// Android平台要想生效，必须设置dottedLine为false
+  BMFLineJoinType? lineJoinType;
+  
   /// 渐变线构造方法
   BMFGradientLine({
     required this.coordinates,
     required this.indexs,
     required this.colors,
     this.width = 5,
+    this.dottedLine = false,
+    this.lineCapType = BMFLineCapType.LineCapButt,
+    this.lineJoinType = BMFLineJoinType.LineJoinBevel,
     this.lineDirectionCross180 = BMFLineDirectionCross180Type.None,
     this.isThined = true,
     this.clickable = true,
@@ -80,6 +103,9 @@ class BMFGradientLine extends BMFOverlay implements BMFOverlayBoundsInterface {
         .values[map['lineDirectionCross180'] as int];
     isThined = map['isThined'] as bool?;
     clickable = map['clickable'] as bool?;
+    dottedLine = map['dottedLine'] as bool?;
+    lineCapType = BMFLineCapType.values[map['lineCapType'] as int];
+    lineJoinType = BMFLineJoinType.values[map['lineJoinType'] as int];
   }
 
   @override
@@ -99,6 +125,9 @@ class BMFGradientLine extends BMFOverlay implements BMFOverlayBoundsInterface {
         'lineDirectionCross180': this.lineDirectionCross180?.index,
         'isThined': this.isThined,
         'clickable': this.clickable,
+        'dottedLine': this.dottedLine,
+        'lineCapType': this.lineCapType?.index,
+        'lineJoinType': this.lineJoinType?.index,
       });
   }
 

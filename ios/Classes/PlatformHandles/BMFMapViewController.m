@@ -96,10 +96,16 @@ static NSString * const kProjectionMethods = @"flutter_bmfmap/projection/";
             
             if (handler) {
                 [weakMapView bmf_performBlockOnMainThreadAsync:^{
+                    __strong __typeof(weakMapView) strongMapView = weakMapView;
+                    __strong __typeof(weakChannel) strongChannel = weakChannel;
+                    if (!strongMapView || !strongChannel) {
+                        result(FlutterMethodNotImplemented);
+                        return;
+                    }
                     if ([handler respondsToSelector:@selector(initWith:channel:)]) {
-                        [[handler initWith:weakMapView channel:weakChannel] handleMethodCall:call result:result];
+                        [[handler initWith:strongMapView channel:strongChannel] handleMethodCall:call result:result];
                     } else {
-                        [[handler initWith:weakMapView] handleMethodCall:call result:result];
+                        [[handler initWith:strongMapView] handleMethodCall:call result:result];
                     }
                 }];
             } else {

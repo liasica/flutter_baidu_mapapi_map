@@ -45,12 +45,6 @@ static const void *polylineModelKey = &polylineModelKey;
         polyline.isThined = model.isThined;
         polyline.lineDirectionCross180 = cross180Type;
         polyline.flutterModel = model;
-        polyline.isThined = NO;
-        polyline.thin = kBMKAlgorithmNone;
-        polyline.thinFactor = 0;
-        polyline.smooth = kBMKAlgorithmNone;
-        polyline.smoothFactor = 0;
-
         return polyline;
     } else { // 单
         BMKPolyline *polyline = [BMKPolyline polylineWithCoordinates:coords count:_coordsCount];
@@ -63,11 +57,6 @@ static const void *polylineModelKey = &polylineModelKey;
         polyline.isThined = model.isThined;
         polyline.lineDirectionCross180 = cross180Type;
         polyline.flutterModel = model;
-        polyline.isThined = NO;
-        polyline.thin = kBMKAlgorithmNone;
-        polyline.thinFactor = 0;
-        polyline.smooth = kBMKAlgorithmNone;
-        polyline.smoothFactor = 0;
         return polyline;
     }
     return nil;
