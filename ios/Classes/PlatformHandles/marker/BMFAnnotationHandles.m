@@ -104,7 +104,7 @@ static BMFAnnotationHandles *_instance = nil;
 
 - (void)handleMethodCall:(nonnull FlutterMethodCall *)call result:(nonnull FlutterResult)result {
     if (!call.arguments || ![call.arguments safeObjectForKey:@"maxDistanceInDP"]) {
-        result(nil);
+        result(@(NO));
         return;
     }
     
@@ -231,7 +231,7 @@ static BMFAnnotationHandles *_instance = nil;
 
 - (void)handleMethodCall:(nonnull FlutterMethodCall *)call result:(nonnull FlutterResult)result {
     if (!call.arguments || ![call.arguments safeObjectForKey:@"zoomLevel"]) {
-        result(nil);
+        result(@(NO));
         return;
     }
     

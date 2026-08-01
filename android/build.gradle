@@ -72,10 +72,10 @@ repositories {
 
 
 dependencies {
-    // implementation fileTree(includes: ['*.jar'], dir: 'libs')
-    implementation 'com.baidu.lbsyun:BaiduMapSDK_Map:7.6.7'
-    implementation 'com.baidu.lbsyun:BaiduMapSDK_Search:7.6.7'
-    implementation 'com.baidu.lbsyun:BaiduMapSDK_Util:7.6.7'
+     // implementation fileTree(includes: ['*.jar'], dir: 'libs')
+    implementation 'com.baidu.lbsyun:BaiduMapSDK_Map_flutter:8.1.0'
+    implementation 'com.baidu.lbsyun:BaiduMapSDK_Search_flutter:8.1.0'
+    implementation 'com.baidu.lbsyun:BaiduMapSDK_Util_flutter:8.1.0'
     implementation 'android.arch.lifecycle:extensions:1.1.1'
 //    implementation rootProject.findProject(":flutter_baidu_mapapi_base")
     implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'

@@ -59,7 +59,7 @@ public class ParticleMapHandler extends BMapHandler {
         }
 
         if (!argument.containsKey("effect") ||
-                !argument.containsKey("location") || !argument.containsKey("images")) {
+                !argument.containsKey("option")) {
             result.success(false);
             return;
         }
@@ -69,8 +69,15 @@ public class ParticleMapHandler extends BMapHandler {
             result.success(false);
             return;
         }
+        
+        Map<String, Object> optionMap = (Map<String, Object>) argument.get("option");
+        
+        if (!optionMap.containsKey("location") || !optionMap.containsKey("images")) {
+            result.success(false);
+            return;
+        }
 
-        Object latLngObj = argument.get("location");
+        Object latLngObj = optionMap.get("location");
 
         if (null == latLngObj) {
             result.success(false);
@@ -84,7 +91,7 @@ public class ParticleMapHandler extends BMapHandler {
             return;
         }
 
-        List<String> images = (List<String>) argument.get("images");
+        List<String> images = (List<String>) optionMap.get("images");
         if (null == images || images.size() < 1) {
             result.success(false);
             return;

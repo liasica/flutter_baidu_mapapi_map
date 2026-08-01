@@ -26,10 +26,10 @@
     if ([annotation isKindOfClass:[BMFClusterAnnotation class]]) {
         BMFAnnotationModel *model = (BMFAnnotationModel *)((BMKPointAnnotation *)annotation).flutterModel;
         NSString *identifier = model.identifier ? model.identifier : NSStringFromClass([BMFClusterAnnotation class]);
-        BMKPinAnnotationView *annotationView = (BMKPinAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:identifier];
+        BMKAnnotationView *annotationView = (BMKAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:identifier];
         
         if (!annotationView) {
-            annotationView = [[BMKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:identifier];
+            annotationView = [[BMKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:identifier];
         }
         
         if (model.iconData) {
@@ -47,10 +47,10 @@
     if ([annotation isKindOfClass:[BMKPointAnnotation class]]) {
         BMFAnnotationModel *model = (BMFAnnotationModel *)((BMKPointAnnotation *)annotation).flutterModel;
         NSString *identifier = model.identifier ? model.identifier : NSStringFromClass([BMKPointAnnotation class]);
-        BMKPinAnnotationView *annotationView = (BMKPinAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:identifier];
+        BMKAnnotationView *annotationView = (BMKAnnotationView *)[mapView dequeueReusableAnnotationViewWithIdentifier:identifier];
         
         if (!annotationView) {
-            annotationView = [[BMKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:identifier];
+            annotationView = [[BMKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:identifier];
         }
         
         if (model.iconData) {
@@ -80,10 +80,8 @@
         annotationView.isForceDisplay = model.isForceDisplay;
         annotationView.isOpenCollisionDetectionWithMapPOI = model.isOpenCollisionDetectionWithMapPOI;
         annotationView.isOpenCollisionDetectionWithPaoPaoView = model.isOpenCollisionDetectionWithPaoPaoView;
-        
         if (model.anchorX >= 0 && model.anchorY >= 0 && model.anchorX <= 1 && model.anchorY <= 1) {
-            // 因为iOSmarker默认已经是上移了图片size的一半，所以这里要减去0.5
-            annotationView.layer.anchorPoint = CGPointMake(model.anchorX, model.anchorY - 0.5);
+            annotationView.layer.anchorPoint = CGPointMake(model.anchorX, model.anchorY);
         }
         CGFloat radians = model.rotation * M_PI / 180.0;
         CGAffineTransform transform = CGAffineTransformMakeRotation(radians);
