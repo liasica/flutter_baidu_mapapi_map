@@ -82,6 +82,10 @@
         if (model.rotate > 0) {
             [annotationView setRotation:model.rotate];
         }
+        else {
+            // 复用的 annotationView 可能残留上一个 marker 的旋转 transform，未设置旋转时归零复位
+            [annotationView setRotation:0];
+        }
         annotationView.canShowCallout = model.canShowCallout;
         annotationView.selected = model.selected;
         annotationView.draggable = model.draggable;
